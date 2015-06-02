@@ -1,0 +1,43 @@
+//
+   Created by goer on 5/21/15.
+
+ion-side-menu(side="left" ng-controller="SideMenuCtrl")
+   ion-header-bar(class="bar bar-header bar-dark")
+      h1(class="title") Menu
+      button(class="button button-clear icon ion-home" ui-sref="store-main")
+   ion-content
+      ion-list
+         ion-item(class="item item-avatar" href="#")
+            img(src="https://www.gravatar.com/avatar/36b92a742d1695b61b9e9572dbd55f6a?s=32&d=identicon&r=PG")
+            h2 Person 1
+            p Last Update: 12:00
+      ul(class='list')
+
+         li(class="item item-divider")
+            h2 Providers
+         li.item.item-checkbox(ng-repeat="p in providers")
+            label.checkbox
+               input(type='checkbox' checked="true")
+            p {{p.name}}
+            span.badge.badge-positive {{p.point | currency : 'Rp' : 0 }}
+
+         li(class="item item-divider")
+            h2 Price Range
+         li(class="item range")
+            i(class="icon ion-ios-sunny-outline")
+            input(type="range" name="price" min="0" max="100" value="33")
+            i(class="icon ion-ios-sunny")
+
+         li.item.item-divider.item-icon-right(ng-click="toggleCategories()")
+            h2 Categories
+            div(ng-if="tc==false")
+               i.icon.ion-plus
+            div(ng-if="tc==true")
+               i.icon.ion-minus
+
+         div(ng-if="tc==true")
+            li.item.item-checkbox.item-icon-right(ng-repeat="c in categories")
+               label.checkbox
+                  input(type='checkbox' checked="true")
+               p {{c.name}}
+               i.icon.ion-ios-arrow-right(ui-sref="store-product-list")

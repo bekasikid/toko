@@ -1,0 +1,36 @@
+//
+   Created by goer on 5/21/15.
+
+
+div.list(ng-controller="ProductListCtrl")
+
+   div.item.item-thumbnail-left( ng-repeat="p in products")
+      img(src="{{p.image}}" ui-sref='store-product-detail')
+      div.product-discount
+         span 30%
+            br
+            OFF
+      h2 This is product title
+      p Product Description
+      p
+         div.subdued.product-price-before Rp 2.500.000,-
+         div.subdued.product-price-after Rp 2.500.000,-
+      p
+         button.button.button-clear.icon.ion-thumbsup
+         button.button.button-clear(ui-sref='store-product-detail') Buy
+         button.button.button-clear(ui-sref='store-product-detail') Detail
+
+   //div.list.card( ng-repeat="p in products")
+   //
+   //   div.item.item-body
+   //      img(src="{{p.image}}" ui-sref='store-product-detail')
+   //      h2 This is product title
+   //      p Product Description
+   //      p
+   //         div.subdued(id="product-price-before") Rp 2.500.000,-
+   //         div.subdued(id="product-price-after") Rp 2.500.000,-
+   //
+   //   div.item.tabs.tabs-secondary
+   //      button.button.button-clear.icon.ion-thumbsup
+   //      button.button.button-clear(ui-sref='store-product-detail') Buy
+   //      button.button.button-clear(ui-sref='store-product-detail') Detail
