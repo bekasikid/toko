@@ -1,4 +1,88 @@
-<!--Created by goer on 5/21/15.--><ion-view title="Product List"><ion-pane><ion-side-menus enable-menu-with-back-views="true"><ion-side-menu-content><ion-nav-bar class="bar-stable"><ion-nav-buttons side="left"><button menu-toggle="left" class="button button-icon button-clear ion-navicon"></button></ion-nav-buttons></ion-nav-bar><ion-content class="has-header"><!--Created by goer on 5/21/15.
+<!--Created by goer on 5/21/15.-->
+<ion-view title="Product List">
+    <ion-pane>
+        <ion-side-menus enable-menu-with-back-views="true">
+            <ion-side-menu-content>
+                <ion-nav-bar class="bar-stable">
+                    <ion-nav-buttons side="left">
+                        <button menu-toggle="left" class="button button-icon button-clear ion-navicon"></button>
+                    </ion-nav-buttons>
+                </ion-nav-bar>
+                <ion-content class="has-header"><!--Created by goer on 5/21/15.
 
---><div ng-controller="ProductListCtrl" class="list"><div ng-repeat="p in products" class="item item-thumbnail-left"><img src="{{p.image}}" ui-sref="store-product-detail"/><div class="product-discount"><span>30%<br/><OFF></OFF></span></div><h2>This is product title</h2><p>Product Description</p><p><div class="subdued product-price-before">Rp 2.500.000,-</div><div class="subdued product-price-after">Rp 2.500.000,-</div></p><p><button class="button button-clear icon ion-thumbsup"></button><button ui-sref="store-product-detail" class="button button-clear">Buy</button><button ui-sref="store-product-detail" class="button button-clear">Detail</button></p></div><!--div.list.card( ng-repeat="p in products")--><!----><!--   div.item.item-body--><!--      img(src="{{p.image}}" ui-sref='store-product-detail')--><!--      h2 This is product title--><!--      p Product Description--><!--      p--><!--         div.subdued(id="product-price-before") Rp 2.500.000,---><!--         div.subdued(id="product-price-after") Rp 2.500.000,---><!----><!--   div.item.tabs.tabs-secondary--><!--      button.button.button-clear.icon.ion-thumbsup--><!--      button.button.button-clear(ui-sref='store-product-detail') Buy--><!--      button.button.button-clear(ui-sref='store-product-detail') Detail--></div></ion-content></ion-side-menu-content><!--Created by goer on 5/21/15.
---><ion-side-menu side="left" ng-controller="SideMenuCtrl"><ion-header-bar class="bar bar-header bar-dark"><h1 class="title">Menu</h1><button ui-sref="store-main" class="button button-clear icon ion-home"></button></ion-header-bar><ion-content><ion-list><ion-item href="#" class="item item-avatar"><img src="https://www.gravatar.com/avatar/36b92a742d1695b61b9e9572dbd55f6a?s=32&amp;d=identicon&amp;r=PG"/><h2>Person 1</h2><p>Last Update: 12:00</p></ion-item></ion-list><ul class="list"><li class="item item-divider"><h2>Providers</h2></li><li ng-repeat="p in providers" class="item item-checkbox"><label class="checkbox"><input type="checkbox" checked="true"/></label><p>{{p.name}}</p><span class="badge badge-positive">{{p.point | currency : 'Rp' : 0 }}</span></li><li class="item item-divider"><h2>Price Range</h2></li><li class="item range"><i class="icon ion-ios-sunny-outline"></i><input type="range" name="price" min="0" max="100" value="33"/><i class="icon ion-ios-sunny"></i></li><li ng-click="toggleCategories()" class="item item-divider item-icon-right"><h2>Categories</h2><div ng-if="tc==false"><i class="icon ion-plus"></i></div><div ng-if="tc==true"><i class="icon ion-minus"></i></div></li><div ng-if="tc==true"><li ng-repeat="c in categories" class="item item-checkbox item-icon-right"><label class="checkbox"><input type="checkbox" checked="true"/></label><p>{{c.name}}</p><i ui-sref="store-product-list" class="icon ion-ios-arrow-right"></i></li></div></ul></ion-content></ion-side-menu></ion-side-menus></ion-pane></ion-view>
+-->
+                    <div ng-controller="ProductListCtrl" class="list">
+                        <div ng-repeat="p in products" class="item item-thumbnail-left"><img src="{{p.image}}"
+                                                                                             ui-sref="store-product-detail"/>
+
+                            <div class="product-discount"><span>30%<br/><OFF></OFF></span></div>
+                            <h2>This is product title</h2>
+
+                            <p>Product Description</p>
+
+                            <p>
+
+                            <div class="subdued product-price-before">Rp 2.500.000,-</div>
+                            <div class="subdued product-price-after">Rp 2.500.000,-</div>
+                            </p>
+                            <p>
+                                <button class="button button-clear icon ion-thumbsup"></button>
+                                <button ui-sref="store-product-detail" class="button button-clear">Buy</button>
+                                <button ui-sref="store-product-detail" class="button button-clear">Detail</button>
+                            </p>
+                        </div>
+                        <!--div.list.card( ng-repeat="p in products")--><!----><!--   div.item.item-body-->
+                        <!--      img(src="{{p.image}}" ui-sref='store-product-detail')-->
+                        <!--      h2 This is product title--><!--      p Product Description--><!--      p-->
+                        <!--         div.subdued(id="product-price-before") Rp 2.500.000,--->
+                        <!--         div.subdued(id="product-price-after") Rp 2.500.000,---><!---->
+                        <!--   div.item.tabs.tabs-secondary--><!--      button.button.button-clear.icon.ion-thumbsup-->
+                        <!--      button.button.button-clear(ui-sref='store-product-detail') Buy-->
+                        <!--      button.button.button-clear(ui-sref='store-product-detail') Detail--></div>
+                </ion-content>
+            </ion-side-menu-content>
+            <!--Created by goer on 5/21/15.
+            -->
+            <ion-side-menu side="left" ng-controller="SideMenuCtrl">
+                <ion-header-bar class="bar bar-header bar-dark"><h1 class="title">Menu</h1>
+                    <button ui-sref="store-main" class="button button-clear icon ion-home"></button>
+                </ion-header-bar>
+                <ion-content>
+                    <ion-list>
+                        <ion-item href="#" class="item item-avatar"><img
+                                src="https://www.gravatar.com/avatar/36b92a742d1695b61b9e9572dbd55f6a?s=32&amp;d=identicon&amp;r=PG"/>
+
+                            <h2>Person 1</h2>
+
+                            <p>Last Update: 12:00</p></ion-item>
+                    </ion-list>
+                    <ul class="list">
+                        <li class="item item-divider"><h2>Providers</h2></li>
+                        <li ng-repeat="p in providers" class="item item-checkbox"><label class="checkbox"><input
+                                type="checkbox" checked="true"/></label>
+
+                            <p>{{p.name}}</p><span
+                                    class="badge badge-positive">{{p.point | currency : 'Rp' : 0 }}</span></li>
+                        <li class="item item-divider"><h2>Price Range</h2></li>
+                        <li class="item range"><i class="icon ion-ios-sunny-outline"></i><input type="range"
+                                                                                                name="price" min="0"
+                                                                                                max="100" value="33"/><i
+                                class="icon ion-ios-sunny"></i></li>
+                        <li ng-click="toggleCategories()" class="item item-divider item-icon-right"><h2>Categories</h2>
+
+                            <div ng-if="tc==false"><i class="icon ion-plus"></i></div>
+                            <div ng-if="tc==true"><i class="icon ion-minus"></i></div>
+                        </li>
+                        <div ng-if="tc==true">
+                            <li ng-repeat="c in categories" class="item item-checkbox item-icon-right"><label
+                                    class="checkbox"><input type="checkbox" checked="true"/></label>
+
+                                <p>{{c.name}}</p><i ui-sref="store-product-list" class="icon ion-ios-arrow-right"></i>
+                            </li>
+                        </div>
+                    </ul>
+                </ion-content>
+            </ion-side-menu>
+        </ion-side-menus>
+    </ion-pane>
+</ion-view>

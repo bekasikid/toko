@@ -3,8 +3,7 @@
  */
 angular.module('StoreModule',[])
 
-.controller('ProductListCtrl',function($scope,cartFactory,$rootScope){
-
+.controller('ProductListCtrl',function($scope,cartFactory,userFactory){
         $scope.products = [
 
             {
@@ -43,9 +42,14 @@ angular.module('StoreModule',[])
     })
 
 
-    .controller('SideMenuCtrl',function($scope,cartFactory,$rootScope){
-
+    .controller('SideMenuCtrl',function($scope,cartFactory,userFactory,providerFactory){
+        /*must be declare in all controllers*/
+        userFactory.setProviders(providerFactory.getProvider());
+        userFactory.mapUserProviders();
+        $scope.loggedin = userFactory.getLoginUser();
         $scope.cartItems = cartFactory.getItems();
+        /*end must be declare in all controllers*/
+
         $scope.tc = true;
         $scope,toggleCategories = function(){
             console.log('Toggle show categories')
@@ -119,4 +123,39 @@ angular.module('StoreModule',[])
         ]
 
 
-    })
+    }).controller('AccountCtrl', function ($scope,userFactory,$location,providerFactory) {
+        $scope.login = function(){
+            $scope.loginStatus = userFactory.login($scope.username,$scope.password);
+            if($scope.loginStatus==true){
+                $location.path('/store-main');
+            }
+        };
+
+        $scope.register = function(){
+            users = userFactory.getUsers();
+            newUser = {
+                id : (users.length+1),
+                name : $scope.name,
+                email : $scope.username,
+                password : $scope.password,
+                image : "https://en.gravatar.com/userimage/88243764/f8ec3653f743fcb87bb78e723c6067f5.png",
+                role : "customer",
+                providers : [
+
+                ]
+            };
+            provs = providerFactory.getProvider();
+            var newProvs = [];
+            angular.forEach(provs,function(prov,key){
+                newProv = {
+                    id : prov.id,
+                    point : 0
+                };
+                newProvs.push(newProv);
+            });
+            newUser.providers = newProvs;
+            userFactory.addUser(newUser);
+            console.log(userFactory.getUsers());
+            $location.path('/store-main');
+        };
+    });

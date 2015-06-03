@@ -17,6 +17,24 @@ angular.module('RouterMain',[])
                 },
             })
 
+            .state('login', {
+                url: "/login",
+                views: {
+                    'main': {
+                        templateUrl: "tpl/store/login.html",
+                    }
+                },
+            })
+
+            .state('daftar', {
+                url: "/daftar",
+                views: {
+                    'main': {
+                        templateUrl: "tpl/store/daftar.html",
+                    }
+                },
+            })
+
             .state('store-product-list', {
                 url: "/store-product-list",
                 views: {
