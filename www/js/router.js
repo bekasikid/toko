@@ -16,7 +16,14 @@ angular.module('RouterMain',[])
                     }
                 },
             })
-
+            .state('store-cart', {
+                url: "/store-cart",
+                views: {
+                    'main': {
+                        templateUrl: "tpl/store/cart.html",
+                    }
+                },
+            })
             .state('login', {
                 url: "/login",
                 views: {

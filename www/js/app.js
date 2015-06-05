@@ -21,7 +21,18 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule'])
         var cartLists = {};
 
         cartLists.add = function(item){
-            items.push(item);
+            var idx = items.indexOf(item);
+            if(idx==-1){
+                item.number=1;
+                items.push(item);
+            }else{
+                items[idx].number +=1;
+            }
+
+        };
+        cartLists.remove = function(item){
+            var idx = items.indexOf(item);
+            items.splice(idx,1);
         };
         cartLists.getItems = function(){
             return items;
@@ -30,6 +41,52 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule'])
             return items.length;
         };
         return cartLists;
+    }).factory("productFactory",function(){
+        var items = [
+
+            {
+                image : 'tpl/store/assets/images/recommendation/165x165xaneka-foto_fujifilm-x-m1-xc-16-50-silver_silver_full01.jpg.pagespeed.ic.gtUDucTVBO.jpg',
+                name : "camera 800",
+                point : 99000,
+                approved : 0
+            },
+            {
+                image : 'tpl/store/assets/images/recommendation/165x165xleica-store-indonesia_leica-x-typ-113-silver-kamera-digital_full01.jpg.pagespeed.ic.ce4XEIcCBT.jpg',
+                name : "camera 900",
+                point : 56000,
+                approved : 0
+            },
+            {
+                image : 'tpl/store/assets/images/recommendation/165x165xmultidimensi_blackvue-sc-300-kamera-motor_full01.jpg.pagespeed.ic.1q0DRfS7UT.jpg',
+                name : "camera 1000",
+                point : 50000,
+                approved : 0
+            },
+            {
+                image : 'tpl/store/assets/images/recommendation/165x165xnavy-club_navy-club-8175-20-24-28-burgundy-koper-fiber_full01.jpg.pagespeed.ic.WcW60zfBHM.jpg',
+                name : "tas perjalanan",
+                point : 120000,
+                approved : 0
+            },
+            {
+                image : 'tpl/store/assets/images/recommendation/165x165xpanasonic-it-comm_panasonic-printer-multifungsi-kx-mb1520_full01.jpg.pagespeed.ic.5MwF2wI9WJ.jpg',
+                name : "printer",
+                point : 200000,
+                approved : 0
+            },
+        ];
+        var productLists = {};
+
+        productLists.add = function(item){
+            items.push(item);
+        };
+        productLists.getItems = function(){
+            return items;
+        };
+        productLists.getNumber = function(){
+            return items.length;
+        };
+        return productLists;
     }).factory("userFactory",function(){
         var login = {
             id : 0,
@@ -78,6 +135,22 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule'])
                         point : 2000000
                     }
                 ]
+            },
+            {
+                id : 3,
+                name : "Vendor 1",
+                email : "example1@gmail.com",
+                image : "https://en.gravatar.com/userimage/88243764/ad74df7c8d39899c4207699d66234b94.png",
+                password : "vendorpwd",
+                role : "vendor"
+            },
+            {
+                id : 3,
+                name : "Provider 1",
+                email : "example2@gmail.com",
+                image : "https://en.gravatar.com/userimage/88243764/ad74df7c8d39899c4207699d66234b94.png",
+                password : "providerpwd",
+                role : "provider"
             }
         ];
         var userObjects = {};

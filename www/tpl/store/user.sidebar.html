@@ -12,7 +12,7 @@
         </ion-item>
     </ion-list>
     <ul class="list">
-        <li class="item item-divider"><h2>Accounts</h2></li>
+        <li class="item item-divider" ng-if="loggedin.providers.length>0"><h2>Accounts</h2></li>
         <li ng-repeat="p in loggedin.providers" class="item item-checkbox">
             <label class="checkbox"><input type="checkbox" checked="true"/></label>
 
