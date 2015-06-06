@@ -25,6 +25,17 @@ angular.module('VendorModule', [])
             $scope.cartList = cartFactory.getItems();
         };
     })
+    .controller('VendorOrderDetailCtrl', function ($scope, userFactory,orderFactory,$stateParams) {
+        $scope.loggedin = userFactory.getLoginUser();
+        $scope.order = orderFactory.getItemById($stateParams.id);
+        $scope.total = function(){
+            var harga = 0;
+            for(i=0;i<$scope.order.products.length;i++){
+                harga += $scope.order.products[i].point * $scope.order.products[i].number;
+            }
+            return harga;
+        }
+    })
     .controller('VendorMenuCtrl', function ($scope, orderFactory, userFactory,productFactory) {
         /*must be declare in all controllers*/
         $scope.loggedin = userFactory.getLoginUser();

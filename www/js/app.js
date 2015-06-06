@@ -60,6 +60,15 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule']
             }
 
         };
+        orderLists.getItemById = function(id){
+            var row = {};
+            angular.forEach(items,function(item,key){
+                if(item.id==id){
+                    row=item;
+                }
+            });
+            return row;
+        };
         orderLists.remove = function(item){
             var idx = items.indexOf(item);
             items.splice(idx,1);

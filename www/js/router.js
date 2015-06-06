@@ -91,6 +91,14 @@ angular.module('RouterMain',[])
                     }
                 },
             })
+            .state('vendor-order/id/:id', {
+                url: "/vendor-order/id/:id",
+                views: {
+                    'main': {
+                        templateUrl: "tpl/store/vendor-order-detail.html",
+                    }
+                },
+            })
 
 
 
