@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic', 'RouterMain', 'StoreModule'])
+angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule'])
 
     .run(function ($ionicPlatform) {
         $ionicPlatform.ready(function () {
@@ -16,7 +16,8 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule'])
                 StatusBar.styleDefault();
             }
         });
-    }).factory("cartFactory",function(){
+    })
+    .factory("cartFactory",function(){
         var items = [];
         var cartLists = {};
 
@@ -34,6 +35,9 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule'])
             var idx = items.indexOf(item);
             items.splice(idx,1);
         };
+        cartLists.cancel = function(){
+            items = [];
+        };
         cartLists.getItems = function(){
             return items;
         };
@@ -41,37 +45,74 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule'])
             return items.length;
         };
         return cartLists;
-    }).factory("productFactory",function(){
+    })
+    .factory("orderFactory",function(){
+        var items = [];
+        var orderLists = {};
+
+        orderLists.add = function(item){
+            var idx = items.indexOf(item);
+            if(idx==-1){
+                item.number=1;
+                items.push(item);
+            }else{
+                items[idx].number +=1;
+            }
+
+        };
+        orderLists.remove = function(item){
+            var idx = items.indexOf(item);
+            items.splice(idx,1);
+        };
+        orderLists.getItems = function(){
+            return items;
+        };
+        orderLists.getId = function(){
+            return items.length+1;
+        }
+        return orderLists;
+    })
+    .factory("productFactory",function(){
         var items = [
 
             {
+                id:1,
                 image : 'tpl/store/assets/images/recommendation/165x165xaneka-foto_fujifilm-x-m1-xc-16-50-silver_silver_full01.jpg.pagespeed.ic.gtUDucTVBO.jpg',
                 name : "camera 800",
                 point : 99000,
+                status : 1,
                 approved : 0
             },
             {
+                id:2,
                 image : 'tpl/store/assets/images/recommendation/165x165xleica-store-indonesia_leica-x-typ-113-silver-kamera-digital_full01.jpg.pagespeed.ic.ce4XEIcCBT.jpg',
                 name : "camera 900",
                 point : 56000,
+                status : 1,
                 approved : 0
             },
             {
+                id:3,
                 image : 'tpl/store/assets/images/recommendation/165x165xmultidimensi_blackvue-sc-300-kamera-motor_full01.jpg.pagespeed.ic.1q0DRfS7UT.jpg',
                 name : "camera 1000",
                 point : 50000,
+                status : 1,
                 approved : 0
             },
             {
+                id:4,
                 image : 'tpl/store/assets/images/recommendation/165x165xnavy-club_navy-club-8175-20-24-28-burgundy-koper-fiber_full01.jpg.pagespeed.ic.WcW60zfBHM.jpg',
                 name : "tas perjalanan",
                 point : 120000,
+                status : 1,
                 approved : 0
             },
             {
+                id:5,
                 image : 'tpl/store/assets/images/recommendation/165x165xpanasonic-it-comm_panasonic-printer-multifungsi-kx-mb1520_full01.jpg.pagespeed.ic.5MwF2wI9WJ.jpg',
                 name : "printer",
                 point : 200000,
+                status : 1,
                 approved : 0
             },
         ];
@@ -80,14 +121,37 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule'])
         productLists.add = function(item){
             items.push(item);
         };
+        productLists.rubah= function(newItem){
+            //items.push(item);
+            angular.forEach(items,function(item,key){
+                if(item.id==newItem.id){
+                    //row=item;
+                    items[key] = newItem;
+                }
+            });
+
+        };
         productLists.getItems = function(){
             return items;
         };
         productLists.getNumber = function(){
             return items.length;
         };
+        productLists.getItemById = function(id){
+            var row = {};
+            angular.forEach(items,function(item,key){
+                if(item.id==id){
+                    row=item;
+                }
+            });
+            return row;
+        };
+        productLists.getId = function(){
+            return items.length+1;
+        }
         return productLists;
-    }).factory("userFactory",function(){
+    })
+    .factory("userFactory",function(){
         var login = {
             id : 0,
             name : "anonymous",
@@ -139,9 +203,9 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule'])
             {
                 id : 3,
                 name : "Vendor 1",
-                email : "example1@gmail.com",
+                email : "vendor",
                 image : "https://en.gravatar.com/userimage/88243764/ad74df7c8d39899c4207699d66234b94.png",
-                password : "vendorpwd",
+                password : "apaansih",
                 role : "vendor"
             },
             {
@@ -208,7 +272,8 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule'])
             console.log(login);
         }
         return userObjects;
-    }).factory("providerFactory",function(){
+    })
+    .factory("providerFactory",function(){
         var providers = [
             {
                 id : 1,

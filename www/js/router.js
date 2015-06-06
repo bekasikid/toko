@@ -42,11 +42,11 @@ angular.module('RouterMain',[])
                 },
             })
 
-            .state('store-product-list', {
-                url: "/store-product-list",
+            .state('store-product/id/:id', {
+                url: "/store-product/id/:id",
                 views: {
                     'main': {
-                        templateUrl: "tpl/store/product-list.html",
+                        templateUrl: "tpl/store/product-detail.html",
                     }
                 },
             })
@@ -56,6 +56,38 @@ angular.module('RouterMain',[])
                 views: {
                     'main': {
                         templateUrl: "tpl/store/product-detail.html",
+                    }
+                },
+            })
+            .state('vendor-list', {
+                url: "/vendor-list",
+                views: {
+                    'main': {
+                        templateUrl: "tpl/store/vendor-list.html",
+                    }
+                },
+            })
+            .state('vendor-product/id/:id', {
+                url: "/vendor-product/id/:id",
+                views: {
+                    'main': {
+                        templateUrl: "tpl/store/vendor-product.html",
+                    }
+                },
+            })
+            .state('vendor-product-new', {
+                url: "/vendor-product-new",
+                views: {
+                    'main': {
+                        templateUrl: "tpl/store/vendor-product-new.html",
+                    }
+                },
+            })
+            .state('vendor-ordered', {
+                url: "/vendor-ordered",
+                views: {
+                    'main': {
+                        templateUrl: "tpl/store/vendor-ordered.html",
                     }
                 },
             })

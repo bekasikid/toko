@@ -1,66 +1,45 @@
 <ion-view title="Product Detail">
-    <ion-pane>
+    <ion-pane ng-controller="productDetailCtrl">
         <ion-header-bar class="bar-stable" align-title="center">
-            <button class="button button-clear icon ion-chevron-left" ui-sref="store-product-list"></button>
+            <button class="button button-clear icon ion-chevron-left" ui-sref="store-main"></button>
             <h1 class="title">Product Detail</h1>
         </ion-header-bar>
         <ion-content>
 
-            <ion-slide-box auto-play="true" does-continue="true" slide-interval="2000">
-
-                <ion-slide-pager></ion-slide-pager>
-
-                <ion-slide>
-                        <img src="tpl/store/assets/images/640x384xbio-2015-hol-hc6.jpg.pagespeed.ic.f-MlLfv8xz.jpg">
-                </ion-slide>
-                <ion-slide>
-                    <img src="tpl/store/assets/images/640x384xOMBS3.jpg.pagespeed.ic.MDfb8AUkJ7.jpg">
-                </ion-slide>
-                <ion-slide>
-                    <img src="tpl/store/assets/images/640x384xprinter-visa-homepage.jpg.pagespeed.ic.rPBoHkl8pr.jpg">
-                </ion-slide>
-                <ion-slide>
-                    <img src="tpl/store/assets/images/640x384xtoshiba-new-glacio-homepage.jpg.pagespeed.ic.2QB-9RhDpk.jpg">
-                </ion-slide>
-
-            </ion-slide-box>
+            <img src="{{product.image}}" />
 
 
             <ion-list>
 
                 <ion-item>
-                    <label>Product Name: {{p.name}}</label>
+                    <label><strong>Product Name</strong>: {{product.name}}</label>
                 </ion-item>
                 <ion-item>
-                    <label>Price: </label>
+                    <label><Strong>Price</Strong>: {{product.point | currency : 'Rp.' : 0}}</label>
                 </ion-item>
                 <ion-item>
-                    <label>Status: </label>
+                    <label><strong>Status</strong>: <span ng-if="product.status==1">Available</span><span ng-if="product.status==0">Not Available</span></label>
                 </ion-item>
                 <ion-item>
-                    <label>Estimate Delivery: </label>
+                    <label><strong>Estimate Delivery</strong>: </label>
                 </ion-item>
                 <ion-item>
-                    <label>Description: </label>
+                    <label><strong>Description</strong>: </label>
                 </ion-item>
                 <ion-item>
-                    <label>Terms & Condition: </label>
+                    <label><strong>Terms & Condition</strong>: </label>
                 </ion-item>
 
             </ion-list>
 
-
-
-
         </ion-content>
 
         <ion-footer-bar class="bar bar-footer bar-stable">
-
-            <button class="button">Rate</button>
-            <button class="button">Share</button>
-            <button class="button">Wish</button>
-
-            <button class="button">Buy</button>
+            <div class="buttons">
+                <button class="button button-small icon-left ion-android-cart button-positive" ng-click="add(product)">Pesan</button>
+                <button type="button" class="button button-positive ion-thumbsup" style="margin-left: 5px;" ng-click="rate()">Rate</button>
+                <button type="button" class="button button-positive ion-pricetag" style="margin-left: 5px;" ng-click="share()">Share</button>
+            </div>
         </ion-footer-bar>
 
 
