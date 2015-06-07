@@ -55,6 +55,8 @@ angular.module('StoreModule', ['angular-carousel'])
                 orderFactory.add(pesanan);
                 console.log(orderFactory.getItems());
                 cartFactory.cancel();
+                $scope.cartList = cartFactory.getItems();
+                $location.path('/store-history');
             }
         };
         $scope.batal = function(){

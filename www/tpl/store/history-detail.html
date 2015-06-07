@@ -20,6 +20,23 @@
                             <div style="margin: 5px 0;">Status : {{(order.status==1)?"Approved":"Not Approved"}}</div>
                         </li>
                         <li class="item item-divider">
+                            Delivery
+                        </li>
+                        <li class="list">
+                            <label class="item item-input item-stacked-label">
+                                <span class="input-label">Ekspedisi</span>
+                                <input type="text" placeholder="Ekspedisi" value="JNE">
+                            </label>
+                            <label class="item item-input item-stacked-label">
+                                <span class="input-label">Tanggal</span>
+                                <input type="text" placeholder="Tanggal Pengiriman" value="2015-06-09">
+                            </label>
+                            <label class="item item-input item-stacked-label">
+                                <span class="input-label">No Tracking</span>
+                                <input type="text" placeholder="No Tracking" value="123456abcd">
+                            </label>
+                        </li>
+                        <li class="item item-divider">
                             Products
                         </li>
                         <li class="item item-thumbnail-left" ng-repeat="product in order.products">
