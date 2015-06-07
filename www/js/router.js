@@ -24,6 +24,22 @@ angular.module('RouterMain',[])
                     }
                 },
             })
+            .state('store-history', {
+                url: "/store-history",
+                views: {
+                    'main': {
+                        templateUrl: "tpl/store/history.html",
+                    }
+                },
+            })
+            .state('store-history/id/:id', {
+                url: "/store-history/id/:id",
+                views: {
+                    'main': {
+                        templateUrl: "tpl/store/history.html",
+                    }
+                },
+            })
             .state('login', {
                 url: "/login",
                 views: {

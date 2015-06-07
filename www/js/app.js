@@ -79,6 +79,15 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule']
         orderLists.getId = function(){
             return items.length+1;
         }
+        orderLists.history = function(uid){
+            var lists = [];
+            angular.forEach(items,function(item,key){
+                if(item.user.id==uid){
+                    lists.push(item);
+                }
+            });
+            return lists;
+        }
         return orderLists;
     })
     .factory("productFactory",function(){

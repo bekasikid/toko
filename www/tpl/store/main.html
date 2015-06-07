@@ -9,6 +9,20 @@
                 </ion-nav-bar>
                 <ion-content class="has-header padding">
                     <ul class="list">
+                        <li class="item" style="height:300px;text-align: center;background-color: #C5C5C5;">
+                            <div style="margin-bottom: 10px;">Recommended Products</div>
+                            <ul rn-carousel class="" rn-carousel-index="carouselIndex22" style="height: 230px;" rn-carousel-auto-slide rn-carousel-buffered>
+                                <li ng-repeat="cList in carouselLists">
+                                    <div class="layer" style="position:relative;">
+                                        <img src="{{cList.image}}" />
+                                        <div style="margin-top: -25px;position: relative;"><label>{{cList.name}}</label></div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="rn-carousel-indicator custom-indicator">
+                                <span ng-repeat="cList in carouselLists" ng-class="{active: $index==$parent.carouselIndex22 }" class="icon ion-star" ng-click="$parent.carouselIndex22 = $index"> </span>
+                            </div>
+                        </li>
                         <li class="item item-thumbnail-left" ng-repeat="product in products">
                             <img src="{{product.image}}"/>
 

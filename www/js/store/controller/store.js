@@ -1,10 +1,12 @@
 /**
  * Created by goer on 5/21/15.
  */
-angular.module('StoreModule', [])
+angular.module('StoreModule', ['angular-carousel'])
 
     .controller('ProductListCtrl', function ($scope, cartFactory, userFactory, productFactory) {
         $scope.loggedin = userFactory.getLoginUser();
+        $scope.myInterval = 300;
+        $scope.carouselLists = productFactory.getItems();
         $scope.products = productFactory.getItems();
         $scope.add = function (item) {
             item.approved = 0;
@@ -32,6 +34,7 @@ angular.module('StoreModule', [])
         $scope.pesan = function(){
             if($scope.loggedin.id==0){
                 alert("Anda harus login terlebih dahulu");
+                $location.path('/login');
                 return false;
             }
             if(confirm("pesan barang?")){
@@ -42,6 +45,8 @@ angular.module('StoreModule', [])
                     id:orderFactory.getId(),
                     tgl:tgl.getFullYear()+"-"+month+"-"+dt,
                     proses:0,
+                    tgl_proses : "",
+                    delivery : "",
                     user : $scope.loggedin,
                     products : cartFactory.getItems(),
                     status:0,
@@ -238,4 +243,8 @@ angular.module('StoreModule', [])
 
         };
 
+    })
+    .controller('HistoryCtrl', function ($scope, userFactory,orderFactory) {
+        $scope.loggedin = userFactory.getLoginUser();
+        $scope.orderList = orderFactory.getItems();
     });
