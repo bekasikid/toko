@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule'])
+angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule', 'ProviderModule'])
 
     .run(function ($ionicPlatform) {
         $ionicPlatform.ready(function () {
@@ -72,6 +72,10 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule']
         orderLists.remove = function(item){
             var idx = items.indexOf(item);
             items.splice(idx,1);
+        };
+        orderLists.edit = function(item){
+            var idx = items.indexOf(item);
+            items[idx]=item;
         };
         orderLists.getItems = function(){
             return items;
@@ -229,9 +233,9 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule']
             {
                 id : 3,
                 name : "Provider 1",
-                email : "example2@gmail.com",
+                email : "provider",
                 image : "https://en.gravatar.com/userimage/88243764/ad74df7c8d39899c4207699d66234b94.png",
-                password : "providerpwd",
+                password : "apaansih",
                 role : "provider"
             }
         ];

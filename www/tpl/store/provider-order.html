@@ -2,7 +2,7 @@
 -->
 <ion-view title="Order List" cache-view="false">
     <ion-pane>
-        <ion-side-menus enable-menu-with-back-views="true" ng-controller="VendorOrderCtrl">
+        <ion-side-menus enable-menu-with-back-views="true" ng-controller="ProviderOrderCtrl">
             <ion-side-menu-content>
                 <ion-nav-bar class="bar-stable">
                     <ion-nav-buttons side="left">
@@ -18,7 +18,9 @@
                             <div style="margin: 5px 0;">Barang : {{order.products.length}} Item</div>
                             <div style="margin: 5px 0;">Total : {{(order.total)  | currency : 'Rp ' : 0 }}</div>
                             <div style="margin: 5px 0;">Status : {{(order.status==1)?"Approved":"Not Approved"}}</div>
-                            <a class="button button-small icon-left ion-android-list button-positive" href="#vendor-order/id/{{order.id}}">Detail</a>
+                            <button class="button button-small icon-left ion-android-cart button-positive" ng-click="approve(order)">Setuju</button>
+                            <button class="button button-small icon-left ion-android-cart button-positive" ng-click="reject(order)">Tolak</button>
+                            <a class="button button-small icon-left ion-android-list button-positive" href="#provider-order/id/{{order.id}}">Detail</a>
                         </li>
                     </ul>
 
@@ -29,8 +31,8 @@
             <!--Created by goer on 5/21/15.
             -->
             <ion-side-menu side="left" ng-switch on="loggedin.role">
-                <div ng-switch-when="vendor">
-                    <div ng-include="'tpl/store/vendor.sidebar.html'"></div>
+                <div ng-switch-when="provider">
+                    <div ng-include="'tpl/store/provider.sidebar.html'"></div>
                 </div>
                 <div ng-switch-default>
                     <div ng-include="'tpl/store/user.sidebar.html'"></div>

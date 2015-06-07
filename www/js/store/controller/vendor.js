@@ -18,12 +18,6 @@ angular.module('VendorModule', [])
     .controller('VendorOrderCtrl', function ($scope, userFactory,orderFactory) {
         $scope.loggedin = userFactory.getLoginUser();
         $scope.orderList = orderFactory.getItems();
-        $scope.remove = function (item) {
-            item.approved = 0;
-            cartFactory.remove(item);
-            console.log(cartFactory.getItems());
-            $scope.cartList = cartFactory.getItems();
-        };
     })
     .controller('VendorOrderDetailCtrl', function ($scope, userFactory,orderFactory,$stateParams) {
         $scope.loggedin = userFactory.getLoginUser();

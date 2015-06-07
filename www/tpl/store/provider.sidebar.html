@@ -1,0 +1,24 @@
+<ion-header-bar class="bar bar-header bar-dark"><h1 class="title">Menu</h1>
+    <button ui-sref="store-main" class="button button-clear icon ion-home"></button>
+</ion-header-bar>
+<ion-content ng-controller="ProviderMenuCtrl">
+    <ion-list>
+        <ion-item href="#login" class="item item-avatar">
+            <img src="{{loggedin.image}}"/>
+
+            <h2>{{loggedin.name}}</h2>
+
+            <p>Last Update: 12:00</p>
+        </ion-item>
+    </ion-list>
+    <ul class="list">
+
+        <li class="item item-divider"><h2>Order</h2></li>
+        <a class="item item-icon-left" href="#/provider-order">
+            <i class="icon ion-android-cart"></i>
+            Ordered
+            <span class="badge badge-assertive">1</span>
+        </a>
+
+    </ul>
+</ion-content>

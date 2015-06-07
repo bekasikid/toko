@@ -115,6 +115,22 @@ angular.module('RouterMain',[])
                     }
                 },
             })
+            .state('provider-order', {
+                url: "/provider-order",
+                views: {
+                    'main': {
+                        templateUrl: "tpl/store/provider-order.html",
+                    }
+                },
+            })
+            .state('provider-order/id/:id', {
+                url: "/provider-order/id/:id",
+                views: {
+                    'main': {
+                        templateUrl: "tpl/store/provider-order-detail.html",
+                    }
+                },
+            })
 
 
 
