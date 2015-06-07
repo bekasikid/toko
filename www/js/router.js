@@ -36,7 +36,7 @@ angular.module('RouterMain',[])
                 url: "/store-history/id/:id",
                 views: {
                     'main': {
-                        templateUrl: "tpl/store/history.html",
+                        templateUrl: "tpl/store/history-detail.html",
                     }
                 },
             })

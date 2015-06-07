@@ -247,4 +247,15 @@ angular.module('StoreModule', ['angular-carousel'])
     .controller('HistoryCtrl', function ($scope, userFactory,orderFactory) {
         $scope.loggedin = userFactory.getLoginUser();
         $scope.orderList = orderFactory.getItems();
+    })
+    .controller('HistoryDetailCtrl', function ($scope, userFactory,orderFactory,$stateParams) {
+        $scope.loggedin = userFactory.getLoginUser();
+        $scope.order = orderFactory.getItemById($stateParams.id);
+        $scope.total = function(){
+            var harga = 0;
+            for(i=0;i<$scope.order.products.length;i++){
+                harga += $scope.order.products[i].point * $scope.order.products[i].number;
+            }
+            return harga;
+        }
     });
