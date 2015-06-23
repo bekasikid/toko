@@ -229,6 +229,15 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
             //return items;
             return def.promise;
         };
+
+        productLists.getPromo = function(){
+            var def = $q.defer();
+            $http.get(base+"index.php/api/promo/getAll").success(function(data){
+                def.resolve(data);
+            });
+            return def.promise;
+        };
+
         productLists.getNumber = function(){
             return items.length;
         };

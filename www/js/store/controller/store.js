@@ -7,7 +7,7 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         $scope.loggedin = userFactory.getLoginUser();
         $scope.myInterval = 300;
 
-        productFactory.getItems().then(function(data){
+        productFactory.getPromo().then(function(data){
             $scope.carouselLists = data;
         });
 
