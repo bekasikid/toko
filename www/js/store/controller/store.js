@@ -3,7 +3,11 @@
  */
 angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
 
-    .controller('ProductListCtrl', function ($scope, cartFactory, userFactory, productFactory,$ionicSlideBoxDelegate) {
+    .controller('headerCtrl', function ($scope, cartFactory, userFactory) {
+        $scope.loggedin = userFactory.getLoginUser();
+        $scope.cart = cartFactory.getItems();
+    })
+    .controller('ProductListCtrl', function ($scope, cartFactory, userFactory, productFactory, providerFactory,$ionicSlideBoxDelegate) {
         $scope.loggedin = userFactory.getLoginUser();
         $scope.myInterval = 300;
 
@@ -15,6 +19,12 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
             $scope.products = data;
             $ionicSlideBoxDelegate.update();
         });
+
+        $scope.point_rate = 1;
+        providerFactory.setMinPoints().then(function(row){
+            $scope.point_rate = row.point;
+        });
+
         $scope.add = function (item) {
             //item.approved = 0;
             cartFactory.add(item);
@@ -24,19 +34,34 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
     .controller('productDetailCtrl', function ($scope, $stateParams, cartFactory, userFactory,productFactory,$location) {
         /*must be declare in all controllers*/
         $scope.loggedin = userFactory.getLoginUser();
+
         //$scope.cartItems = cartFactory.getItems();
         //$scope.products = productFactory.getItems();
         /*end must be declare in all controllers*/
         //$scope.params = $routeParams;
         //console.log($stateParams.id);
         //$scope.product = productFactory.getItemById($stateParams.id);
+        $scope.prod = {
+            points : 0,
+            topup:0
+        };
+
+        $scope.product = {
+            product_point : 0
+        };
         productFactory.getItemById($stateParams.id).then(function(row){
             $scope.product=row;
+            $scope.prod.points = $scope.product.product_point;
+        });
+
+        $scope.$watch("prod.points",function(){
+            $scope.prod.topup = ($scope.product.product_point - $scope.prod.points) * 2500;
+            console.log($scope.prod);
         });
 
         $scope.add = function (item) {
             if(confirm("Add to cart?")){
-                item.approved = 0;
+                //item.approved = 0;
                 cartFactory.add(item);
                 console.log(cartFactory.getItems());
                 $location.path('/home/store');
@@ -45,50 +70,19 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
 
         };
 
-    })
-    .controller('productVendorDetailCtrl', function ($scope, $stateParams, cartFactory, userFactory,productFactory,$location,fileFactory) {
-        /*must be declare in all controllers*/
-        $scope.loggedin = userFactory.getLoginUser();
-        productFactory.getItems().then(function(data){
-            $scope.products = data;
-        });
-        /*end must be declare in all controllers*/
-        //$scope.params = $routeParams;
-        //console.log($stateParams.id);
-        $scope.product = productFactory.getItemById($stateParams.id);
-        $scope.save = function (item) {
-            if(confirm("Simpan Product?")){
-                productFactory.rubah(item);
-                console.log(productFactory.getItems());
-                $location.path('/home/vendor');
-                //$rootScope.cartNumber = cartFactory.getNumber();
-            }
-
+        $scope.isDescShown = true;
+        $scope.toggleDesc = function(){
+            $scope.isDescShown = !$scope.isDescShown;
         };
-        $scope.imagename = '';
-        $scope.$watch('files', function () {
-            fileFactory.upload($scope.files).then(function(data){
-                //setImage(data.name,data.url);
-                $scope.imagename = data.name;
-            });
-        });
-        $scope.upload = function(){
-            console.log($scope.files);
-            fileFactory.upload($scope.files).then(function(data){
-                //setImage(data.name,data.url);
-                $scope.imagename = data.name;
-            });
-        };
-        $scope.add = function (item) {
-            if(confirm("Tambah Product?")){
-                item.id = productFactory.getId();
-                item.approved = 0;
-                item.image = $scope.imagename;
-                productFactory.add(item);
-                //console.log(productFactory.getItems());
-                $location.path('/home/vendor');
-            }
 
+        $scope.isDetShown = true;
+        $scope.toggleDet = function(){
+            $scope.isDetShown = !$scope.isDetShown;
+        };
+
+        $scope.isTermShown = true;
+        $scope.toggleTerm = function(){
+            $scope.isTermShown = !$scope.isTermShown;
         };
 
     })
@@ -145,8 +139,16 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
     })
     .controller('SideMenuCtrl', function ($scope, cartFactory, userFactory, providerFactory,urlFactory) {
         /*must be declare in all controllers*/
+        $scope.pid = 0;
         $scope.loggedin = userFactory.getLoginUser();
         $scope.cartItems = cartFactory.getItems();
+        $scope.itemsNumber = function(){
+            var jml = 0;
+            angular.forEach($scope.cartItems,function(item,key){
+                jml += item.number;
+            });
+            return jml;
+        }
         /*end must be declare in all controllers*/
 
         $scope.tc = true;
@@ -248,7 +250,9 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         };
         $scope.logout = function(){
             userFactory.logout();
-            $location.path('/home/store');
+            $state.transitionTo('home.store', $state.$current.params, {
+                reload: true, inherit: true, notify: true
+            });
         };
         $scope.register = function () {
             userFactory.addUser($scope.name,$scope.username,$scope.password,$scope.imagename,"customer");

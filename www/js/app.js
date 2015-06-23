@@ -6,9 +6,9 @@
 //var base = "http://localhost/wincom/goer/toko-master/rest/";
 //var uploadUrl = "http://localhost/wincom/goer/toko-master/rest/index.php/api/upload/upload";
 //var uploadPointUrl = "http://localhost/wincom/goer/toko-master/rest/index.php/api/upload/uploadPoint";
-var base = "http://202.146.225.80:55080/tukarpoint/";
-var uploadUrl = "http://202.146.225.80:55080/tukarpoint/index.php/api/upload/upload";
-var uploadPointUrl = "http://202.146.225.80:55080/tukarpoint/index.php/api/upload/uploadPoint";
+var base = "http://localhost/tukarpoint/tukarpoint/";
+var uploadUrl = "http://localhost/tukarpoint/tukarpoint/index.php/api/upload/upload";
+var uploadPointUrl = "http://localhost/tukarpoint/tukarpoint/index.php/api/upload/uploadPoint";
 angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule', 'ProviderModule','ngFileUpload','chieffancypants.loadingBar', 'ngAnimate'])
 
     .run(function ($ionicPlatform) {
@@ -27,18 +27,35 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
         var items = [];
         var cartLists = {};
 
+        //cartLists.add = function(item){
+        //    item.id = parseInt(item.product_id);
+        //    console.log(item);
+        //    var idx = items.indexOf(item);
+        //    if(idx==-1){
+        //        item.number=1;
+        //        items.push(item);
+        //    }else{
+        //        items[idx].number +=1;
+        //    }
+        //    console.log(items);
+        //};
         cartLists.add = function(item){
             item.id = parseInt(item.product_id);
             console.log(item);
-            var idx = items.indexOf(item);
-            if(idx==-1){
-                item.number=1;
+            var isAdded = false;
+            angular.forEach(items,function(row,key){
+                if(row.id == item.id){
+                    items[key].number += 1;
+                    isAdded = true;
+                }
+            });
+            if(!isAdded){
+                item.number = 1;
                 items.push(item);
-            }else{
-                items[idx].number +=1;
             }
             console.log(items);
         };
+
         cartLists.remove = function(item){
             var idx = items.indexOf(item);
             items.splice(idx,1);
@@ -148,49 +165,7 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
         return orderLists;
     })
     .factory("productFactory",function($http,$q){
-        var items = [
-
-            {
-                id:1,
-                image : 'tpl/store/assets/images/recommendation/foto1.jpg',
-                name : "camera 800",
-                point : 99000,
-                status : 1,
-                approved : 0
-            },
-            {
-                id:2,
-                image : 'tpl/store/assets/images/recommendation/foto3.jpg',
-                name : "camera 900",
-                point : 56000,
-                status : 1,
-                approved : 0
-            },
-            {
-                id:3,
-                image : 'tpl/store/assets/images/recommendation/foto2.jpg',
-                name : "camera 1000",
-                point : 50000,
-                status : 1,
-                approved : 0
-            },
-            {
-                id:4,
-                image : 'tpl/store/assets/images/recommendation/koper.jpg',
-                name : "tas perjalanan",
-                point : 120000,
-                status : 1,
-                approved : 0
-            },
-            {
-                id:5,
-                image : 'tpl/store/assets/images/recommendation/printer.jpg',
-                name : "printer",
-                point : 200000,
-                status : 1,
-                approved : 0
-            },
-        ];
+        var items = [];
         var productLists = {};
 
         //productLists.add = function(item){
@@ -200,10 +175,12 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
         productLists.add = function(item){
             var def = $q.defer();
             $http.post(base+"index.php/api/products/product",{
+                maker : item.maker,
                 name : item.name,
-                point : item.point,
+                price : item.price,
                 image : item.image,
                 status : item.status,
+                detail : item.detail,
                 desc: item.desc
             }).success(function(data){
                 def.resolve(data);
@@ -223,7 +200,8 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
         };
         productLists.getItems = function(){
             var def = $q.defer();
-            $http.get(base+"index.php/api/products/getAll").success(function(data){
+            var limit = 6;
+            $http.get(base+"index.php/api/products/getAll/limit/"+limit).success(function(data){
                 def.resolve(data);
             });
             //return items;
@@ -352,6 +330,7 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
     .factory("providerFactory",function($http,$q){
         var provider = {};
         var providerObjects = {};
+        var minpoints = 1;
 
         providerObjects.setProvider = function(uid){
             //var def = $q.defer();
@@ -380,6 +359,20 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
             });
             return def.promise;
         };
+
+        providerObjects.setMinPoints = function(){
+            var def = $q.defer();
+            $http.get(base+"index.php/api/providers/getMinPoint").success(function(row){
+                def.resolve(row);
+                minpoints = row.point;
+            });
+            return def.promise;
+        };
+
+        providerObjects.getMinPoints = function(){
+            return minpoints;
+        };
+
         return providerObjects;
     })
     .factory("urlFactory",function(){
@@ -448,4 +441,48 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
     .config(function($ionicConfigProvider,cfpLoadingBarProvider) {
         $ionicConfigProvider.views.maxCache(0);
         cfpLoadingBarProvider.includeSpinner = true;
-    });
+    })
+    .directive('ngMin', function() {
+        return {
+            restrict : 'A',
+            require : ['ngModel'],
+            compile: function($element, $attr) {
+                return function linkDateTimeSelect(scope, element, attrs, controllers) {
+                    var ngModelController = controllers[0];
+                    scope.$watch($attr.ngMin, function watchNgMin(value) {
+                        element.attr('min', value);
+                        ngModelController.$render();
+                    })
+                }
+            }
+        }
+    })
+    .directive('ngMax', function() {
+        return {
+            restrict : 'A',
+            require : ['ngModel'],
+            compile: function($element, $attr) {
+                return function linkDateTimeSelect(scope, element, attrs, controllers) {
+                    var ngModelController = controllers[0];
+                    scope.$watch($attr.ngMax, function watchNgMax(value) {
+                        element.attr('max', value);
+                        ngModelController.$render();
+                    })
+                }
+            }
+        }
+    })
+    .directive('currency', function () {
+        return {
+            require: 'ngModel',
+            link: function(elem, $scope, attrs, ngModel){
+                ngModel.$formatters.push(function(val){
+                    return number_format(val,0,".",",")
+                });
+                ngModel.$parsers.push(function(val){
+                    return val.replace(/^\$/, '')
+                });
+            }
+        }
+    })
+;

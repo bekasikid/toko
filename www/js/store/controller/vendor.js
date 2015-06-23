@@ -1,7 +1,7 @@
 /**
  * Created by goer on 5/21/15.
  */
-angular.module('VendorModule', ['ngFileUpload'])
+angular.module('VendorModule', ['ngFileUpload','ckeditor'])
 
     .controller('VendorListCtrl', function ($scope, userFactory,productFactory) {
         $scope.loggedin = userFactory.getLoginUser();
@@ -59,5 +59,69 @@ angular.module('VendorModule', ['ngFileUpload'])
         $scope.$watch('files', function () {
             fileFactory.upload($scope.files);
         });
+    })
+    .controller('productVendorDetailCtrl', function ($scope, $stateParams, cartFactory, userFactory,productFactory,$location,fileFactory) {
+        /*must be declare in all controllers*/
+        $scope.loggedin = userFactory.getLoginUser();
+        productFactory.getItems().then(function(data){
+            $scope.products = data;
+        });
+        /*end must be declare in all controllers*/
+        //$scope.params = $routeParams;
+        //console.log($stateParams.id);
+        $scope.product = productFactory.getItemById($stateParams.id);
+        $scope.save = function (item) {
+            if(confirm("Simpan Product?")){
+                productFactory.rubah(item);
+                console.log(productFactory.getItems());
+                $location.path('/home/vendor');
+                //$rootScope.cartNumber = cartFactory.getNumber();
+            }
+
+        };
+        $scope.imagename = '';
+        //$scope.$watch('files', function () {
+        //    fileFactory.upload($scope.files).then(function(data){
+        //        //setImage(data.name,data.url);
+        //        $scope.imagename = data.name;
+        //    });
+        //});
+        $scope.upload = function(){
+            console.log($scope.files);
+            fileFactory.upload($scope.files).then(function(data){
+                //setImage(data.name,data.url);
+                $scope.imagename = data.name;
+            });
+        };
+        $scope.add = function (item) {
+            if(confirm("Tambah Product?")){
+                //alert(item.desc);
+                fileFactory.upload($scope.files).then(function(data){
+                    item.image = data.name;
+                    alert(item.desc);
+                    alert(item.detail);
+                    productFactory.add(item);
+                    //$location.path('/home/vendor');
+                });
+
+                //item.id = productFactory.getId();
+                //item.approved = 0;
+
+                //console.log(productFactory.getItems());
+
+            }
+        };
+
+        $scope.options = {
+            language: 'en',
+            allowedContent: true,
+            entities: false
+        };
+
+        // Called when the editor is completely ready.
+        $scope.onReady = function () {
+            // ...
+        };
+
     })
     ;

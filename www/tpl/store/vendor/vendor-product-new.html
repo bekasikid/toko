@@ -20,22 +20,20 @@
                     </div>
                     <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
                     <br/>
-                    <button type="button" ng-click="upload()" class="button button-default">Upload</button>
                 </div>
 
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Produsen</span>
+                    <input type="text" placeholder="Produsen" ng-model="product.maker">
+                </label>
                 <label class="item item-input item-stacked-label">
                     <span class="input-label">Nama Produk</span>
                     <input type="text" placeholder="Name" ng-model="product.name">
                 </label>
                 <label class="item item-input item-stacked-label">
-                    <span class="input-label">Point</span>
-                    <input type="text" placeholder="Harga" ng-model="product.point">
+                    <span class="input-label">Harga</span>
+                    <input type="text" placeholder="Harga" ng-model="product.price">
                 </label>
-                <!--<label class="item item-input item-stacked-label">-->
-                    <!--<span class="input-label">Point</span>-->
-                    <!--<input type="text" placeholder="Harga">-->
-                <!--</label>-->
-
                 <div class="item item-toggle">
                     Status
                     <label class="toggle toggle-positive">
@@ -46,11 +44,15 @@
                     </label>
                 </div>
                 <label class="item item-input item-stacked-label">
+                    <span class="input-label">Detail</span>
+                    <div ckeditor="options" ng-model="product.detail" ready="onReady()"></div>
+                </label>
+                <label class="item item-input item-stacked-label">
                     <span class="input-label">Deskripsi</span>
-                    <input type="text" placeholder="Name" ng-model="product.desc">
+                    <div ckeditor="options" ng-model="product.desc" ready="onReady()"></div>
                 </label>
             </div>
-            <button type="button" class="button button-full button-positive" ng-click="add(product)">Pesan</button>
+            <button type="button" class="button button-full button-positive" ng-click="add(product)">Tambah</button>
         </ion-list>
 
     </ion-content>
