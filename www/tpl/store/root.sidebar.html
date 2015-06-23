@@ -1,0 +1,25 @@
+<ion-header-bar class="bar bar-header bar-dark"><h1 class="title">Menu</h1>
+    <button ui-sref="home.store" class="button button-clear icon ion-home"></button>
+</ion-header-bar>
+<ion-content ng-controller="RootMenuCtrl">
+    <ion-list>
+        <ion-item href="#/home/login" class="item item-avatar">
+            <img src="{{loggedin.user_imageurl}}"/>
+            <h2>{{loggedin.user_name}}</h2>
+            <p>Last Update: 12:00</p>
+        </ion-item>
+    </ion-list>
+    <ul class="list">
+
+        <li class="item item-divider"><h2>Menu</h2></li>
+        <a class="item item-icon-left" href="#/home/vendor-add">
+            <i class="icon ion-person-add"></i>
+            Add Vendor
+        </a>
+        <a class="item item-icon-left" href="#/home/provider-add">
+            <i class="icon ion-person-add"></i>
+            Add Provider
+        </a>
+
+    </ul>
+</ion-content>

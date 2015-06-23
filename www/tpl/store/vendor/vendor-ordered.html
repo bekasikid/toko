@@ -1,0 +1,26 @@
+<ion-nav-bar class="bar-stable" align-title="left">
+    <ion-nav-buttons side="left">
+        <button menu-toggle="left" class="button button-icon button-clear ion-navicon"></button>
+    </ion-nav-buttons>
+    <ion-nav-title style="padding-left: 30px;">
+        TUKAR POINT
+    </ion-nav-title>
+</ion-nav-bar>
+<ion-content class="has-header padding" ng-controller="VendorOrderCtrl">
+    <ul class="list">
+        <li class="item item-thumbnail-left" ng-repeat="order in orderList">
+            <img src="{{order.user.image}}"/>
+
+            <h2><strong>{{order.user.name}}</strong></h2>
+
+            <div style="margin: 5px 0;">Tanggal : {{order.tgl}}</div>
+            <div style="margin: 5px 0;">Barang : {{order.products.length}} Item</div>
+            <div style="margin: 5px 0;">Total : {{(order.total) | currency : 'Rp ' : 0 }}</div>
+            <div style="margin: 5px 0;">Status : {{(order.status==1)?"Approved":"Not Approved"}}</div>
+            <a class="button button-small icon-left ion-android-list button-positive"
+               href="#/home/vendor-order/id/{{order.id}}">Detail</a>
+        </li>
+    </ul>
+</ion-content>
+<ion-footer-bar class="bar bar-stable">
+</ion-footer-bar>

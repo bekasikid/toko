@@ -1,0 +1,43 @@
+<ion-view title="Set User Point">
+    <ion-pane>
+        <ion-side-menus enable-menu-with-back-views="true">
+            <ion-side-menu-content>
+                <ion-nav-bar class="bar-stable">
+                    <ion-nav-buttons side="left">
+                        <button menu-toggle="left" class="button button-icon button-clear ion-navicon"></button>
+                    </ion-nav-buttons>
+                </ion-nav-bar>
+                <ion-content class="has-header padding" ng-controller="ProviderUsersPointsCtrl">
+                    <ion-list>
+                        <ion-item>
+                            <div style="text-align: center;padding-top: 10px;">
+                                <div ngf-drop ngf-select ng-model="files" class="drop-box"
+                                     ngf-drag-over-class="dragover" ngf-multiple="false" ngf-allow-dir="true"
+                                     accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                                    <br/>
+                                    <label class="button button-small" style="margin-top: 5px;width: 100px;">Add
+                                        Excel</label>
+                                </div>
+                                <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+                                <br/>
+                                <pre>{{log}}</pre>
+                            </div>
+                            <button class="button button-small" style="margin-top: 5px;width: 100px;" ng-click="uploadPoint()">Upload
+                            </button>
+                        </ion-item>
+                        <ion-item ng-repeat="user in users" class="item-icon-right" href="#/provider-users-point-detail">
+                            {{ user.user_name}} - {{user.point | currency : '':0}}
+                            <i class="icon ion-ios-arrow-forward"></i>
+                        </ion-item>
+                    </ion-list>
+                    <ion-infinite-scroll ng-if="!noMoreData" on-infinite="loadMore()" distance="10%"></ion-infinite-scroll>
+                </ion-content>
+            </ion-side-menu-content>
+            <!--Created by goer on 5/21/15.
+            -->
+            <ion-side-menu side="left" ng-include="'tpl/store/provider.sidebar.html'">
+
+            </ion-side-menu>
+        </ion-side-menus>
+    </ion-pane>
+</ion-view>

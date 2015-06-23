@@ -1,0 +1,43 @@
+
+    <ion-pane ng-controller="productVendorDetailCtrl">
+        <ion-header-bar class="bar-stable" align-title="center">
+            <button class="button button-clear icon ion-chevron-left" ui-sref="home.vendor"></button>
+            <h1 class="title">Product Detail</h1>
+        </ion-header-bar>
+        <ion-content>
+
+            <img src="{{product.image}}" />
+
+
+            <ion-list>
+                <div class="list">
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Nama Produk</span>
+                        <input type="text" placeholder="Name" ng-model="product.name">
+                    </label>
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Harga</span>
+                        <input type="text" placeholder="Harga" ng-model="product.point">
+                    </label>
+                    <div class="item item-toggle">
+                        Status
+                        <label class="toggle toggle-positive">
+                            <input type="checkbox" ng-model="product.status" ng-true-value="1" ng-false-value="0">
+                            <div class="track">
+                                <div class="handle"></div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </ion-list>
+
+        </ion-content>
+
+        <ion-footer-bar class="bar bar-footer bar-stable">
+            <div class="buttons">
+                <button class="button button-small icon-left ion-android-cart button-positive" ng-click="save(product)">Simpan</button>
+            </div>
+        </ion-footer-bar>
+
+
+    </ion-pane>

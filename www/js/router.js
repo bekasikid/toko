@@ -7,134 +7,159 @@ angular.module('RouterMain',[])
 
         $stateProvider
 
-
-            .state('store-main', {
-                url: "/store-main",
-                views: {
-                    'main': {
-                        templateUrl: "tpl/store/main.html",
+            .state('home', {
+                url: '/home',
+                abstract: true,
+                views : {
+                    'main' : {
+                        templateUrl: 'tpl/home.html'
                     }
-                },
+                }
             })
-            .state('store-cart', {
-                url: "/store-cart",
+            .state('home.store', {
+                url: "/main",
                 views: {
-                    'main': {
+                    'content': {
+                        templateUrl: "tpl/store/main.html"
+                    }
+                }
+            })
+            .state('home.cart', {
+                url: "/cart",
+                views: {
+                    'content': {
                         templateUrl: "tpl/store/cart.html",
                     }
                 },
             })
-            .state('store-history', {
-                url: "/store-history",
+            .state('home.history', {
+                url: "/history",
                 views: {
-                    'main': {
+                    'content': {
                         templateUrl: "tpl/store/history.html",
                     }
                 },
             })
-            .state('store-history/id/:id', {
-                url: "/store-history/id/:id",
+            .state('home.historyid', {
+                url: "/history/id/:id",
                 views: {
-                    'main': {
+                    'content': {
                         templateUrl: "tpl/store/history-detail.html",
                     }
                 },
             })
-            .state('login', {
+            .state('home.login', {
                 url: "/login",
                 views: {
-                    'main': {
+                    'content': {
                         templateUrl: "tpl/store/login.html",
                     }
                 },
             })
 
-            .state('daftar', {
+            .state('home.daftar', {
                 url: "/daftar",
                 views: {
-                    'main': {
+                    'content': {
                         templateUrl: "tpl/store/daftar.html",
                     }
                 },
             })
 
-            .state('store-product/id/:id', {
-                url: "/store-product/id/:id",
+            .state('home.product', {
+                url: "/product/id/:id",
                 views: {
-                    'main': {
+                    'content': {
                         templateUrl: "tpl/store/product-detail.html",
                     }
                 },
             })
 
-            .state('store-product-detail', {
-                url: "/store-product-detail",
+            .state('home.vendor', {
+                url: "/vendor",
                 views: {
-                    'main': {
-                        templateUrl: "tpl/store/product-detail.html",
+                    'content': {
+                        templateUrl: "tpl/store/vendor/vendor-list.html",
                     }
                 },
             })
-            .state('vendor-list', {
-                url: "/vendor-list",
-                views: {
-                    'main': {
-                        templateUrl: "tpl/store/vendor-list.html",
-                    }
-                },
-            })
-            .state('vendor-product/id/:id', {
+            .state('home.vendor-product', {
                 url: "/vendor-product/id/:id",
                 views: {
-                    'main': {
-                        templateUrl: "tpl/store/vendor-product.html",
+                    'content': {
+                        templateUrl: "tpl/store/vendor/vendor-product.html",
                     }
                 },
             })
-            .state('vendor-product-new', {
+            .state('home.vendor-product-new', {
                 url: "/vendor-product-new",
                 views: {
-                    'main': {
-                        templateUrl: "tpl/store/vendor-product-new.html",
+                    'content': {
+                        templateUrl: "tpl/store/vendor/vendor-product-new.html",
                     }
                 },
             })
-            .state('vendor-ordered', {
-                url: "/vendor-ordered",
+            .state('home.vendor-order', {
+                url: "/vendor-order",
                 views: {
-                    'main': {
-                        templateUrl: "tpl/store/vendor-ordered.html",
+                    'content': {
+                        templateUrl: "tpl/store/vendor/vendor-ordered.html",
                     }
                 },
             })
-            .state('vendor-order/id/:id', {
+            .state('home.vendor-order.id', {
                 url: "/vendor-order/id/:id",
                 views: {
-                    'main': {
-                        templateUrl: "tpl/store/vendor-order-detail.html",
+                    'content': {
+                        templateUrl: "tpl/store/vendor/vendor-order-detail.html",
                     }
                 },
             })
-            .state('provider-order', {
+            .state('home.vendor-add', {
+                url: "/vendor-add",
+                views: {
+                    'content': {
+                        templateUrl: "tpl/store/vendor/vendor-add.html",
+                    }
+                },
+            })
+            .state('home.provider-order', {
                 url: "/provider-order",
                 views: {
-                    'main': {
-                        templateUrl: "tpl/store/provider-order.html",
+                    'content': {
+                        templateUrl: "tpl/store/provider/provider-order.html",
                     }
                 },
             })
-            .state('provider-order/id/:id', {
+            .state('home.provider-order-id', {
                 url: "/provider-order/id/:id",
                 views: {
-                    'main': {
-                        templateUrl: "tpl/store/provider-order-detail.html",
+                    'content': {
+                        templateUrl: "tpl/store/provider/provider-order-detail.html",
+                    }
+                },
+            })
+            .state('home.provider-add', {
+                url: "/provider-add",
+                views: {
+                    'content': {
+                        templateUrl: "tpl/store/provider/provider-add.html",
+
+                    }
+                },
+            })
+            .state('home.provider-users-point', {
+                url: "/provider-users-point",
+                views: {
+                    'content': {
+                        templateUrl: "tpl/store/provider/provider-users-point.html",
                     }
                 },
             })
 
 
 
-        $urlRouterProvider.otherwise('/store-main');
+        $urlRouterProvider.otherwise('/home/main');
 
 
-    })
+    });

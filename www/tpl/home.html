@@ -1,0 +1,27 @@
+
+
+
+        <ion-side-menus enable-menu-with-back-views="true">
+            <!-- CENTER CONTENT -->
+            <ion-pane ion-side-menu-content drag-content="false">
+                <div ui-view="content"></div>
+            </ion-pane>
+            <!-- LEFT SIDE MENU -->
+            <ion-side-menu side="left" ng-switch on="loggedin.user_role" ng-controller="LoginCtrl">
+                <div ng-switch-when="vendor">
+                    <div ng-include="'tpl/store/vendor.sidebar.html'"></div>
+                </div>
+                <div ng-switch-when="root">
+                    <div ng-include="'tpl/store/root.sidebar.html'"></div>
+                </div>
+                <div ng-switch-when="provider">
+                    <div ng-include="'tpl/store/provider.sidebar.html'"></div>
+                </div>
+                <div ng-switch-default>
+                    <div ng-include="'tpl/store/user.sidebar.html'"></div>
+                </div>
+            </ion-side-menu>
+        </ion-side-menus>
+
+
+

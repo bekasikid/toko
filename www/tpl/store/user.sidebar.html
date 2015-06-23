@@ -1,12 +1,12 @@
 <ion-header-bar class="bar bar-header bar-dark"><h1 class="title">Menu</h1>
-    <button ui-sref="store-main" class="button button-clear icon ion-home"></button>
+    <button ui-sref="home.store" class="button button-clear icon ion-home"></button>
 </ion-header-bar>
 <ion-content ng-controller="SideMenuCtrl">
     <ion-list>
-        <ion-item href="#login" class="item item-avatar">
-            <img src="{{loggedin.image}}"/>
+        <ion-item href="#/home/login" class="item item-avatar">
+            <img src="{{loggedin.user_imageurl}}"/>
 
-            <h2>{{loggedin.name}}</h2>
+            <h2>{{loggedin.user_name}}</h2>
 
             <p>Last Update: 12:00</p>
         </ion-item>
@@ -16,37 +16,37 @@
         <li ng-repeat="p in loggedin.providers" class="item item-checkbox">
             <label class="checkbox"><input type="checkbox" checked="true"/></label>
 
-            <p>{{p.name}}</p>
+            <p>{{p.provider_name}}</p>
             <span class="badge badge-positive">{{p.point | currency : 'Rp ' : 0 }}</span>
         </li>
         <li class="item item-divider"><h2>Shopping Cart</h2></li>
-        <a class="item item-icon-left" href="#/store-cart">
+        <a class="item item-icon-left" href="#/home/cart">
             <i class="icon ion-android-cart"></i>
             Chart
             <span class="badge badge-assertive">{{cartItems.length}}</span>
         </a>
         <li class="item item-divider"><h2>History</h2></li>
-        <a class="item item-icon-left" href="#/store-history">
+        <a class="item item-icon-left" href="#/home/history">
             <i class="icon ion-android-list"></i>
             History
         </a>
-        <li class="item item-divider"><h2>Price Range</h2></li>
-        <li class="item range"><i class="icon ion-ios-sunny-outline"></i>
-            <input type="range" name="price" min="0" max="100" value="33"/>
-            <i class="icon ion-ios-sunny"></i>
-        </li>
-        <li ng-click="toggleCategories()" class="item item-divider item-icon-right">
-            <h2>Categories</h2>
+        <!--<li class="item item-divider"><h2>Price Range</h2></li>-->
+        <!--<li class="item range"><i class="icon ion-ios-sunny-outline"></i>-->
+            <!--<input type="range" name="price" min="0" max="100" value="33"/>-->
+            <!--<i class="icon ion-ios-sunny"></i>-->
+        <!--</li>-->
+        <!--<li ng-click="toggleCategories()" class="item item-divider item-icon-right">-->
+            <!--<h2>Categories</h2>-->
 
-            <div ng-if="tc==false"><i class="icon ion-plus"></i></div>
-            <div ng-if="tc==true"><i class="icon ion-minus"></i></div>
-        </li>
-        <div ng-if="tc==true">
-            <li ng-repeat="c in categories" class="item item-checkbox item-icon-right">
-                <label class="checkbox"><input type="checkbox" checked="true"/></label>
+            <!--<div ng-if="tc==false"><i class="icon ion-plus"></i></div>-->
+            <!--<div ng-if="tc==true"><i class="icon ion-minus"></i></div>-->
+        <!--</li>-->
+        <!--<div ng-if="tc==true">-->
+            <!--<li ng-repeat="c in categories" class="item item-checkbox item-icon-right">-->
+                <!--<label class="checkbox"><input type="checkbox" checked="true"/></label>-->
 
-                <p>{{c.name}}</p><i ui-sref="store-product-list" class="icon ion-ios-arrow-right"></i>
-            </li>
-        </div>
+                <!--<p>{{c.name}}</p><i ui-sref="store-product-list" class="icon ion-ios-arrow-right"></i>-->
+            <!--</li>-->
+        <!--</div>-->
     </ul>
 </ion-content>

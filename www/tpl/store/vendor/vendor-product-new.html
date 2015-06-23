@@ -1,0 +1,57 @@
+<ion-view>
+    <ion-header-bar class="bar-stable" align-title="center">
+        <button class="button button-clear icon ion-chevron-left" ui-sref="home.vendor"></button>
+        <h1 class="title">Product Detail</h1>
+    </ion-header-bar>
+    <ion-content ng-controller="productVendorDetailCtrl">
+        <ion-list>
+            <div class="list card">
+                <div class="item item-image" style="text-align: center;padding-top: 10px;">
+                    <div ngf-drop ngf-select ng-model="files" class="drop-box"
+                         ngf-drag-over-class="dragover" ngf-multiple="false" ngf-allow-dir="true"
+                         accept="image/*">
+                        <img ngf-src="files[0]"
+                             ngf-default-src="https://en.gravatar.com/userimage/88243764/f8ec3653f743fcb87bb78e723c6067f5.png"
+                             ngf-accept="'image/*'" style="max-width: 100px;"
+                             src='tpl/store/assets/images/default.png'>
+                        <br/>
+                        <label class="button button-small" style="margin-top: 5px;width: 100px;">Upload
+                            Gambar</label>
+                    </div>
+                    <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+                    <br/>
+                    <button type="button" ng-click="upload()" class="button button-default">Upload</button>
+                </div>
+
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Nama Produk</span>
+                    <input type="text" placeholder="Name" ng-model="product.name">
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Point</span>
+                    <input type="text" placeholder="Harga" ng-model="product.point">
+                </label>
+                <!--<label class="item item-input item-stacked-label">-->
+                    <!--<span class="input-label">Point</span>-->
+                    <!--<input type="text" placeholder="Harga">-->
+                <!--</label>-->
+
+                <div class="item item-toggle">
+                    Status
+                    <label class="toggle toggle-positive">
+                        <input type="checkbox" ng-model="product.status" ng-true-value="1" ng-false-value="0">
+                        <div class="track">
+                            <div class="handle"></div>
+                        </div>
+                    </label>
+                </div>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Deskripsi</span>
+                    <input type="text" placeholder="Name" ng-model="product.desc">
+                </label>
+            </div>
+            <button type="button" class="button button-full button-positive" ng-click="add(product)">Pesan</button>
+        </ion-list>
+
+    </ion-content>
+</ion-view>

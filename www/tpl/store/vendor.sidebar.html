@@ -1,12 +1,12 @@
 <ion-header-bar class="bar bar-header bar-dark"><h1 class="title">Menu</h1>
-    <button ui-sref="store-main" class="button button-clear icon ion-home"></button>
+    <button ui-sref="home.store" class="button button-clear icon ion-home"></button>
 </ion-header-bar>
 <ion-content ng-controller="VendorMenuCtrl">
     <ion-list>
-        <ion-item href="#login" class="item item-avatar">
-            <img src="{{loggedin.image}}"/>
+        <ion-item href="#/home/login" class="item item-avatar">
+            <img src="{{loggedin.user_imageurl}}"/>
 
-            <h2>{{loggedin.name}}</h2>
+            <h2>{{loggedin.user_name}}</h2>
 
             <p>Last Update: 12:00</p>
         </ion-item>
@@ -14,12 +14,12 @@
     <ul class="list">
 
         <li class="item item-divider"><h2>Product</h2></li>
-        <a class="item item-icon-left" href="#/vendor-list">
+        <a class="item item-icon-left" href="#/home/vendor">
             <i class="icon ion-android-cart"></i>
             List
             <span class="badge badge-assertive">{{products.length}}</span>
         </a>
-        <a class="item item-icon-left" href="#/vendor-ordered">
+        <a class="item item-icon-left" href="#/home/vendor-order">
             <i class="icon ion-android-cart"></i>
             Ordered
             <span class="badge badge-assertive">{{orderItems.length}}</span>

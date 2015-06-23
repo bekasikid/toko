@@ -6,23 +6,17 @@
         TUKAR POINT
     </ion-nav-title>
 </ion-nav-bar>
-<ion-content class="has-header padding" ng-controller="HistoryDetailCtrl">
+<ion-content class="has-header padding" ng-controller="ProviderOrderDetailCtrl">
     <ul class="list">
         <li class="item item-divider">
-            History
+            Pesanan
         </li>
-        <li class="item">
+        <li class="item item-thumbnail-left">
+            <img src="{{order.imageurl}}"/>
+
+            <h2><strong>{{order.user_name}} ({{(order.point) | currency : 'Rp ' : 0 }})</strong></h2>
             <div style="margin: 5px 0;">Tanggal : {{order.order_date}}</div>
-            <div style="margin: 5px 0;">Status : {{(order.order_approved==1)?"Disetujui":"Belum Disetujui"}}</div>
-            <div style="margin: 5px 0;">Status : {{(order.order_status==1)?"Dalam Proses":"Belum Diproses"}}</div>
-        </li>
-        <li class="item item-divider" ng-if="order.order_status==2">
-            Delivery
-        </li>
-        <li class="item" ng-if="order.order_status==2">
-            <h3>Pengiriman Oleh {{order.order_courier}}</h3>
-            id : {{order.order_tracking_id}} <br />
-            tanggal : {{order.order_delivery_date}}
+            <div style="margin: 5px 0;">Status : {{(order.order_approved==1)?"Approved":"Not Approved"}}</div>
         </li>
         <li class="item item-divider">
             Products
@@ -31,7 +25,7 @@
             <img src="{{product.imageurl}}"/>
             <h2><strong>{{product.product_maker}}</strong></h2>
             <h3><strong>{{product.product_name}}</strong></h3>
-            <div style="margin: 5px 0;">{{product.product_point | currency : 'Rp ' : 0 }}</div>
+            <div style="margin: 5px 0;">Harga : {{product.product_point | currency : 'Rp ' : 0 }}</div>
             <div style="margin: 5px 0;">Jumlah : {{product.product_quantity}}</div>
             <div style="margin: 5px 0;">Total : {{(product.product_point*product.product_quantity) | currency : 'Rp ' : 0 }}</div>
         </li>
@@ -40,9 +34,13 @@
         </li>
         <li class="item">
             <div class="row">
-                <div class="col col-50" style="margin: 5px 0;">{{(itemNumber) | currency : '' : 0 }} Item</div>
-                <div class="col col-50" style="margin: 5px 0;text-align: right;">{{(total()) | currency : 'Rp ' : 0 }}</div>
+                <div class="col col-50">{{order.products.length}} Item</div>
+                <div class="col col-50" style="text-align: right;">{{(total()) | currency : 'Rp ' : 0 }}</div>
             </div>
         </li>
     </ul>
+    <div class="button-bar">
+        <button type="button" class="button button-positive" style="margin-right: 5px;" ng-click="approve()">Setuju</button>
+        <button type="button" class="button button-positive" ng-click="reject()">Tolak</button>
+    </div>
 </ion-content>
