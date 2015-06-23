@@ -8,14 +8,29 @@
             <div class="card" style="padding: 10px;">
                 <img src="{{product.imageurl}}" class="image-presentation"/>
                 <div class="item">
-                    <div><h2><strong>{{product.product_maker}}</strong></h2></div>
-                    <div><h3><strong>{{product.product_name}}</strong></h3></div>
-                    <div>Status : <span ng-if="product.product_status==1">Available</span><span ng-if="product.product_status==0">Not Available</span></div>
-                    <div>Description : {{product.product_description}}</div>
-                    <div>Terms & Condition : </div>
+                    <div><strong>{{product.product_maker}}</strong></div>
+                    <div><strong>{{product.product_name}}</strong></div>
+                    <div class="card">
+                        <div class="item item-text-wrap item-icon-right active" style="padding: 5px 5px;" ng-click="toggleDesc()">
+                            Description
+                            <i class="icon" style="font-size:14px;" ng-class="isDescShown ? 'ion-plus' : 'ion-minus'"></i>
+                        </div>
+                        <div class="item item-text-wrap" style="padding: 35px 5px;" ng-show="!isDescShown">
+                            {{product.product_description}}
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="item item-text-wrap item-icon-right active" style="padding: 5px 5px;" ng-click="toggleTerm()">
+                            Terms & Condition
+                            <i class="icon" style="font-size:14px;" ng-class="isTermShown ? 'ion-plus' : 'ion-minus'"></i>
+                        </div>
+                        <div class="item item-text-wrap" style="padding: 35px 5px;" ng-show="!isTermShown">
+                        </div>
+
+                    </div>
                 </div>
                 <div class="item item-text-wrap" style="font-weight: bolder;">
-                    {{product.product_point | currency : 'Rp. ' : 0}}
+                    {{product.product_point | currency : 'Rp. ' : 0}} - Product <span ng-if="product.product_status==1">Tersedia</span><span ng-if="product.product_status==0">Tidak Tersedia</span>
                 </div>
             </div>
             <button class="button button-full button-positive" ng-click="add(product)">Pesan</button>

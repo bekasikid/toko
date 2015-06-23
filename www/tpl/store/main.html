@@ -5,14 +5,26 @@
 </style>
 
 
-<ion-nav-bar class="bar-stable" align-title="left">
-    <ion-nav-buttons side="left">
-        <button menu-toggle="left" class="button button-icon button-clear ion-navicon"></button>
-    </ion-nav-buttons>
-    <ion-nav-title style="padding-left: 30px;">
-        TUKAR POINT
-    </ion-nav-title>
-</ion-nav-bar>
+<div class="bar bar-stable bar-header item-input-inset">
+    <div class="row">
+        <div class="col col-50" style="overflow: hidden;">
+                <div class="buttons buttons-left" style="margin-left: -18px;margin-top: 3px;font-weight: bold;">
+                    <button menu-toggle="left" class="button button-icon icon ion-navicon">
+                    </button>
+                </div>
+                <div class="title title-left header-item" style="padding-left: 30px;width: 40%;">TUKAR POINT</div>
+        </div>
+        <div class="col col-50">
+            <label class="item-input-wrapper" style="border: #EEE 1px solid;background-color: #FFF;">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input ng-change="search()"
+                       ng-model="data.searchQuery" type="search"
+                       placeholder="Search Product">
+            </label>
+        </div>
+    </div>
+</div>
+
 <ion-content class="has-header padding">
 
     <div ng-controller="ProductListCtrl">
@@ -22,7 +34,7 @@
                     rn-carousel-auto-slide rn-carousel-buffered>
                     <li ng-repeat="cList in carouselLists">
                         <div class="layer" style="position:relative;">
-                            <img src="{{cList.imageurl}}" style="max-height: 250px;"/>
+                            <img src="{{cList.imageurl}}" style="max-height: 250px;max-width: 100%;"/>
                         </div>
                     </li>
                 </ul>

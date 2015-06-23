@@ -6,9 +6,9 @@
 //var base = "http://localhost/wincom/goer/toko-master/rest/";
 //var uploadUrl = "http://localhost/wincom/goer/toko-master/rest/index.php/api/upload/upload";
 //var uploadPointUrl = "http://localhost/wincom/goer/toko-master/rest/index.php/api/upload/uploadPoint";
-var base = "http://202.146.225.80:55080/tukarpoint/";
-var uploadUrl = "http://202.146.225.80:55080/tukarpoint/index.php/api/upload/upload";
-var uploadPointUrl = "http://202.146.225.80:55080/tukarpoint/index.php/api/upload/uploadPoint";
+var base = "http://52.0.13.11/tukarpoint/";
+var uploadUrl = "http://52.0.13.11/tukarpoint/index.php/api/upload/upload";
+var uploadPointUrl = "http://52.0.13.11/tukarpoint/index.php/api/upload/uploadPoint";
 angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule', 'ProviderModule','ngFileUpload','chieffancypants.loadingBar', 'ngAnimate'])
 
     .run(function ($ionicPlatform) {
@@ -27,18 +27,35 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
         var items = [];
         var cartLists = {};
 
+        //cartLists.add = function(item){
+        //    item.id = parseInt(item.product_id);
+        //    console.log(item);
+        //    var idx = items.indexOf(item);
+        //    if(idx==-1){
+        //        item.number=1;
+        //        items.push(item);
+        //    }else{
+        //        items[idx].number +=1;
+        //    }
+        //    console.log(items);
+        //};
         cartLists.add = function(item){
             item.id = parseInt(item.product_id);
             console.log(item);
-            var idx = items.indexOf(item);
-            if(idx==-1){
-                item.number=1;
+            var isAdded = false;
+            angular.forEach(items,function(row,key){
+                if(row.id == item.id){
+                    items[key].number += 1;
+                    isAdded = true;
+                }
+            });
+            if(!isAdded){
+                item.number = 1;
                 items.push(item);
-            }else{
-                items[idx].number +=1;
             }
             console.log(items);
         };
+
         cartLists.remove = function(item){
             var idx = items.indexOf(item);
             items.splice(idx,1);

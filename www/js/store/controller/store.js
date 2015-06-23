@@ -36,13 +36,23 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
 
         $scope.add = function (item) {
             if(confirm("Add to cart?")){
-                item.approved = 0;
+                //item.approved = 0;
                 cartFactory.add(item);
                 console.log(cartFactory.getItems());
                 $location.path('/home/store');
                 //$rootScope.cartNumber = cartFactory.getNumber();
             }
 
+        };
+
+        $scope.isDescShown = true;
+        $scope.toggleDesc = function(){
+            $scope.isDescShown = !$scope.isDescShown;
+        };
+
+        $scope.isTermShown = true;
+        $scope.toggleTerm = function(){
+            $scope.isTermShown = !$scope.isTermShown;
         };
 
     })
@@ -147,6 +157,13 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         /*must be declare in all controllers*/
         $scope.loggedin = userFactory.getLoginUser();
         $scope.cartItems = cartFactory.getItems();
+        $scope.itemsNumber = function(){
+            var jml = 0;
+            angular.forEach($scope.cartItems,function(item,key){
+                jml += item.number;
+            });
+            return jml;
+        }
         /*end must be declare in all controllers*/
 
         $scope.tc = true;
