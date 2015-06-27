@@ -139,8 +139,25 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
     })
     .controller('SideMenuCtrl', function ($scope, cartFactory, userFactory, providerFactory,urlFactory) {
         /*must be declare in all controllers*/
-        $scope.pid = 0;
+        $scope.pid = {value:0};
         $scope.loggedin = userFactory.getLoginUser();
+        $scope.loggedin_sample = {providers : [
+            {
+                provider_id:1,
+                provider_name:'Pertamina',
+                point : 10000
+            },
+            {
+                provider_id:2,
+                provider_name:'Mandiri',
+                point : 20000
+            },
+            {
+                provider_id:3,
+                provider_name:'BCA',
+                point : 30000
+            }
+        ]};
         $scope.cartItems = cartFactory.getItems();
         $scope.itemsNumber = function(){
             var jml = 0;
