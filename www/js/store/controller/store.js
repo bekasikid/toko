@@ -20,10 +20,13 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
             $ionicSlideBoxDelegate.update();
         });
 
-        $scope.point_rate = 1;
-        providerFactory.setMinPointRate().then(function(row){
-            $scope.point_rate = row.point;
-        });
+        $scope.point_rate = providerFactory.getPointRate();
+        if($scope.loggedin.user_id==0){
+            //untuk user yg sudah login, setting rate dan point ada di control accountCtrl
+            providerFactory.setMinPointRate().then(function(row){
+                $scope.point_rate = row.point;
+            });
+        }
 
         $scope.add = function (item) {
             //item.approved = 0;
@@ -55,11 +58,25 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
             $scope.product=row;
             $scope.product.product_point = Math.floor($scope.product.product_price/$scope.point_rate);
             $scope.prod.points = Math.floor($scope.product.product_price/$scope.point_rate);
-        });
 
-        $scope.$watch("prod.points",function(){
-            $scope.prod.topup = ($scope.product.product_point - $scope.prod.points) * 2500;
-            console.log($scope.prod);
+            if($scope.loggedin.user_id>0){
+                //set max points
+                $scope.upoint = userFactory.getPoints();
+                if($scope.upoint<$scope.product.product_point){
+                    $scope.maxpoints =$scope.upoint;
+                }else{
+                    $scope.maxpoints = $scope.product.product_point;
+                }
+                $scope.$watch("prod.points",function(){
+                    $scope.prod.topup = ($scope.product.product_point - $scope.prod.points) * $scope.point_rate;
+                    //jaga slider supaya tidak boleh lebih besar dr max points
+                    if($scope.prod.points > $scope.maxpoints){
+                        $scope.prod.points = $scope.maxpoints;
+                    }
+                    console.log($scope.prod);
+                });
+            }
+
         });
 
         $scope.add = function (item) {
@@ -142,28 +159,38 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
     })
     .controller('SideMenuCtrl', function ($scope, cartFactory, userFactory, providerFactory,urlFactory) {
         /*must be declare in all controllers*/
+        $scope.rubah = function(pid){
+            //set rate dan point user
+            providerFactory.setPointRate(pid);
+            userFactory.setPoints($scope.loggedin.user_id,pid);
+        };
+
         $scope.pid = {value:0};
         $scope.loggedin = userFactory.getLoginUser();
         if($scope.loggedin.user_id>0){
             $scope.pid.value = $scope.loggedin.providers[0].provider_id;
+            $scope.rubah($scope.loggedin.providers[0].provider_id);
+        }else{
+            providerFactory.setMinPointRate();
         }
-        $scope.loggedin_sample = {providers : [
-            {
-                provider_id:1,
-                provider_name:'Pertamina',
-                point : 10000
-            },
-            {
-                provider_id:2,
-                provider_name:'Mandiri',
-                point : 20000
-            },
-            {
-                provider_id:3,
-                provider_name:'BCA',
-                point : 30000
-            }
-        ]};
+
+        //$scope.loggedin_sample = {providers : [
+        //    {
+        //        provider_id:1,
+        //        provider_name:'Pertamina',
+        //        point : 10000
+        //    },
+        //    {
+        //        provider_id:2,
+        //        provider_name:'Mandiri',
+        //        point : 20000
+        //    },
+        //    {
+        //        provider_id:3,
+        //        provider_name:'BCA',
+        //        point : 30000
+        //    }
+        //]};
         $scope.cartItems = cartFactory.getItems();
         $scope.itemsNumber = function(){
             var jml = 0;
@@ -174,77 +201,77 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         }
         /*end must be declare in all controllers*/
 
-        $scope.tc = true;
-        $scope.toggleCategories = function () {
-            console.log('Toggle show categories')
-            $scope.tc = !$scope.tc;
-        }
-        $scope.providers = [
-
-            {
-                name: 'VISA',
-                point: 990000
-
-            },
-            {
-                name: 'BCA',
-                point: 65660000
-
-            },
-            {
-                name: 'MANDIRI',
-                point: 545000
-
-            },
-
-        ]
-
-        $scope.categories = [
-
-            {
-                name: 'Handphone & Tablet'
-            },
-            {
-                name: 'Kesehatan & Kecantikan'
-            },
-            {
-                name: 'Fashion'
-            },
-            {
-                name: 'Elektronik Rumah Tangga'
-            },
-            {
-                name: 'Mainan & Bayi'
-            },
-            {
-                name: 'Komputer & Laptop'
-            },
-            {
-                name: 'Kamera'
-            },
-            {
-                name: 'JamTangan'
-            },
-            {
-                name: 'Perhiasan'
-            },
-            {
-                name: 'Peralatan Rumah Tangga'
-            },
-            {
-                name: 'Otomotif'
-            },
-            {
-                name: 'Groceries'
-            },
-            {
-                name: 'Buku, Games & Musik'
-            },
-            {
-                name: 'Olahraga & Outdoor'
-            },
-
-        ]
+        //$scope.tc = true;
+        //$scope.toggleCategories = function () {
+        //    console.log('Toggle show categories')
+        //    $scope.tc = !$scope.tc;
+        //}
+        //$scope.providers = [
+        //
+        //    {
+        //        name: 'VISA',
+        //        point: 990000
+        //
+        //    },
+        //    {
+        //        name: 'BCA',
+        //        point: 65660000
+        //
+        //    },
+        //    {
+        //        name: 'MANDIRI',
+        //        point: 545000
+        //
+        //    },
+        //
+        //]
+        //
+        //$scope.categories = [
+        //
+        //    {
+        //        name: 'Handphone & Tablet'
+        //    },
+        //    {
+        //        name: 'Kesehatan & Kecantikan'
+        //    },
+        //    {
+        //        name: 'Fashion'
+        //    },
+        //    {
+        //        name: 'Elektronik Rumah Tangga'
+        //    },
+        //    {
+        //        name: 'Mainan & Bayi'
+        //    },
+        //    {
+        //        name: 'Komputer & Laptop'
+        //    },
+        //    {
+        //        name: 'Kamera'
+        //    },
+        //    {
+        //        name: 'JamTangan'
+        //    },
+        //    {
+        //        name: 'Perhiasan'
+        //    },
+        //    {
+        //        name: 'Peralatan Rumah Tangga'
+        //    },
+        //    {
+        //        name: 'Otomotif'
+        //    },
+        //    {
+        //        name: 'Groceries'
+        //    },
+        //    {
+        //        name: 'Buku, Games & Musik'
+        //    },
+        //    {
+        //        name: 'Olahraga & Outdoor'
+        //    },
+        //
+        //]
 
 
     })
@@ -258,7 +285,12 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
                     $scope.loggedin = userFactory.getLoginUser();
                     if($scope.loggedin.user_role=="provider"){
                         providerFactory.setProvider($scope.loggedin.user_id);
+                    }else if($scope.loggedin.user_role=="customer"){
+                        //set point n rate
+                        providerFactory.setPointRate($scope.loggedin.providers[0].provider_id);
+                        userFactory.setPoints($scope.loggedin.user_id,$scope.loggedin.providers[0].provider_id);
                     }
+
                     //$location.path('/home/store');
                     //$state.go('home.store');
                     $state.transitionTo('home.store', $state.$current.params, {

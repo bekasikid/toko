@@ -257,6 +257,7 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
         var providers = [];
         var users;
         var userObjects = {};
+        var points = 0;
 
         userObjects.addUser = function(name,email,password,image,role){
             var def = $q.defer();
@@ -303,6 +304,19 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
         userObjects.getLoginUser = function(){
             return login;
         };
+        userObjects.setPoints = function(uid,pid){
+            var def = $q.defer();
+            $http.get(base+"index.php/api/users/getPoint/provider/"+pid+"/user/"+uid).success(function(row){
+                def.resolve(row);
+                points = row.point;
+            });
+            return def.promise;
+        };
+
+        userObjects.getPoints = function(){
+            return points;
+        };
+
         return userObjects;
     })
     .factory("vendorFactory",function($http,$q){
@@ -369,9 +383,9 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
             return def.promise;
         };
 
-        providerObjects.setPointRate = function(uid,pid){
+        providerObjects.setPointRate = function(pid){
             var def = $q.defer();
-            $http.get(base+"index.php/api/providers/getPointRate").success(function(row){
+            $http.get(base+"index.php/api/providers/getPointRate/provider/"+pid).success(function(row){
                 def.resolve(row);
                 pointRate = row.point;
             });

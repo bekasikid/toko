@@ -36,7 +36,7 @@
         <li class="item item-divider" ng-if="loggedin.providers.length>0"><h2>Accounts</h2></li>
         <li ng-repeat="p in loggedin.providers">
             <label class="item item-radio">
-                <input type="radio" ng-model="pid.value" name="pValue" ng-value="p.provider_id">
+                <input type="radio" ng-model="pid.value" name="pValue" ng-value="p.provider_id" ng-change="rubah(p.provider_id)">
                 <div class="item-content">
                     {{p.provider_name}}
                 </div>
