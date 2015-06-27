@@ -5,14 +5,24 @@
 </style>
 
 
-<div class="bar bar-stable bar-header item-input-inset" ng-controller="headerCtrl">
-    <div class="buttons buttons-left" style="margin-left: -18px;margin-top: 3px;font-weight: bold;">
-        <button menu-toggle="left" class="button button-icon icon ion-navicon">
-        </button>
+<div class="bar bar-stable bar-header item-input-inset">
+    <div class="row">
+        <div class="col col-50" style="overflow: hidden;">
+                <div class="buttons buttons-left" style="margin-left: -18px;margin-top: 3px;font-weight: bold;">
+                    <button menu-toggle="left" class="button button-icon icon ion-navicon">
+                    </button>
+                </div>
+                <div class="title title-left header-item" style="padding-left: 30px;width: 40%;">TUKAR POINT</div>
+        </div>
+        <div class="col col-50">
+            <label class="item-input-wrapper" style="border: #EEE 1px solid;background-color: #FFF;">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input ng-change="search()"
+                       ng-model="data.searchQuery" type="search"
+                       placeholder="Search Product">
+            </label>
+        </div>
     </div>
-    <div class="title title-left header-item" style="padding-left: 30px;width: 40%;">TUKAR POINT</div>
-    <button class="button button-icon icon ion-android-cart buttonn-right" ng-if="loggedin.user_role=='customer'"><span class="badge badge-assertive">{{cart.length}}</span>
-    </button>
 </div>
 
 <ion-content class="has-header padding">
@@ -48,8 +58,8 @@
                                 </div>
                                 <h2><strong>{{products[$index].product_name}}</strong></h2>
 
-                                <div style="margin: 5px 0;"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(products[$index].product_price
-                                    / point_rate) | currency : '' :0}} Points</strong></div>
+                                <div style="margin: 5px 0;">{{products[$index].product_point | currency : 'Rp ' : 0 }}
+                                </div>
                             </div>
                             <div class="col col-50" ng-if="($index+1)<products.length" style="text-align: center;"
                                  ui-sref="home.product({id:products[$index+1].product_id})">
@@ -59,8 +69,9 @@
                                     </div>
                                     <h2><strong>{{products[$index+1].product_name}}</strong></h2>
 
-                                    <div style="margin: 5px 0;"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(products[$index+1].product_price
-                                        / point_rate) | currency : '' :0}} Points</strong></div>
+                                    <div style="margin: 5px 0;">{{products[$index+1].product_point | currency : 'Rp '
+                                        :0}}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -68,37 +79,13 @@
                 </ion-slide-box>
             </li>
             <li class="item item-divider">
-                Product Baru
+                Semua Product
             </li>
-            <li class="item">
-                <ion-slide-box style="height: 300px;" on-slide-changed="slideHasChanged($index)">
-                    <ion-slide ng-repeat="product in products" ng-if="$index%2==0" class="muter">
-                        <div class="row">
-                            <div class="col col-50" ng-if="$index<products.length" style="text-align: center;"
-                                 ui-sref="home.product({id:products[$index].product_id})">
-                                <div class="image-display-container">
-                                    <img src="{{products[$index].imageurl}}" class="image-display"/>
-                                </div>
-                                <h2><strong>{{products[$index].product_name}}</strong></h2>
-
-                                <div style="margin: 5px 0;"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(products[$index].product_price
-                                    / point_rate) | currency : '' :0}} Points</strong></div>
-                            </div>
-                            <div class="col col-50" ng-if="($index+1)<products.length" style="text-align: center;"
-                                 ui-sref="home.product({id:products[$index+1].product_id})">
-                                <div>
-                                    <div class="image-display-container">
-                                        <img src="{{products[$index+1].imageurl}}" class="image-display"/>
-                                    </div>
-                                    <h2><strong>{{products[$index+1].product_name}}</strong></h2>
-
-                                    <div style="margin: 5px 0;"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(products[$index+1].product_price
-                                        / point_rate) | currency : '' :0}} Points</strong></div>
-                                </div>
-                            </div>
-                        </div>
-                    </ion-slide>
-                </ion-slide-box>
+            <li class="item item-thumbnail-left" ng-repeat="product in products" ui-sref="home.product({id:product.product_id})">
+                <img src="{{product.imageurl}}" class="image-display"/>
+                <h2><strong>{{product.product_maker}}</strong></h2>
+                <h3><strong>{{product.product_name}}</strong></h3>
+                <div style="margin: 5px 0;">{{product.product_point | currency : 'Rp ' : 0 }}</div>
             </li>
         </ul>
     </div>
