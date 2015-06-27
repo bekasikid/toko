@@ -21,7 +21,7 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         });
 
         $scope.point_rate = 1;
-        providerFactory.setMinPoints().then(function(row){
+        providerFactory.setMinPointRate().then(function(row){
             $scope.point_rate = row.point;
         });
 
@@ -31,7 +31,7 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
             console.log(cartFactory.getItems());
         };
     })
-    .controller('productDetailCtrl', function ($scope, $stateParams, cartFactory, userFactory,productFactory,$location) {
+    .controller('productDetailCtrl', function ($scope, $stateParams, cartFactory, userFactory,productFactory,providerFactory,$location) {
         /*must be declare in all controllers*/
         $scope.loggedin = userFactory.getLoginUser();
 
@@ -41,6 +41,7 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         //$scope.params = $routeParams;
         //console.log($stateParams.id);
         //$scope.product = productFactory.getItemById($stateParams.id);
+        $scope.point_rate = providerFactory.getPointRate();
         $scope.prod = {
             points : 0,
             topup:0
@@ -49,9 +50,11 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         $scope.product = {
             product_point : 0
         };
+
         productFactory.getItemById($stateParams.id).then(function(row){
             $scope.product=row;
-            $scope.prod.points = $scope.product.product_point;
+            $scope.product.product_point = Math.floor($scope.product.product_price/$scope.point_rate);
+            $scope.prod.points = Math.floor($scope.product.product_price/$scope.point_rate);
         });
 
         $scope.$watch("prod.points",function(){
@@ -141,6 +144,9 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         /*must be declare in all controllers*/
         $scope.pid = {value:0};
         $scope.loggedin = userFactory.getLoginUser();
+        if($scope.loggedin.user_id>0){
+            $scope.pid.value = $scope.loggedin.providers[0].provider_id;
+        }
         $scope.loggedin_sample = {providers : [
             {
                 provider_id:1,

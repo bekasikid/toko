@@ -330,7 +330,7 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
     .factory("providerFactory",function($http,$q){
         var provider = {};
         var providerObjects = {};
-        var minpoints = 1;
+        var pointRate = 1;
 
         providerObjects.setProvider = function(uid){
             //var def = $q.defer();
@@ -360,17 +360,26 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
             return def.promise;
         };
 
-        providerObjects.setMinPoints = function(){
+        providerObjects.setMinPointRate = function(){
             var def = $q.defer();
             $http.get(base+"index.php/api/providers/getMinPoint").success(function(row){
                 def.resolve(row);
-                minpoints = row.point;
+                pointRate = row.point;
             });
             return def.promise;
         };
 
-        providerObjects.getMinPoints = function(){
-            return minpoints;
+        providerObjects.setPointRate = function(uid,pid){
+            var def = $q.defer();
+            $http.get(base+"index.php/api/providers/getPointRate").success(function(row){
+                def.resolve(row);
+                pointRate = row.point;
+            });
+            return def.promise;
+        };
+
+        providerObjects.getPointRate = function(){
+            return pointRate;
         };
 
         return providerObjects;
