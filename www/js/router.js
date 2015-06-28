@@ -16,6 +16,15 @@ angular.module('RouterMain',[])
                     }
                 }
             })
+            .state('detail', {
+                url: '/detail',
+                abstract: true,
+                views : {
+                    'main' : {
+                        templateUrl: 'tpl/home-detail.html'
+                    }
+                }
+            })
             .state('home.store', {
                 url: "/main",
                 views: {

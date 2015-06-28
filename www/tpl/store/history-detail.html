@@ -1,11 +1,7 @@
-<ion-nav-bar class="bar-stable" align-title="left">
-    <ion-nav-buttons side="left">
-        <button menu-toggle="left" class="button button-icon button-clear ion-navicon"></button>
-    </ion-nav-buttons>
-    <ion-nav-title style="padding-left: 30px;">
-        TUKAR POINT
-    </ion-nav-title>
-</ion-nav-bar>
+<ion-header-bar class="bar-stable" align-title="center">
+    <button class="button button-clear icon ion-chevron-left" ui-sref="home.history"></button>
+    <h1 class="title">Tukar Point</h1>
+</ion-header-bar>
 <ion-content class="has-header padding" ng-controller="HistoryDetailCtrl">
     <ul class="list">
         <li class="item item-divider">
@@ -21,7 +17,7 @@
         </li>
         <li class="item" ng-if="order.order_status==2">
             <h3>Pengiriman Oleh {{order.order_courier}}</h3>
-            id : {{order.order_tracking_id}} <br />
+            id : {{order.order_tracking_id}} <br/>
             tanggal : {{order.order_delivery_date}}
         </li>
         <li class="item item-divider">
@@ -29,11 +25,16 @@
         </li>
         <li class="item item-thumbnail-left" ng-repeat="product in order.products">
             <img src="{{product.imageurl}}"/>
+
             <h2><strong>{{product.product_maker}}</strong></h2>
+
             <h3><strong>{{product.product_name}}</strong></h3>
+
             <div style="margin: 5px 0;">{{product.product_point | currency : 'Rp ' : 0 }}</div>
             <div style="margin: 5px 0;">Jumlah : {{product.product_quantity}}</div>
-            <div style="margin: 5px 0;">Total : {{(product.product_point*product.product_quantity) | currency : 'Rp ' : 0 }}</div>
+            <div style="margin: 5px 0;">Total : {{(product.product_point*product.product_quantity) | currency : 'Rp ' :
+                0 }}
+            </div>
         </li>
         <li class="item item-divider">
             Total
@@ -41,7 +42,8 @@
         <li class="item">
             <div class="row">
                 <div class="col col-50" style="margin: 5px 0;">{{(itemNumber) | currency : '' : 0 }} Item</div>
-                <div class="col col-50" style="margin: 5px 0;text-align: right;">{{(total()) | currency : 'Rp ' : 0 }}</div>
+                <div class="col col-50" style="margin: 5px 0;text-align: right;">{{(total()) | currency : 'Rp ' : 0 }}
+                </div>
             </div>
         </li>
     </ul>

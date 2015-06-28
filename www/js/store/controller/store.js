@@ -38,12 +38,6 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         /*must be declare in all controllers*/
         $scope.loggedin = userFactory.getLoginUser();
 
-        //$scope.cartItems = cartFactory.getItems();
-        //$scope.products = productFactory.getItems();
-        /*end must be declare in all controllers*/
-        //$scope.params = $routeParams;
-        //console.log($stateParams.id);
-        //$scope.product = productFactory.getItemById($stateParams.id);
         $scope.point_rate = providerFactory.getPointRate();
         $scope.prod = {
             points : 0,
@@ -70,7 +64,8 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
                 $scope.$watch("prod.points",function(){
                     $scope.prod.topup = ($scope.product.product_point - $scope.prod.points) * $scope.point_rate;
                     //jaga slider supaya tidak boleh lebih besar dr max points
-                    if($scope.prod.points > $scope.maxpoints){
+                    console.log($scope.prod.points);
+                    if(parseInt($scope.prod.points) > $scope.maxpoints){
                         $scope.prod.points = $scope.maxpoints;
                     }
                     console.log($scope.prod);
@@ -275,7 +270,7 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
 
 
     })
-    .controller('AccountCtrl', function ($scope, userFactory, $location, providerFactory,Upload,fileFactory,$state) {
+    .controller('AccountCtrl', function ($scope, userFactory,vendorFactory, $location, providerFactory,Upload,fileFactory,$state) {
         //$scope.imageurl = "https://en.gravatar.com/userimage/88243764/f8ec3653f743fcb87bb78e723c6067f5.png";
         $scope.loggedin = userFactory.getLoginUser();
         $scope.login = function () {
@@ -289,6 +284,8 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
                         //set point n rate
                         providerFactory.setPointRate($scope.loggedin.providers[0].provider_id);
                         userFactory.setPoints($scope.loggedin.user_id,$scope.loggedin.providers[0].provider_id);
+                    }else if($scope.loggedin.user_role=="vendor"){
+                        vendorFactory.setVendor($scope.loggedin.user_id);
                     }
 
                     //$location.path('/home/store');
@@ -305,6 +302,7 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         };
         $scope.logout = function(){
             userFactory.logout();
+            providerFactory.setMinPointRate();
             $state.transitionTo('home.store', $state.$current.params, {
                 reload: true, inherit: true, notify: true
             });

@@ -8,7 +8,7 @@ angular.module('VendorModule', ['ngFileUpload','ckeditor'])
         //$scope.productsList = productFactory.getItems();
         productFactory.getItems().then(function(data){
             $scope.productsList = data;
-            console.log($scope.productsList);
+            //console.log($scope.productsList);
         });
         $scope.remove = function (item) {
             item.approved = 0;
@@ -60,32 +60,44 @@ angular.module('VendorModule', ['ngFileUpload','ckeditor'])
             fileFactory.upload($scope.files);
         });
     })
-    .controller('productVendorDetailCtrl', function ($scope, $stateParams, cartFactory, userFactory,productFactory,$location,fileFactory) {
+    .controller('productVendorDetailCtrl', function ($scope, $stateParams, cartFactory, vendorFactory, userFactory,productFactory,$location,fileFactory) {
         /*must be declare in all controllers*/
         $scope.loggedin = userFactory.getLoginUser();
-        productFactory.getItems().then(function(data){
-            $scope.products = data;
-        });
+        $scope.vendor = vendorFactory.getVendor();
+        //productFactory.getItems().then(function(data){
+        //    $scope.products = data;
+        //});
         /*end must be declare in all controllers*/
         //$scope.params = $routeParams;
         //console.log($stateParams.id);
-        $scope.product = productFactory.getItemById($stateParams.id);
+        productFactory.getItemById($stateParams.id).then(function(data){
+            $scope.product = data;
+            console.log($scope.product);
+        });
+        $scope.image_update = 0;
         $scope.save = function (item) {
             if(confirm("Simpan Product?")){
-                productFactory.rubah(item);
-                console.log(productFactory.getItems());
-                $location.path('/home/vendor');
-                //$rootScope.cartNumber = cartFactory.getNumber();
+                if($scope.image_update==1){
+                    fileFactory.upload($scope.files).then(function(data){
+                        item.product_image = data.name;
+                        productFactory.rubah(item);
+                        //console.log(productFactory.getItems());
+                        $location.path('/home/vendor');
+                    });
+                }else{
+                    alert("update");
+                    productFactory.rubah(item);
+                    $location.path('/home/vendor');
+                }
             }
-
         };
         $scope.imagename = '';
-        //$scope.$watch('files', function () {
-        //    fileFactory.upload($scope.files).then(function(data){
-        //        //setImage(data.name,data.url);
-        //        $scope.imagename = data.name;
-        //    });
-        //});
+        $scope.$watch('files', function () {
+            if($scope.files!= undefined){
+                $scope.image_update = 1;
+                console.log($scope.files);
+            }
+        });
         $scope.upload = function(){
             console.log($scope.files);
             fileFactory.upload($scope.files).then(function(data){
@@ -98,8 +110,9 @@ angular.module('VendorModule', ['ngFileUpload','ckeditor'])
                 //alert(item.desc);
                 fileFactory.upload($scope.files).then(function(data){
                     item.image = data.name;
-                    alert(item.desc);
-                    alert(item.detail);
+                    item.vendor_id = vendor.vendor_id;
+                    //alert(item.desc);
+                    //alert(item.detail);
                     productFactory.add(item);
                     //$location.path('/home/vendor');
                 });
@@ -110,12 +123,6 @@ angular.module('VendorModule', ['ngFileUpload','ckeditor'])
                 //console.log(productFactory.getItems());
 
             }
-        };
-
-        $scope.options = {
-            language: 'en',
-            allowedContent: true,
-            entities: false
         };
 
         // Called when the editor is completely ready.

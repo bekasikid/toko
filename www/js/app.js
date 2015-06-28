@@ -181,21 +181,30 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
                 image : item.image,
                 status : item.status,
                 detail : item.detail,
-                desc: item.desc
+                desc: item.desc,
+                vendor: item.vendor_id
             }).success(function(data){
                 def.resolve(data);
             });
             return def.promise;
         };
 
-        productLists.rubah= function(newItem){
-            //items.push(item);
-            angular.forEach(items,function(item,key){
-                if(item.id==newItem.id){
-                    //row=item;
-                    items[key] = newItem;
-                }
+        productLists.rubah= function(item){
+            var def = $q.defer();
+            $http.post(base+"index.php/api/products/productUpdate",{
+                id : item.product_id,
+                maker : item.product_maker,
+                name : item.product_name,
+                price : item.product_price,
+                image : item.product_image,
+                status : item.product_status,
+                detail : item.product_detail,
+                desc: item.product_description,
+                vendor: item.vendor_id
+            }).success(function(data){
+                def.resolve(data);
             });
+            return def.promise;
 
         };
         productLists.getItems = function(){
@@ -295,6 +304,7 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
                 user_name : "anonymous",
                 user_email : "",
                 user_image : "default.png",
+                user_imageurl : base+"assets/images/default.png",
                 user_role : "guest",
                 providers : [
 
@@ -322,6 +332,7 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
     .factory("vendorFactory",function($http,$q){
 
         var vendorObjects = {};
+        var vendor = {};
 
         vendorObjects.add = function(nama,email,password,image,address,phone){
             var def = $q.defer();
@@ -337,6 +348,20 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
             });
             //console.log(def.promise);
             return def.promise;
+        };
+
+        vendorObjects.setVendor = function(uid){
+            var def = $q.defer();
+            $http.get(base+"index.php/api/vendors/getVendor/user/"+uid).success(function(row){
+                def.resolve(row);
+                vendor = row;
+            });
+            //console.log(def.promise);
+            return def.promise;
+        };
+
+        vendorObjects.getVendor = function(){
+            return vendor;
         };
 
         return vendorObjects;

@@ -1,50 +1,33 @@
-<ion-pane ng-controller="CartListCtrl">
-    <div class="bar bar-stable bar-header item-input-inset">
-        <div class="row">
-            <div class="col col-50" style="overflow: hidden;">
-                <div class="buttons buttons-left" style="margin-left: -18px;margin-top: 3px;font-weight: bold;">
-                    <button menu-toggle="left" class="button button-icon icon ion-navicon">
-                    </button>
+<ion-content class="has-header padding" ng-controller="CartListCtrl">
+    <ul class="list">
+        <li class="item item-divider">
+            Keranjang Belanja
+        </li>
+        <li class="item item-thumbnail-left" ng-repeat="product in cartList">
+            <img src="{{product.imageurl}}"/>
+
+            <h2><strong>{{product.product_name}}</strong></h2>
+
+            <div style="margin: 5px 0;">{{product.product_point | currency : 'Rp ' : 0 }}</div>
+            <div style="margin: 5px 0;">Jumlah : {{product.number}}</div>
+            <div style="margin: 5px 0;">Total : {{(product.product_point*product.number) | currency : 'Rp ' : 0 }}</div>
+            <button class="button button-small icon-left ion-android-cart button-positive"
+                    ng-click="remove(product)">
+                Batal
+            </button>
+            <a class="button button-small icon-left ion-android-list button-positive"
+               href="#/home/product/id/{{product.product_id}}">Detail</a>
+        </li>
+        <li class="item item-divider">
+            Total
+        </li>
+        <li class="item">
+            <div class="row">
+                <div class="col col-50" style="margin: 5px 0;">{{(itemNumber) | currency : '' : 0 }} Item</div>
+                <div class="col col-50" style="margin: 5px 0;text-align: right;">{{(total()) | currency : 'Rp ' : 0 }}
                 </div>
-                <div class="title title-left header-item" style="padding-left: 30px;width: 40%;">TUKAR POINT</div>
             </div>
-            <div class="col col-50">
-
-            </div>
-        </div>
-    </div>
-
-
-    <ion-content class="has-header padding">
-        <ul class="list">
-            <li class="item item-divider">
-                Keranjang Belanja
-            </li>
-            <li class="item item-thumbnail-left" ng-repeat="product in cartList">
-                <img src="{{product.imageurl}}"/>
-
-                <h2><strong>{{product.product_name}}</strong></h2>
-
-                <div style="margin: 5px 0;">{{product.product_point | currency : 'Rp ' : 0 }}</div>
-                <div style="margin: 5px 0;">Jumlah : {{product.number}}</div>
-                <div style="margin: 5px 0;">Total : {{(product.product_point*product.number) | currency : 'Rp ' : 0 }}</div>
-                <button class="button button-small icon-left ion-android-cart button-positive"
-                        ng-click="remove(product)">
-                    Batal
-                </button>
-                <a class="button button-small icon-left ion-android-list button-positive"
-                   href="#/home/product/id/{{product.product_id}}">Detail</a>
-            </li>
-            <li class="item item-divider">
-                Total
-            </li>
-            <li class="item">
-                <div class="row">
-                    <div class="col col-50" style="margin: 5px 0;">{{(itemNumber) | currency : '' : 0 }} Item</div>
-                    <div class="col col-50" style="margin: 5px 0;text-align: right;">{{(total()) | currency : 'Rp ' : 0 }}</div>
-                </div>
-            </li>
-            <button type="button" class="button button-full button-positive" ng-click="pesan()">Pesan</button>
-        </ul>
-    </ion-content>
-</ion-pane>
+        </li>
+        <button type="button" class="button button-full button-positive" ng-click="pesan()">Pesan</button>
+    </ul>
+</ion-content>

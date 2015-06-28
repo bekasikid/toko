@@ -43,17 +43,21 @@
                         </div>
                     </label>
                 </div>
-                <label class="item item-input item-stacked-label">
+                <label class="item item-divider">
+                    Detail
+                </label>
+                <label class="item item-stacked-label">
                     <span class="input-label">Detail</span>
                     <div ckeditor="options" ng-model="product.detail" ready="onReady()"></div>
                 </label>
-                <label class="item item-input item-stacked-label">
-                    <span class="input-label">Deskripsi</span>
+                <label class="item item-divider">
+                    Deskripsi
+                </label>
+                <label class="item item-stacked-label">
                     <div ckeditor="options" ng-model="product.desc" ready="onReady()"></div>
                 </label>
             </div>
             <button type="button" class="button button-full button-positive" ng-click="add(product)">Tambah</button>
         </ion-list>
-
     </ion-content>
 </ion-view>

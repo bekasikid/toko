@@ -3,12 +3,12 @@
         margin-top: 0 !important;
     }
 </style>
+<ion-header-bar class="bar-stable" align-title="center">
+    <button class="button button-clear icon ion-chevron-left" ui-sref="home.store"></button>
+    <h1 class="title">Tukar Point</h1>
+</ion-header-bar>
 <ion-view title="Product Detail">
     <ion-pane ng-controller="productDetailCtrl">
-        <ion-header-bar class="bar-stable" align-title="center">
-            <button class="button button-clear icon ion-chevron-left" ui-sref="home.store"></button>
-            <h1 class="title">Tukar Point</h1>
-        </ion-header-bar>
         <ion-content>
             <div class="card" style="">
                 <div class="item" style="text-align: center;">
@@ -33,15 +33,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="item item-text-wrap item-divider">
+                <div class="item item-text-wrap item-divider" ng-if="loggedin.user_id>0">
                     Pembayaran
                 </div>
-                <div class="item range">
+                <div class="item range" ng-if="loggedin.user_id>0">
                     <i class="icon ion-pricetag"></i>
                     <input type="range" ng-min="0" ng-max="product.product_point" ng-model="prod.points"/>
                     <i class="icon ion-pricetags"></i>
                 </div>
-                <div class="item item-borderless" style="padding: 10px 0 0;">
+                <div class="item item-borderless" style="padding: 10px 0 0;" ng-if="loggedin.user_id>0">
                     <div class="row">
                         <div class="col col-50"
                              style="border-top: 1px solid #DDD;border-right: 1px solid #DDD;text-align: center;">
@@ -67,7 +67,7 @@
                 </div>
                 <div class="item item-text-wrap" style="padding: 35px 5px;" ng-show="!isDetShown"
                      ng-bind-html="product.product_detail">
-                    {{product.product_detail}}
+
                 </div>
                 <div class="item item-text-wrap item-icon-right item-divider" style="padding: 5px 5px;"
                      ng-click="toggleDesc()">
@@ -76,7 +76,6 @@
                 </div>
                 <div class="item item-text-wrap" style="padding: 35px 5px;" ng-show="!isDescShown"
                      ng-bind-html="product.product_description">
-                    {{product.product_description}}
                 </div>
                 <div class="item item-text-wrap item-icon-right item-divider" style="padding: 5px 5px;"
                      ng-click="toggleTerm()">
