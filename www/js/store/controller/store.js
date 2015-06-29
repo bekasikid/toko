@@ -211,8 +211,8 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         $scope.limit = 1;
         $scope.noMoreData = false;
         $scope.search = function(){
-            $state.transitionTo("home.search", {name:$scope.searchQuery}, {
-                reload: true, inherit: true, notify: true
+            $state.transitionTo("home.store.search", {name:$scope.searchQuery}, {
+                reload: false, inherit: true, notify: true
             });
 
             //productFactory.searchItems($scope.searchQuery,$scope.page).then(function(data){

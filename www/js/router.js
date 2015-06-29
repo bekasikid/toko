@@ -93,10 +93,10 @@ angular.module('RouterMain',[])
                 },
             })
 
-            .state('home.search', {
+            .state('home.store.search', {
                 url: "/product/name/:name",
                 views: {
-                    'content': {
+                    'mainContent': {
                         templateUrl: "tpl/store/product-list.html",
                     }
                 },

@@ -3,84 +3,95 @@
         color: #FFFF00;
     }
 </style>
-<ion-content class="has-header padding">
-    <div ng-controller="ProductListCtrl">
-        <ul class="list">
-            <li class="item" style="height:300px;text-align: center;">
-                <ul rn-carousel class="" rn-carousel-index="carouselIndex22" style="height: 230px;"
-                    rn-carousel-auto-slide rn-carousel-buffered>
-                    <li ng-repeat="cList in carouselLists">
-                        <div class="layer" style="position:relative;">
-                            <img src="{{cList.imageurl}}" style="max-height: 250px;max-width: 100%;"/>
-                        </div>
-                    </li>
-                </ul>
-                <div class="rn-carousel-indicator custom-indicator">
+<div ui-view="mainContent">
+    <ion-content class="has-header padding">
+        <div ng-controller="ProductListCtrl">
+            <ul class="list">
+                <li class="item item-borderless" style="height:500px;text-align: center;">
+                    <ul rn-carousel class="" rn-carousel-index="carouselIndex22" style="height: 430px;"
+                        rn-carousel-auto-slide rn-carousel-buffered>
+                        <li ng-repeat="cList in carouselLists">
+                            <div class="layer" style="position:relative;">
+                                <img src="{{cList.imageurl}}" style="max-height: 350px;max-width: 100%;"/>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="rn-carousel-indicator custom-indicator">
                                     <span ng-repeat="cList in carouselLists"
                                           ng-class="{active: $index==$parent.carouselIndex22 }" class="icon ion-star"
                                           ng-click="$parent.carouselIndex22 = $index"> </span>
-                </div>
-            </li>
-            <li class="item item-divider">
-                Product Terbaik
-            </li>
-            <li class="item">
-                <ion-slide-box style="height: 300px;" on-slide-changed="slideHasChanged($index)">
-                    <ion-slide ng-repeat="product in products" ng-if="$index%2==0" class="muter">
-                        <div class="row">
-                            <div class="col col-50" ng-if="$index<products.length" style="text-align: center;"
-                                 ui-sref="home.product({id:products[$index].product_id})">
-                                <div class="image-display-container">
-                                    <img src="{{products[$index].imageurl}}" class="image-display"/>
-                                </div>
-                                <h2><strong>{{products[$index].product_name}}</strong></h2>
-
-                                <div style="margin: 5px 0;"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(products[$index].point) | currency : '' :0}} Points</strong></div>
-                            </div>
-                            <div class="col col-50" ng-if="($index+1)<products.length" style="text-align: center;"
-                                 ui-sref="home.product({id:products[$index+1].product_id})">
-                                <div>
-                                    <div class="image-display-container">
-                                        <img src="{{products[$index+1].imageurl}}" class="image-display"/>
-                                    </div>
-                                    <h2><strong>{{products[$index+1].product_name}}</strong></h2>
-
-                                    <div style="margin: 5px 0;"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(products[$index+1].point) | currency : '' :0}} Points</strong></div>
-                                </div>
-                            </div>
+                    </div>
+                </li>
+                <li class="item item-borderless">
+                    <div class="card">
+                        <div class="item item-borderless">
+                            <h2><strong>Product Terbaik</strong></h2>
                         </div>
-                    </ion-slide>
-                </ion-slide-box>
-            </li>
-            <li class="item item-divider">
-                Product Baru
-            </li>
-            <li class="item">
-                <ion-slide-box style="height: 300px;" on-slide-changed="slideHasChanged($index)">
-                    <ion-slide ng-repeat="product in newProducts" ng-if="$index%2==0" class="muter">
-                        <div class="row">
-                            <div class="col col-50" ng-if="$index<products.length" style="text-align: center;"
-                                 ui-sref="home.product({id:newProducts[$index].product_id})">
-                                <div class="image-display-container">
-                                    <img src="{{newProducts[$index].imageurl}}" class="image-display"/>
-                                </div>
-                                <h2><strong>{{newProducts[$index].product_name}}</strong></h2>
-                                <div style="margin: 5px 0;"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(newProducts[$index].point) | currency : '' :0}} Points</strong></div>
-                            </div>
-                            <div class="col col-50" ng-if="($index+1)<products.length" style="text-align: center;"
-                                 ui-sref="home.product({id:newProducts[$index+1].product_id})">
-                                <div>
-                                    <div class="image-display-container">
-                                        <img src="{{newProducts[$index+1].imageurl}}" class="image-display"/>
+                        <div class="item item-borderless">
+                            <ion-slide-box style="height: 300px;" on-slide-changed="slideHasChanged($index)">
+                                <ion-slide ng-repeat="product in products" ng-if="$index%2==0" class="muter">
+                                    <div class="row">
+                                        <div class="col col-50" ng-if="$index<products.length" style="text-align: center;"
+                                             ui-sref="home.product({id:products[$index].product_id})">
+                                            <div class="image-display-container">
+                                                <img src="{{products[$index].imageurl}}" class="image-display"/>
+                                            </div>
+                                            <h2><strong>{{products[$index].product_name}}</strong></h2>
+
+                                            <div style="margin: 5px 0;"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(products[$index].point) | currency : '' :0}} Points</strong></div>
+                                        </div>
+                                        <div class="col col-50" ng-if="($index+1)<products.length" style="text-align: center;"
+                                             ui-sref="home.product({id:products[$index+1].product_id})">
+                                            <div>
+                                                <div class="image-display-container">
+                                                    <img src="{{products[$index+1].imageurl}}" class="image-display"/>
+                                                </div>
+                                                <h2><strong>{{products[$index+1].product_name}}</strong></h2>
+
+                                                <div style="margin: 5px 0;"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(products[$index+1].point) | currency : '' :0}} Points</strong></div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <h2><strong>{{newProducts[$index+1].product_name}}</strong></h2>
-                                    <div style="margin: 5px 0;"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(newProducts[$index+1].point) | currency : '' :0}} Points</strong></div>
-                                </div>
-                            </div>
+                                </ion-slide>
+                            </ion-slide-box>
                         </div>
-                    </ion-slide>
-                </ion-slide-box>
-            </li>
-        </ul>
-    </div>
-</ion-content>
+                    </div>
+                </li>
+                <li class="item item-borderless">
+                    <div class="card">
+                        <div class="item item-borderless">
+                            <h2><strong>Produk Baru</strong></h2>
+                        </div>
+                        <div class="item item-borderless">
+                            <ion-slide-box style="height: 300px;" on-slide-changed="slideHasChanged($index)">
+                                <ion-slide ng-repeat="product in newProducts" ng-if="$index%2==0" class="muter">
+                                    <div class="row">
+                                        <div class="col col-50" ng-if="$index<products.length" style="text-align: center;"
+                                             ui-sref="home.product({id:newProducts[$index].product_id})">
+                                            <div class="image-display-container">
+                                                <img src="{{newProducts[$index].imageurl}}" class="image-display"/>
+                                            </div>
+                                            <h2><strong>{{newProducts[$index].product_name}}</strong></h2>
+                                            <div style="margin: 5px 0;"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(newProducts[$index].point) | currency : '' :0}} Points</strong></div>
+                                        </div>
+                                        <div class="col col-50" ng-if="($index+1)<products.length" style="text-align: center;"
+                                             ui-sref="home.product({id:newProducts[$index+1].product_id})">
+                                            <div>
+                                                <div class="image-display-container">
+                                                    <img src="{{newProducts[$index+1].imageurl}}" class="image-display"/>
+                                                </div>
+                                                <h2><strong>{{newProducts[$index+1].product_name}}</strong></h2>
+                                                <div style="margin: 5px 0;"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(newProducts[$index+1].point) | currency : '' :0}} Points</strong></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ion-slide>
+                            </ion-slide-box>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </ion-content>
+</div>
