@@ -6,10 +6,10 @@ angular.module('VendorModule', ['ngFileUpload','ckeditor'])
     .controller('VendorListCtrl', function ($scope, userFactory,productFactory) {
         $scope.loggedin = userFactory.getLoginUser();
         //$scope.productsList = productFactory.getItems();
-        productFactory.getItems().then(function(data){
-            $scope.productsList = data;
+        //productFactory.getItems(0).then(function(data){
+        //    $scope.productsList = data;
             //console.log($scope.productsList);
-        });
+        //});
         $scope.remove = function (item) {
             item.approved = 0;
             cartFactory.remove(item);
@@ -18,14 +18,36 @@ angular.module('VendorModule', ['ngFileUpload','ckeditor'])
             //$rootScope.cartNumber = cartFactory.getNumber();
         };
         $scope.add = function(){};
+
+        $scope.productsList = [];
+        $scope.page = 0;
+        $scope.limit = 1;
+        $scope.noMoreData = false;
+        $scope.loadMore = function(){
+            productFactory.getItems($scope.page).then(function(data){
+                $scope.productsList = $scope.productsList.concat(data);
+                if(data.length<$scope.limit){
+                    $scope.noMoreData = true;
+                }
+                $scope.page++;
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+                //console.log($scope.productsList);
+            });
+        };
     })
     .controller('VendorOrderCtrl', function ($scope, userFactory,orderFactory) {
         $scope.loggedin = userFactory.getLoginUser();
-        $scope.orderList = orderFactory.getItems();
+        orderFactory.getItems(0).then(function(rows){
+            $scope.orderList = rows;
+            console.log(rows);
+        });
+
     })
     .controller('VendorOrderDetailCtrl', function ($scope, userFactory,orderFactory,$stateParams) {
         $scope.loggedin = userFactory.getLoginUser();
-        $scope.order = orderFactory.getItemById($stateParams.id);
+        orderFactory.getItemById($stateParams.id).then(function(row){
+            $scope.order = row;
+        });
         $scope.total = function(){
             var harga = 0;
             for(i=0;i<$scope.order.products.length;i++){
@@ -34,12 +56,17 @@ angular.module('VendorModule', ['ngFileUpload','ckeditor'])
             return harga;
         }
     })
-    .controller('VendorMenuCtrl', function ($scope, orderFactory, userFactory,productFactory,urlFactory) {
+    .controller('VendorMenuCtrl', function ($scope, orderFactory, userFactory,productFactory,urlFactory,vendorFactory) {
         /*must be declare in all controllers*/
         $scope.loggedin = userFactory.getLoginUser();
+        $scope.vendor = vendorFactory.getVendor();
         $scope.loggedin.imageurl = urlFactory.imageurl($scope.loggedin.image);
-        $scope.orderItems = orderFactory.getItems();
-        $scope.products = productFactory.getItems();
+        orderFactory.getItems(0).then(function(rows){
+            $scope.orderItems = rows
+        });
+        productFactory.getItems().then(function(rows){
+            $scope.products = rows;
+        });
         /*end must be declare in all controllers*/
 
 
@@ -64,28 +91,34 @@ angular.module('VendorModule', ['ngFileUpload','ckeditor'])
         /*must be declare in all controllers*/
         $scope.loggedin = userFactory.getLoginUser();
         $scope.vendor = vendorFactory.getVendor();
-        //productFactory.getItems().then(function(data){
-        //    $scope.products = data;
-        //});
+
         /*end must be declare in all controllers*/
         //$scope.params = $routeParams;
         //console.log($stateParams.id);
         productFactory.getItemById($stateParams.id).then(function(data){
             $scope.product = data;
-            console.log($scope.product);
+            //console.log($scope.product);
         });
+        productFactory.getCategories().then(function(data){
+            $scope.categories = data;
+            console.log($scope.categories);
+        });
+
         $scope.image_update = 0;
         $scope.save = function (item) {
+            console.log(item);
             if(confirm("Simpan Product?")){
                 if($scope.image_update==1){
                     fileFactory.upload($scope.files).then(function(data){
                         item.product_image = data.name;
+                        item.vendor_id = $scope.vendor.vendor_id;
                         productFactory.rubah(item);
                         //console.log(productFactory.getItems());
                         $location.path('/home/vendor');
                     });
                 }else{
-                    alert("update");
+                    //alert("update");
+                    item.vendor_id = $scope.vendor.vendor_id;
                     productFactory.rubah(item);
                     $location.path('/home/vendor');
                 }
@@ -110,7 +143,7 @@ angular.module('VendorModule', ['ngFileUpload','ckeditor'])
                 //alert(item.desc);
                 fileFactory.upload($scope.files).then(function(data){
                     item.image = data.name;
-                    item.vendor_id = vendor.vendor_id;
+                    item.vendor_id = $scope.vendor.vendor_id;
                     //alert(item.desc);
                     //alert(item.detail);
                     productFactory.add(item);

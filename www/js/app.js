@@ -182,7 +182,8 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
                 status : item.status,
                 detail : item.detail,
                 desc: item.desc,
-                vendor: item.vendor_id
+                vendor: item.vendor_id,
+                category : item.category.category_id
             }).success(function(data){
                 def.resolve(data);
             });
@@ -200,17 +201,52 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
                 status : item.product_status,
                 detail : item.product_detail,
                 desc: item.product_description,
-                vendor: item.vendor_id
+                vendor: item.vendor_id,
+                category : item.category.category_id
             }).success(function(data){
                 def.resolve(data);
             });
             return def.promise;
 
         };
-        productLists.getItems = function(){
+        productLists.getItems = function(page){
             var def = $q.defer();
             var limit = 6;
-            $http.get(base+"index.php/api/products/getAll/limit/"+limit).success(function(data){
+            //var uri = base+"index.php/api/products/getAll/limit/"+limit;
+            var uri = base+"index.php/api/products/getProducts/limit/"+limit+"/page/"+page;
+            $http.get(uri).success(function(data){
+                def.resolve(data);
+            });
+            //return items;
+            return def.promise;
+        };
+
+        productLists.newItems = function(){
+            var def = $q.defer();
+            var limit = 6;
+            //var uri = base+"index.php/api/products/getAll/limit/"+limit;
+            var uri = base+"index.php/api/products/getProducts/limit/"+limit+"/new/1";
+            $http.get(uri).success(function(data){
+                def.resolve(data);
+            });
+            //return items;
+            return def.promise;
+        };
+
+        productLists.searchItems = function(name,page){
+            var def = $q.defer();
+            var limit = 6;
+            $http.get(base+"index.php/api/products/getProducts/search/"+name+"/limit/"+limit+"/page/"+page).success(function(data){
+                def.resolve(data);
+            });
+            //return items;
+            return def.promise;
+        };
+
+        productLists.categoryItems = function(cat,page){
+            var def = $q.defer();
+            var limit = 6;
+            $http.get(base+"index.php/api/products/getProducts/category/"+cat+"/limit/"+limit+"/page/"+page).success(function(data){
                 def.resolve(data);
             });
             //return items;
@@ -225,18 +261,18 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
             return def.promise;
         };
 
+        productLists.getCategories = function(){
+            var def = $q.defer();
+            $http.get(base+"index.php/api/products/categories").success(function(data){
+                def.resolve(data);
+            });
+            return def.promise;
+        };
+
         productLists.getNumber = function(){
             return items.length;
         };
-        //productLists.getItemById = function(id){
-        //    var row = {};
-        //    angular.forEach(items,function(item,key){
-        //        if(item.id==id){
-        //            row=item;
-        //        }
-        //    });
-        //    return row;
-        //};
+
         productLists.getItemById = function(id){
             var def = $q.defer();
 
@@ -251,7 +287,7 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
         }
         return productLists;
     })
-    .factory("userFactory",function($http,$q){
+    .factory("userFactory",function($http,$q,$window){
         var login = {
             user_id : 0,
             user_name : "anonymous",
@@ -291,45 +327,47 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
                 password : password
             }).success(function(row){
                 if(row.noerr==100){
-                    login = row.user;
+                    $window.localStorage['user'] = JSON.stringify(row.user);
                 }
                 def.resolve(row);
             });
-            //console.log(def.promise);
             return def.promise;
         };
         userObjects.logout = function(){
-            login = {
-                user_id : 0,
-                user_name : "anonymous",
-                user_email : "",
-                user_image : "default.png",
-                user_imageurl : base+"assets/images/default.png",
-                user_role : "guest",
-                providers : [
-
-                ]
-            };
+            $window.localStorage.removeItem('user');
         };
         userObjects.getLoginUser = function(){
-            return login;
-        };
-        userObjects.setPoints = function(uid,pid){
-            var def = $q.defer();
-            $http.get(base+"index.php/api/users/getPoint/provider/"+pid+"/user/"+uid).success(function(row){
-                def.resolve(row);
-                points = row.point;
-            });
-            return def.promise;
-        };
+            user = JSON.parse($window.localStorage['user'] || '{}')
+            if(Object.keys(user).length === 0){
+                return login;
+            }else{
+                return user;
+            }
 
-        userObjects.getPoints = function(){
-            return points;
+        };
+        //userObjects.setPoints = function(uid,pid){
+        //    var def = $q.defer();
+        //    $http.get(base+"index.php/api/users/getPoint/provider/"+pid+"/user/"+uid).success(function(row){
+        //        def.resolve(row);
+        //        points = row.point;
+        //    });
+        //    return def.promise;
+        //};
+
+        userObjects.getPoints = function(active_provider){
+            var user = this.getLoginUser();
+            var points = 0;
+            angular.forEach(user.providers, function(val,i){
+                if(active_provider.provider_id == val.provider_id){
+                    points = val.point;
+                }
+            });
+            return parseInt(points);
         };
 
         return userObjects;
     })
-    .factory("vendorFactory",function($http,$q){
+    .factory("vendorFactory",function($http,$q,$window){
 
         var vendorObjects = {};
         var vendor = {};
@@ -354,19 +392,23 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
             var def = $q.defer();
             $http.get(base+"index.php/api/vendors/getVendor/user/"+uid).success(function(row){
                 def.resolve(row);
-                vendor = row;
+                $window.localStorage['vendor'] = JSON.stringify(row);
             });
             //console.log(def.promise);
             return def.promise;
         };
 
         vendorObjects.getVendor = function(){
-            return vendor;
+            return JSON.parse($window.localStorage['vendor'] || '{}');
         };
+
+        vendorObjects.removeVendor = function(){
+            $window.localStorage.removeItem('vendor');
+        }
 
         return vendorObjects;
     })
-    .factory("providerFactory",function($http,$q){
+    .factory("providerFactory",function($http,$q,$window){
         var provider = {};
         var providerObjects = {};
         var pointRate = 1;
@@ -382,6 +424,17 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
         };
         providerObjects.getProvider = function(){
             return provider;
+        };
+        providerObjects.setActive = function(pid){
+            $http.get(base+"index.php/api/providers/getProvider/id/"+pid).success(function(row){
+                $window.localStorage["active_provider"] = JSON.stringify(row);
+            });
+        };
+        providerObjects.getActive = function(){
+            return JSON.parse($window.localStorage['active_provider'] || '{}');
+        };
+        providerObjects.removeActive = function(){
+            $window.localStorage.removeItem("active_provider");
         };
         providerObjects.add = function(nama,email,password,img_thumb,address,phone,point){
             var def = $q.defer();
@@ -486,6 +539,25 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
         };
         return fileObjects;
     })
+    .factory('$localstorage', ['$window', function($window) {
+        return {
+            set: function(key, value) {
+                $window.localStorage[key] = value;
+            },
+            get: function(key, defaultValue) {
+                return $window.localStorage[key] || defaultValue;
+            },
+            setObject: function(key, value) {
+                $window.localStorage[key] = JSON.stringify(value);
+            },
+            getObject: function(key) {
+                return JSON.parse($window.localStorage[key] || '{}');
+            },
+            remove : function(key){
+                $window.localStorage.removeItem(key);
+            }
+        }
+    }])
     .config(function($ionicConfigProvider,cfpLoadingBarProvider) {
         $ionicConfigProvider.views.maxCache(0);
         cfpLoadingBarProvider.includeSpinner = true;

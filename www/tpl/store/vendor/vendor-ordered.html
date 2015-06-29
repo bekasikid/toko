@@ -1,16 +1,15 @@
 <ion-content class="has-header padding" ng-controller="VendorOrderCtrl">
     <ul class="list">
-        <li class="item item-thumbnail-left" ng-repeat="order in orderList">
-            <img src="{{order.user.image}}"/>
-
-            <h2><strong>{{order.user.name}}</strong></h2>
-
-            <div style="margin: 5px 0;">Tanggal : {{order.tgl}}</div>
-            <div style="margin: 5px 0;">Barang : {{order.products.length}} Item</div>
-            <div style="margin: 5px 0;">Total : {{(order.total) | currency : 'Rp ' : 0 }}</div>
-            <div style="margin: 5px 0;">Status : {{(order.status==1)?"Approved":"Not Approved"}}</div>
-            <a class="button button-small icon-left ion-android-list button-positive"
-               href="#/home/vendor-order/id/{{order.id}}">Detail</a>
+        <li class="item item-divider">
+            Daftar Pesanan
+        </li>
+        <li class="item item-thumbnail-left item-icon-right" ng-repeat="order in orderList" ui-sref="home.vendor-order-id({id:order.order_id})">
+            <img src="{{order.imageurl}}"/>
+            <h2><strong>{{order.user_name}}</strong></h2>
+            <div style="margin: 5px 0;">Tanggal : {{order.order_date}}</div>
+            <div style="margin: 5px 0;">Total : {{(order.order_total) | currency : 'Rp ' : 0 }}</div>
+            <div style="margin: 5px 0;">Status : {{(order.order_status==1)?"Approved":"Not Approved"}}</div>
+            <i class="icon ion-ios-arrow-right"></i>
         </li>
     </ul>
 </ion-content>

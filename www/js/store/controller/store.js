@@ -11,22 +11,26 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         $scope.loggedin = userFactory.getLoginUser();
         $scope.myInterval = 300;
 
+        if(($scope.loggedin.user_id>0)&&($scope.loggedin.user_role=='customer')){
+            var active = providerFactory.getActive();
+            if(Object.keys(active).length==0){
+                providerFactory.setActive($scope.loggedin.providers[0].provider_id);
+            }
+        }
+
         productFactory.getPromo().then(function(data){
             $scope.carouselLists = data;
         });
 
-        productFactory.getItems().then(function(data){
+        productFactory.getItems(0).then(function(data){
             $scope.products = data;
             $ionicSlideBoxDelegate.update();
         });
 
-        $scope.point_rate = providerFactory.getPointRate();
-        if($scope.loggedin.user_id==0){
-            //untuk user yg sudah login, setting rate dan point ada di control accountCtrl
-            providerFactory.setMinPointRate().then(function(row){
-                $scope.point_rate = row.point;
-            });
-        }
+        productFactory.newItems().then(function(data){
+            $scope.newProducts = data;
+            $ionicSlideBoxDelegate.update();
+        });
 
         $scope.add = function (item) {
             //item.approved = 0;
@@ -34,11 +38,51 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
             console.log(cartFactory.getItems());
         };
     })
+    .controller('productCategoryCtrl', function ($scope, userFactory, productFactory, providerFactory,$stateParams) {
+        $scope.loggedin = userFactory.getLoginUser();
+
+        if(($scope.loggedin.user_id>0)&&($scope.loggedin.user_role=='customer')){
+            var active = providerFactory.getActive();
+            if(Object.keys(active).length==0){
+                providerFactory.setActive($scope.loggedin.providers[0].provider_id);
+            }
+        }
+
+        $scope.productsList = [];
+        $scope.page = 0;
+        $scope.limit = 1;
+        $scope.noMoreData = false;
+        $scope.loadMore = function(){
+            if($stateParams.id){
+                productFactory.categoryItems($stateParams.id,$scope.page).then(function(data){
+                    $scope.productsList = $scope.productsList.concat(data);
+                    if(data.length<$scope.limit){
+                        $scope.noMoreData = true;
+                    }
+                    $scope.page++;
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+
+                });
+            }else{
+                productFactory.searchItems($stateParams.name,$scope.page).then(function(data){
+                    $scope.productsList = $scope.productsList.concat(data);
+                    if(data.length<$scope.limit){
+                        $scope.noMoreData = true;
+                    }
+                    $scope.page++;
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+
+                });
+            }
+
+        };
+
+    })
     .controller('productDetailCtrl', function ($scope, $stateParams, cartFactory, userFactory,productFactory,providerFactory,$location) {
         /*must be declare in all controllers*/
         $scope.loggedin = userFactory.getLoginUser();
+        $scope.provider = providerFactory.getActive();
 
-        $scope.point_rate = providerFactory.getPointRate();
         $scope.prod = {
             points : 0,
             topup:0
@@ -50,25 +94,28 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
 
         productFactory.getItemById($stateParams.id).then(function(row){
             $scope.product=row;
-            $scope.product.product_point = Math.floor($scope.product.product_price/$scope.point_rate);
-            $scope.prod.points = Math.floor($scope.product.product_price/$scope.point_rate);
+            $scope.prod.points = row.point;
 
             if($scope.loggedin.user_id>0){
                 //set max points
-                $scope.upoint = userFactory.getPoints();
-                if($scope.upoint<$scope.product.product_point){
+                $scope.upoint = userFactory.getPoints($scope.provider);
+                if($scope.upoint<$scope.product.point){
                     $scope.maxpoints =$scope.upoint;
                 }else{
-                    $scope.maxpoints = $scope.product.product_point;
+                    $scope.maxpoints = $scope.product.point;
                 }
+                //console.log($scope.upoint);
+                //console.log($scope.maxpoints);
                 $scope.$watch("prod.points",function(){
-                    $scope.prod.topup = ($scope.product.product_point - $scope.prod.points) * $scope.point_rate;
+                    $scope.prod.topup = ($scope.product.point - $scope.prod.points) * $scope.provider.provider_point;
                     //jaga slider supaya tidak boleh lebih besar dr max points
-                    console.log($scope.prod.points);
+                    //console.log($scope.prod.points);
+                    //console.log($scope.product.point);
+                    //console.log($scope.provider.provider_point);
                     if(parseInt($scope.prod.points) > $scope.maxpoints){
                         $scope.prod.points = $scope.maxpoints;
                     }
-                    console.log($scope.prod);
+                    //console.log($scope.prod);
                 });
             }
 
@@ -152,12 +199,31 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
             return harga;
         }
     })
-    .controller('SideMenuCtrl', function ($scope, cartFactory, userFactory, providerFactory,urlFactory) {
+    .controller('SideMenuCtrl', function ($scope, cartFactory, userFactory, providerFactory,productFactory,$state) {
         /*must be declare in all controllers*/
         $scope.rubah = function(pid){
             //set rate dan point user
-            providerFactory.setPointRate(pid);
-            userFactory.setPoints($scope.loggedin.user_id,pid);
+            providerFactory.setActive(pid);
+        };
+
+        $scope.productsList = [];
+        $scope.page = 0;
+        $scope.limit = 1;
+        $scope.noMoreData = false;
+        $scope.search = function(){
+            $state.transitionTo("home.search", {name:$scope.searchQuery}, {
+                reload: true, inherit: true, notify: true
+            });
+
+            //productFactory.searchItems($scope.searchQuery,$scope.page).then(function(data){
+            //    $scope.productsList = $scope.productsList.concat(data);
+            //    if(data.length<$scope.limit){
+            //        $scope.noMoreData = true;
+            //    }
+            //    $scope.page++;
+            //    $scope.$broadcast('scroll.infiniteScrollComplete');
+            //
+            //});
         };
 
         $scope.pid = {value:0};
@@ -165,8 +231,6 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         if($scope.loggedin.user_id>0){
             $scope.pid.value = $scope.loggedin.providers[0].provider_id;
             $scope.rubah($scope.loggedin.providers[0].provider_id);
-        }else{
-            providerFactory.setMinPointRate();
         }
 
         //$scope.loggedin_sample = {providers : [
@@ -196,11 +260,15 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         }
         /*end must be declare in all controllers*/
 
-        //$scope.tc = true;
-        //$scope.toggleCategories = function () {
-        //    console.log('Toggle show categories')
-        //    $scope.tc = !$scope.tc;
-        //}
+        productFactory.getCategories().then(function(rows){
+            $scope.categories = rows;
+        });
+
+        $scope.tc = true;
+        $scope.toggleCategories = function () {
+            console.log('Toggle show categories')
+            $scope.tc = !$scope.tc;
+        }
         //$scope.providers = [
         //
         //    {
@@ -270,14 +338,16 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
 
 
     })
-    .controller('AccountCtrl', function ($scope, userFactory,vendorFactory, $location, providerFactory,Upload,fileFactory,$state) {
+    .controller('AccountCtrl', function ($scope, userFactory,vendorFactory, $location, providerFactory,Upload,fileFactory,$state,$localstorage) {
         //$scope.imageurl = "https://en.gravatar.com/userimage/88243764/f8ec3653f743fcb87bb78e723c6067f5.png";
         $scope.loggedin = userFactory.getLoginUser();
         $scope.login = function () {
             $scope.loginStatus = true;
             userFactory.login($scope.username, $scope.password).then(function(data){
                 if (data.noerr == 100) {
+                    $localstorage.setObject('user', userFactory.getLoginUser());
                     $scope.loggedin = userFactory.getLoginUser();
+
                     if($scope.loggedin.user_role=="provider"){
                         providerFactory.setProvider($scope.loggedin.user_id);
                     }else if($scope.loggedin.user_role=="customer"){
@@ -288,8 +358,6 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
                         vendorFactory.setVendor($scope.loggedin.user_id);
                     }
 
-                    //$location.path('/home/store');
-                    //$state.go('home.store');
                     $state.transitionTo('home.store', $state.$current.params, {
                         reload: true, inherit: true, notify: true
                     });
@@ -302,7 +370,8 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         };
         $scope.logout = function(){
             userFactory.logout();
-            providerFactory.setMinPointRate();
+            providerFactory.removeActive();
+            vendorFactory.removeVendor();
             $state.transitionTo('home.store', $state.$current.params, {
                 reload: true, inherit: true, notify: true
             });

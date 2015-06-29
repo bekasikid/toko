@@ -75,11 +75,29 @@ angular.module('RouterMain',[])
                 },
             })
 
+            .state('home.category', {
+                url: "/category/id/:id",
+                views: {
+                    'content': {
+                        templateUrl: "tpl/store/product-list.html",
+                    }
+                },
+            })
+
             .state('home.product', {
                 url: "/product/id/:id",
                 views: {
                     'content': {
                         templateUrl: "tpl/store/product-detail.html",
+                    }
+                },
+            })
+
+            .state('home.search', {
+                url: "/product/name/:name",
+                views: {
+                    'content': {
+                        templateUrl: "tpl/store/product-list.html",
                     }
                 },
             })
@@ -116,7 +134,7 @@ angular.module('RouterMain',[])
                     }
                 },
             })
-            .state('home.vendor-order.id', {
+            .state('home.vendor-order-id', {
                 url: "/vendor-order/id/:id",
                 views: {
                     'content': {

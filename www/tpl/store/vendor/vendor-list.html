@@ -1,5 +1,6 @@
 <ion-content class="has-header padding" ng-controller="VendorListCtrl">
-    <ul class="list">
+    <ion-list>
+        <li class="item item-divider">Daftar Produk</li>
         <li class="item item-thumbnail-left item-icon-right" ng-repeat="product in productsList" ui-sref="home.vendor-product({id:product.product_id})">
             <img src="{{product.imageurl}}"/>
             <h2><strong>{{product.product_name}}</strong></h2>
@@ -7,7 +8,8 @@
             <div><strong>Status: </strong>{{product.product_status==1?"Available":"Not Available"}}</div>
             <i class="icon ion-ios-arrow-right"></i>
         </li>
-    </ul>
+    </ion-list>
+    <ion-infinite-scroll ng-if="!noMoreData" on-infinite="loadMore()" distance="10%"></ion-infinite-scroll>
 </ion-content>
 <ion-footer-bar class="bar bar-stable">
     <div class="buttons">
