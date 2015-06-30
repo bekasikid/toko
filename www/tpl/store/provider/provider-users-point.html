@@ -16,7 +16,7 @@
         <ion-item class="item item-divider">
             Daftar Pelanggan
         </ion-item>
-        <ion-item ng-repeat="user in users" class="item-icon-right" href="#/provider-users-point-detail">
+        <ion-item ng-repeat="user in users" class="item-icon-right" href="#/home/provider-users-point/id/{{user.user_id}}">
             {{ user.user_name}} - {{user.point | currency : '':0}}
             <i class="icon ion-ios-arrow-forward"></i>
         </ion-item>

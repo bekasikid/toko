@@ -1,0 +1,65 @@
+<ion-header-bar class="bar-stable" align-title="center">
+    <button class="button button-clear icon ion-chevron-left" ui-sref="home.provider-order"></button>
+    <h1 class="title">Report</h1>
+</ion-header-bar>
+<ion-content class="has-header padding" ng-controller="ProviderOrderReportCtrl">
+    <ul class="list">
+        <li class="item item-divider">
+            <div class="row">
+                <div class="col col-10">
+                    Tanggal
+                </div>
+                <div class="col col-20">
+                    Nama
+                </div>
+                <div class="col col-20">
+                    Produk
+                </div>
+                <div class="col col-10" style="text-align: right;">
+                    Harga
+                </div>
+                <div class="col col-10" style="text-align: right;">
+                    Point
+                </div>
+            </div>
+        </li>
+        <li class="item" ng-repeat="order in orderList">
+            <div class="row">
+                <div class="col col-10">
+                    {{order.order_date}}
+                </div>
+                <div class="col col-20">
+                    {{order.user_name}}
+                </div>
+                <div class="col col-20">
+                    {{order.product_name}}
+                </div>
+                <div class="col col-10" style="text-align: right;">
+                    {{order.product_price | currency:"":0}}
+                </div>
+                <div class="col col-10" style="text-align: right;">
+                    {{order.product_point | currency:"":0}}
+                </div>
+            </div>
+        </li>
+        <li class="item item-divider">
+            <div class="row">
+                <div class="col col-10">
+                    Total
+                </div>
+                <div class="col col-20">
+                </div>
+                <div class="col col-20">
+                </div>
+                <div class="col col-10" style="text-align: right;">
+                    {{totalPrice | currency : "" : 0}}
+                </div>
+                <div class="col col-10" style="text-align: right;">
+                    {{totalPoint | currency : "" : 0}}
+                </div>
+            </div>
+        </li>
+
+    </ul>
+
+</ion-content>

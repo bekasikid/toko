@@ -71,24 +71,16 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
         };
         return cartLists;
     })
-    .factory("orderFactory",function($http,$q){
+    .factory("orderFactory",function($http,$q,$window){
         var items = [];
         var orderLists = {};
 
-        //orderLists.add = function(item){
-        //    var idx = items.indexOf(item);
-        //    if(idx==-1){
-        //        item.number=1;
-        //        items.push(item);
-        //    }else{
-        //        items[idx].number +=1;
-        //    }
-        //
-        //};
         orderLists.add = function(userid,total,products){
             var def = $q.defer();
+            ap = JSON.parse($window.localStorage['active_provider'] || '{}');
             $http.post(base+"index.php/api/orders/order",{
                 user_id : userid,
+                provider_id : ap.provider_id,
                 total : total,
                 products : products
             }).success(function(data){
@@ -98,21 +90,15 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
         };
 
         orderLists.getItemById = function(id,pid){
-            //var row = {};
-            //angular.forEach(items,function(item,key){
-            //    if(item.id==id){
-            //        row=item;
-            //    }
-            //});
-            //return row;
             var def = $q.defer();
             var uri = "";
             if(pid>0){
-                uri = base+"index.php/api/orders/getOrder/order/"+id+"/provider/"+pid;
+                uri = base+"index.php/api/orders/getOrderById/order/"+id+"/provider/"+pid;
             }else{
-                uri = base+"index.php/api/orders/getOrder/order/"+id;
+                uri = base+"index.php/api/orders/getOrderById/order/"+id;
             }
             $http.get(uri).success(function(data){
+                //console.log(data);
                 def.resolve(data);
             });
             return def.promise;
@@ -126,10 +112,19 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
             items[idx]=item;
         };
 
+        orderLists.approve = function(oid,approve){
+            var def = $q.defer();
+            var uri = base+"index.php/api/orders/orderApproved/order/"+oid+"/approve/"+approve;
+            $http.get(uri).success(function(row){
+                def.resolve(row);
+            });
+            return def.promise;
+        }
+
         orderLists.getItems = function(uid){
             //return items;
             var def = $q.defer();
-            $http.get(base+"index.php/api/orders/getAll/user/"+uid).success(function(rows){
+            $http.get(base+"index.php/api/orders/getOrder/user/"+uid).success(function(rows){
                 def.resolve(rows);
             });
             return def.promise;
@@ -143,6 +138,21 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
                 uri = base+"index.php/api/orders/getAll/provider/"+pid;
             }else{
                 uri = base+"index.php/api/orders/getAll";
+            }
+            $http.get(uri).success(function(rows){
+                def.resolve(rows);
+            });
+            return def.promise;
+        };
+
+        orderLists.getReport = function(pid){
+            //return items;
+            var def = $q.defer();
+            var uri = "";
+            if(pid>0){
+                uri = base+"index.php/api/orders/getOrder/provider/"+pid+"/approve/1";
+            }else{
+                uri = base+"index.php/api/orders/getOrder";
             }
             $http.get(uri).success(function(rows){
                 def.resolve(rows);
@@ -164,13 +174,37 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
         }
         return orderLists;
     })
-    .factory("productFactory",function($http,$q){
+    .factory("productFactory",function($http,$q,$window){
         var items = [];
         var productLists = {};
+        var default_provider = {provider_id:0};
 
         //productLists.add = function(item){
         //    items.push(item);
         //};
+
+        productLists.setActive = function(pid){
+            var def = $q.defer();
+            $http.get(base+"index.php/api/providers/getProvider/id/"+pid).success(function(row){
+                $window.localStorage["active_provider"] = JSON.stringify(row);
+                //active_provider = row;
+                def.resolve(row);
+            });
+            return def.promise;
+        };
+        productLists.getActive = function(){
+            ap = JSON.parse($window.localStorage['active_provider'] || '{}');
+            if(Object.keys(ap).length==0){
+                return default_provider;
+            }else{
+                return ap;
+            }
+
+        };
+        productLists.removeActive = function(){
+            $window.localStorage.removeItem("active_provider");
+            active_provider = {provider_id:0};
+        };
 
         productLists.add = function(item){
             var def = $q.defer();
@@ -213,7 +247,8 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
             var def = $q.defer();
             var limit = 6;
             //var uri = base+"index.php/api/products/getAll/limit/"+limit;
-            var uri = base+"index.php/api/products/getProducts/limit/"+limit+"/page/"+page;
+            var active_provider = this.getActive();
+            var uri = base+"index.php/api/products/getProducts/limit/"+limit+"/page/"+page+"/provider/"+active_provider.provider_id;
             $http.get(uri).success(function(data){
                 def.resolve(data);
             });
@@ -225,7 +260,8 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
             var def = $q.defer();
             var limit = 6;
             //var uri = base+"index.php/api/products/getAll/limit/"+limit;
-            var uri = base+"index.php/api/products/getProducts/limit/"+limit+"/new/1";
+            var active_provider = this.getActive();
+            var uri = base+"index.php/api/products/getProducts/limit/"+limit+"/new/1"+"/provider/"+active_provider.provider_id;
             $http.get(uri).success(function(data){
                 def.resolve(data);
             });
@@ -236,7 +272,9 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
         productLists.searchItems = function(name,page){
             var def = $q.defer();
             var limit = 6;
-            $http.get(base+"index.php/api/products/getProducts/search/"+name+"/limit/"+limit+"/page/"+page).success(function(data){
+            var active_provider = this.getActive();
+            var uri = base+"index.php/api/products/getProducts/search/"+name+"/limit/"+limit+"/page/"+page+"/provider/"+active_provider.provider_id;
+            $http.get(uri).success(function(data){
                 def.resolve(data);
             });
             //return items;
@@ -246,7 +284,9 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
         productLists.categoryItems = function(cat,page){
             var def = $q.defer();
             var limit = 6;
-            $http.get(base+"index.php/api/products/getProducts/category/"+cat+"/limit/"+limit+"/page/"+page).success(function(data){
+            var active_provider = this.getActive();
+            var uri = base+"index.php/api/products/getProducts/category/"+cat+"/limit/"+limit+"/page/"+page+"/provider/"+active_provider.provider_id;
+            $http.get(uri).success(function(data){
                 def.resolve(data);
             });
             //return items;
@@ -275,8 +315,9 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
 
         productLists.getItemById = function(id){
             var def = $q.defer();
-
-            $http.get(base+"index.php/api/products/getProduct/product/"+id).success(function(row){
+            var active_provider = this.getActive();
+            var uri = base+"index.php/api/products/getProduct/product/"+id+"/provider/"+active_provider.provider_id;
+            $http.get(uri).success(function(row){
                 def.resolve(row);
             });
             return def.promise;
@@ -304,14 +345,17 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
         var userObjects = {};
         var points = 0;
 
-        userObjects.addUser = function(name,email,password,image,role){
+        userObjects.addUser = function(name,email,password,image,role,address,postcode,phone){
             var def = $q.defer();
             $http.post(base+"index.php/api/users/user",{
                 name: name,
                 email: email,
                 password: password,
                 image: image,
-                role: "customer"
+                role: "customer",
+                address:address,
+                postcode:postcode,
+                phone:phone
             }).success(function(data){
                def.resolve(data);
             });
@@ -365,6 +409,26 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
             return parseInt(points);
         };
 
+        userObjects.getUserById = function(id,pid){
+            var def = $q.defer();
+            uri = base+"index.php/api/users/getUserById/user/"+id+"/provider/"+pid;
+            $http.get(uri).success(function(data){
+                def.resolve(data);
+            });
+            return def.promise;
+        };
+
+        userObjects.update = function(data_user){
+            var row = {
+                user_id : data_user.user_id,
+                point : data_user.point,
+                user_status : data_user.user_status,
+                provider :data_user.provider_id
+            };
+            uri = base+"index.php/api/users/update";
+            $http.post(uri,row);
+        };
+
         return userObjects;
     })
     .factory("vendorFactory",function($http,$q,$window){
@@ -416,26 +480,19 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
         providerObjects.setProvider = function(uid){
             //var def = $q.defer();
             $http.get(base+"index.php/api/providers/getByUserId/user/"+uid).success(function(row){
-                //def.resolve(row);
-                //provider = def.promise;
-                provider = row;
+                $window.localStorage['provider'] = JSON.stringify(row);
             });
             //return def.promise;
         };
+
         providerObjects.getProvider = function(){
-            return provider;
+            return JSON.parse($window.localStorage['provider'] || '{}');
         };
-        providerObjects.setActive = function(pid){
-            $http.get(base+"index.php/api/providers/getProvider/id/"+pid).success(function(row){
-                $window.localStorage["active_provider"] = JSON.stringify(row);
-            });
+
+        providerObjects.removeProvider = function(){
+            $window.localStorage.removeItem('provider');
         };
-        providerObjects.getActive = function(){
-            return JSON.parse($window.localStorage['active_provider'] || '{}');
-        };
-        providerObjects.removeActive = function(){
-            $window.localStorage.removeItem("active_provider");
-        };
+
         providerObjects.add = function(nama,email,password,img_thumb,address,phone,point){
             var def = $q.defer();
             $http.post(base+"index.php/api/providers/provider",{

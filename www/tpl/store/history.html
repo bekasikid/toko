@@ -1,10 +1,11 @@
 <ion-content class="has-header padding" ng-controller="HistoryCtrl">
     <ul class="list">
-        <li class="item item-icon-right" ng-repeat="order in orderList" ui-sref="home.historyid({id:order.order_id})">
+        <li class="item item-icon-right item-thumbnail-left" ng-repeat="order in orderList" ui-sref="home.historyid({id:order.order_id})">
+            <img src="{{order.imageurl}}"/>
             <div style="margin: 5px 0;">Tanggal : {{order.order_date}}</div>
-            <div style="margin: 5px 0;">Total : {{(order.order_total) | currency : 'Rp ' : 0 }}</div>
-            <div style="margin: 5px 0;">Status : {{(order.order_approved==1)?"Disetujui":"Belum Disetujui"}}</div>
-            <div style="margin: 5px 0;">Proses : {{(order.order_status==1)?"Dalam Proses":"Belum Diproses"}}</div>
+            <div style="margin: 5px 0;">Point   : {{(order.product_point) | currency : '' : 0 }}</div>
+            <div style="margin: 5px 0;">Status  : {{(order.order_approved==1)?"Disetujui":"Belum Disetujui"}}</div>
+            <div style="margin: 5px 0;">Proses  : {{(order.order_status==1)?"Dalam Proses":"Belum Diproses"}}</div>
             <i class="icon ion-ios-arrow-right"></i>
         </li>
     </ul>

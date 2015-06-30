@@ -1,54 +1,83 @@
 /**
  * Created by goer on 5/21/15.
  */
-angular.module('ProviderModule', ['ngFileUpload'])
+angular.module('ProviderModule', ['ngFileUpload',"chart.js"])
     .controller('ProviderOrderCtrl', function ($scope, userFactory,orderFactory,providerFactory) {
         $scope.loggedin = userFactory.getLoginUser();
         $scope.provider = providerFactory.getProvider();
-        console.log($scope.provider);
         orderFactory.getOrders($scope.provider.provider_id).then(function(data){
             $scope.orderList = data;
             console.log(data);
         });
 
         $scope.reject = function (item) {
-            item.status = 2;
-            orderFactory.edit(item);
-            console.log(orderFactory.getItems());
-            $scope.orderList = orderFactory.getItems();
+            //item.status = 2;
+            //orderFactory.edit(item);
+            orderFactory.approve(item.order_id,2);
+            item.order_approved = 2;
+            //console.log(orderFactory.getItems());
+            //$scope.orderList = orderFactory.getItems();
         };
         $scope.approve = function (item) {
-            item.status = 1;
-            orderFactory.edit(item);
-            console.log(orderFactory.getItems());
-            $scope.orderList = orderFactory.getItems();
+            //item.status = 1;
+            //orderFactory.edit(item);
+            //console.log(orderFactory.getItems());
+            //$scope.orderList = orderFactory.getItems();
+            orderFactory.approve(item.order_id,1);
+            item.order_approved = 1;
         };
     })
-    .controller('ProviderOrderDetailCtrl', function ($scope, userFactory,orderFactory,$stateParams,providerFactory) {
+    .controller('ProviderOrderReportCtrl', function ($scope, userFactory,orderFactory,providerFactory) {
         $scope.loggedin = userFactory.getLoginUser();
         $scope.provider = providerFactory.getProvider();
+        //console.log($scope.provider);
+        $scope.totalPoint = 0;
+        $scope.totalPrice = 0;
+        orderFactory.getReport($scope.provider.provider_id).then(function(data){
+            $scope.orderList = data;
+            console.log(data);
+            angular.forEach(data,function(val,i){
+                $scope.totalPoint += val.product_point;
+                $scope.totalPrice += val.product_price;
+            });
+        });
+    })
+    .controller('ProviderOrderChartCtrl', function ($scope, userFactory,orderFactory,providerFactory) {
+        $scope.loggedin = userFactory.getLoginUser();
+        $scope.provider = providerFactory.getProvider();
+        //console.log($scope.provider);
+        $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
+        $scope.series = ['Vendor A', 'Vendor B'];
+        $scope.data = [
+            [10000, 4000, 6000, 15000, 3500, 8000, 7500],
+            [28000, 0, 12000, 4500, 8200, 9400, 7000]
+        ];
+        $scope.onClick = function (points, evt) {
+            console.log(points, evt);
+        };
+    })
+    .controller('ProviderOrderDetailCtrl', function ($scope, userFactory,orderFactory,providerFactory) {
+        $scope.loggedin = userFactory.getLoginUser();
+        $scope.provider = providerFactory.getProvider();
+        console.log($scope.provider);
         orderFactory.getItemById($stateParams.id,$scope.provider.provider_id).then(function(data){
-            $scope.order = data;
+            $scope.pesanan = data;
+            //console.log($scope.pesanan);
         });
 
-        $scope.total = function(){
-            var harga = 0;
-            for(i=0;i<$scope.order.products.length;i++){
-                harga += $scope.order.products[i].product_point * $scope.order.products[i].product_quantity;
-            }
-            return harga;
-        }
         $scope.reject = function () {
-            $scope.order.status = 2;
-            orderFactory.edit($scope.order);
-            console.log(orderFactory.getItems());
-            $scope.orderList = orderFactory.getItems();
+            orderFactory.approve($scope.pesanan.order_id,2);
+            orderFactory.getItemById($stateParams.id,$scope.provider.provider_id).then(function(data){
+                $scope.pesanan = data;
+                //console.log($scope.pesanan);
+            });
         };
         $scope.approve = function () {
-            $scope.order.status = 1;
-            orderFactory.edit($scope.order);
-            console.log(orderFactory.getItems());
-            $scope.orderList = orderFactory.getItems();
+            orderFactory.approve($scope.pesanan.order_id,1);
+            orderFactory.getItemById($stateParams.id,$scope.provider.provider_id).then(function(data){
+                $scope.pesanan = data;
+                //console.log($scope.pesanan);
+            });
         };
     })
     .controller('ProviderMenuCtrl', function ($scope, orderFactory, userFactory,productFactory, providerFactory) {
@@ -59,7 +88,7 @@ angular.module('ProviderModule', ['ngFileUpload'])
         orderFactory.getOrders($scope.provider.provider_id).then(function(data){
             $scope.orderItems = data;
         });
-        $scope.products = productFactory.getItems();
+        //$scope.products = productFactory.getItems();
         /*end must be declare in all controllers*/
 
 
@@ -99,7 +128,7 @@ angular.module('ProviderModule', ['ngFileUpload'])
         };
         $scope.users = [];
         $scope.page = 0;
-        $scope.limit = 1;
+        $scope.limit = 10;
         $scope.noMoreData = false;
         $scope.loadMore = function(){
             var url = base+"index.php/api/users/usersByProvider/provider/"+$scope.provider.provider_id+"/limit/"+$scope.limit+"/page/"+$scope.page;
@@ -114,5 +143,25 @@ angular.module('ProviderModule', ['ngFileUpload'])
                 $scope.$broadcast('scroll.infiniteScrollComplete');
             });
         };
+    })
+    .controller('ProviderUsersPointsDetailCtrl', function ($scope, $http, providerFactory, userFactory, $stateParams,$state) {
+        $scope.loggedin = userFactory.getLoginUser();
+        $scope.provider = providerFactory.getProvider();
+
+        userFactory.getUserById($stateParams.id,$scope.provider.provider_id).then(function(data){
+            data.provider_id = $scope.provider.provider_id;
+            $scope.user=data;
+            console.log(data);
+        });
+
+        $scope.update = function(user){
+            if(confirm("Update data?")){
+                userFactory.update(user);
+            }
+            $state.transitionTo('home.provider-users-point', $state.$current.params, {
+                reload: true, inherit: true, notify: true
+            });
+        };
+
     })
     ;

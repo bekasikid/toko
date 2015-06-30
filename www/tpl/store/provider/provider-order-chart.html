@@ -1,0 +1,11 @@
+<ion-header-bar class="bar-stable" align-title="center">
+    <button class="button button-clear icon ion-chevron-left" ui-sref="home.provider-order"></button>
+    <h1 class="title">Report</h1>
+</ion-header-bar>
+<ion-content class="has-header padding" ng-controller="ProviderOrderChartCtrl">
+    <canvas id="line" class="chart chart-line" data="data"
+            labels="labels" legend="true" series="series"
+            click="onClick">
+    </canvas>
+
+</ion-content>

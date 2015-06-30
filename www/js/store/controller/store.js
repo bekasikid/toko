@@ -3,20 +3,32 @@
  */
 angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
 
-    .controller('headerCtrl', function ($scope, cartFactory, userFactory) {
+    .controller('headerCtrl', function ($scope, cartFactory, userFactory,$state) {
         $scope.loggedin = userFactory.getLoginUser();
-        $scope.cart = cartFactory.getItems();
+        if($scope.loggedin.user_role=='customer'){
+            $scope.cart = cartFactory.getItems();
+        }
+
+        if($state.$current.name=='home.cart'){
+            $scope.title = 'Keranjang Belanja';
+        }else if($state.$current.name=='home.history'){
+            $scope.title = 'Riwayat';
+        }else if($state.$current.name=='home.historyid'){
+            $scope.title = 'Detail Riwayat';
+        }else if($state.$current.name=='home.category'){
+            $scope.title = 'Daftar Produk';
+        }else if($state.$current.name=='home.store.search'){
+            $scope.title = 'Daftar Produk';
+        }else if($state.$current.name=='home.store.all'){
+            $scope.title = 'Daftar Produk';
+        }else{
+            $scope.title = 'TUKAR POINT';
+        }
+
     })
     .controller('ProductListCtrl', function ($scope, cartFactory, userFactory, productFactory, providerFactory,$ionicSlideBoxDelegate) {
         $scope.loggedin = userFactory.getLoginUser();
         $scope.myInterval = 300;
-
-        if(($scope.loggedin.user_id>0)&&($scope.loggedin.user_role=='customer')){
-            var active = providerFactory.getActive();
-            if(Object.keys(active).length==0){
-                providerFactory.setActive($scope.loggedin.providers[0].provider_id);
-            }
-        }
 
         productFactory.getPromo().then(function(data){
             $scope.carouselLists = data;
@@ -35,26 +47,27 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         $scope.add = function (item) {
             //item.approved = 0;
             cartFactory.add(item);
-            console.log(cartFactory.getItems());
+            //console.log(cartFactory.getItems());
         };
     })
-    .controller('productCategoryCtrl', function ($scope, userFactory, productFactory, providerFactory,$stateParams) {
+    .controller('productCategoryCtrl', function ($scope, userFactory, productFactory, providerFactory,$stateParams,$state) {
         $scope.loggedin = userFactory.getLoginUser();
-
         if(($scope.loggedin.user_id>0)&&($scope.loggedin.user_role=='customer')){
-            var active = providerFactory.getActive();
+            var active = productFactory.getActive();
             if(Object.keys(active).length==0){
-                providerFactory.setActive($scope.loggedin.providers[0].provider_id);
+                productFactory.setActive($scope.loggedin.providers[0].provider_id);
             }
         }
+
+        //console.log($state);
 
         $scope.productsList = [];
         $scope.page = 0;
         $scope.limit = 1;
         $scope.noMoreData = false;
         $scope.loadMore = function(){
-            if($stateParams.id){
-                productFactory.categoryItems($stateParams.id,$scope.page).then(function(data){
+            if($state.$current.name=='home.store.all'){
+                productFactory.getItems($scope.page).then(function(data){
                     $scope.productsList = $scope.productsList.concat(data);
                     if(data.length<$scope.limit){
                         $scope.noMoreData = true;
@@ -64,16 +77,29 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
 
                 });
             }else{
-                productFactory.searchItems($stateParams.name,$scope.page).then(function(data){
-                    $scope.productsList = $scope.productsList.concat(data);
-                    if(data.length<$scope.limit){
-                        $scope.noMoreData = true;
-                    }
-                    $scope.page++;
-                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                if($stateParams.id){
+                    productFactory.categoryItems($stateParams.id,$scope.page).then(function(data){
+                        $scope.productsList = $scope.productsList.concat(data);
+                        if(data.length<$scope.limit){
+                            $scope.noMoreData = true;
+                        }
+                        $scope.page++;
+                        $scope.$broadcast('scroll.infiniteScrollComplete');
 
-                });
+                    });
+                }else{
+                    productFactory.searchItems($stateParams.name,$scope.page).then(function(data){
+                        $scope.productsList = $scope.productsList.concat(data);
+                        if(data.length<$scope.limit){
+                            $scope.noMoreData = true;
+                        }
+                        $scope.page++;
+                        $scope.$broadcast('scroll.infiniteScrollComplete');
+
+                    });
+                }
             }
+
 
         };
 
@@ -81,7 +107,7 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
     .controller('productDetailCtrl', function ($scope, $stateParams, cartFactory, userFactory,productFactory,providerFactory,$location) {
         /*must be declare in all controllers*/
         $scope.loggedin = userFactory.getLoginUser();
-        $scope.provider = providerFactory.getActive();
+        $scope.provider = productFactory.getActive();
 
         $scope.prod = {
             points : 0,
@@ -157,9 +183,10 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         $scope.myInterval = 300;
         $scope.products = productFactory.getItems();
     })
-    .controller('CartListCtrl', function ($scope, cartFactory, userFactory,orderFactory,$state) {
+    .controller('CartListCtrl', function ($scope, cartFactory, productFactory, userFactory,orderFactory,$state) {
         $scope.loggedin = userFactory.getLoginUser();
         $scope.cartList = cartFactory.getItems();
+        $scope.active_provider = productFactory.getActive();
         $scope.remove = function (item) {
             item.approved = 0;
             cartFactory.remove(item);
@@ -193,17 +220,21 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
             var harga = 0;
             $scope.itemNumber = 0;
             for(i=0;i<$scope.cartList.length;i++){
-                harga += $scope.cartList[i].product_point * $scope.cartList[i].number;
-                $scope.itemNumber += $scope.cartList[i].number;
+                harga += Math.floor($scope.cartList[i].product_price / $scope.active_provider.provider_point);
+                $scope.itemNumber++;
             }
             return harga;
         }
     })
     .controller('SideMenuCtrl', function ($scope, cartFactory, userFactory, providerFactory,productFactory,$state) {
         /*must be declare in all controllers*/
+        console.log($state);
         $scope.rubah = function(pid){
             //set rate dan point user
-            providerFactory.setActive(pid);
+            productFactory.setActive(pid).then(function(){
+                $state.go($state.current, {}, {reload: true});
+            });
+
         };
 
         $scope.productsList = [];
@@ -214,42 +245,20 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
             $state.transitionTo("home.store.search", {name:$scope.searchQuery}, {
                 reload: false, inherit: true, notify: true
             });
-
-            //productFactory.searchItems($scope.searchQuery,$scope.page).then(function(data){
-            //    $scope.productsList = $scope.productsList.concat(data);
-            //    if(data.length<$scope.limit){
-            //        $scope.noMoreData = true;
-            //    }
-            //    $scope.page++;
-            //    $scope.$broadcast('scroll.infiniteScrollComplete');
-            //
-            //});
         };
 
         $scope.pid = {value:0};
         $scope.loggedin = userFactory.getLoginUser();
         if($scope.loggedin.user_id>0){
-            $scope.pid.value = $scope.loggedin.providers[0].provider_id;
-            $scope.rubah($scope.loggedin.providers[0].provider_id);
+            //$scope.pid.value = $scope.loggedin.providers[0].provider_id;
+            //$scope.rubah($scope.loggedin.providers[0].provider_id);
+            var active = productFactory.getActive();
+            if(Object.keys(active).length==0){
+                productFactory.setActive($scope.loggedin.providers[0].provider_id);
+            }
+            $scope.pid.value = active.provider_id;
         }
 
-        //$scope.loggedin_sample = {providers : [
-        //    {
-        //        provider_id:1,
-        //        provider_name:'Pertamina',
-        //        point : 10000
-        //    },
-        //    {
-        //        provider_id:2,
-        //        provider_name:'Mandiri',
-        //        point : 20000
-        //    },
-        //    {
-        //        provider_id:3,
-        //        provider_name:'BCA',
-        //        point : 30000
-        //    }
-        //]};
         $scope.cartItems = cartFactory.getItems();
         $scope.itemsNumber = function(){
             var jml = 0;
@@ -269,26 +278,7 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
             console.log('Toggle show categories')
             $scope.tc = !$scope.tc;
         }
-        //$scope.providers = [
-        //
-        //    {
-        //        name: 'VISA',
-        //        point: 990000
-        //
-        //    },
-        //    {
-        //        name: 'BCA',
-        //        point: 65660000
-        //
-        //    },
-        //    {
-        //        name: 'MANDIRI',
-        //        point: 545000
-        //
-        //    },
-        //
-        //]
-        //
+
         //$scope.categories = [
         //
         //    {
@@ -338,7 +328,7 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
 
 
     })
-    .controller('AccountCtrl', function ($scope, userFactory,vendorFactory, $location, providerFactory,Upload,fileFactory,$state,$localstorage) {
+    .controller('AccountCtrl', function ($scope, userFactory,vendorFactory, $location, providerFactory,Upload,fileFactory,productFactory,$state,$localstorage) {
         //$scope.imageurl = "https://en.gravatar.com/userimage/88243764/f8ec3653f743fcb87bb78e723c6067f5.png";
         $scope.loggedin = userFactory.getLoginUser();
         $scope.login = function () {
@@ -352,8 +342,9 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
                         providerFactory.setProvider($scope.loggedin.user_id);
                     }else if($scope.loggedin.user_role=="customer"){
                         //set point n rate
-                        providerFactory.setPointRate($scope.loggedin.providers[0].provider_id);
-                        userFactory.setPoints($scope.loggedin.user_id,$scope.loggedin.providers[0].provider_id);
+                        //providerFactory.setPointRate($scope.loggedin.providers[0].provider_id);
+                        productFactory.setActive($scope.loggedin.providers[0].provider_id);
+                        //userFactory.setPoints($scope.loggedin.user_id,$scope.loggedin.providers[0].provider_id);
                     }else if($scope.loggedin.user_role=="vendor"){
                         vendorFactory.setVendor($scope.loggedin.user_id);
                     }
@@ -370,14 +361,15 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         };
         $scope.logout = function(){
             userFactory.logout();
-            providerFactory.removeActive();
+            productFactory.removeActive();
             vendorFactory.removeVendor();
+            providerFactory.removeProvider();
             $state.transitionTo('home.store', $state.$current.params, {
                 reload: true, inherit: true, notify: true
             });
         };
         $scope.register = function () {
-            userFactory.addUser($scope.name,$scope.username,$scope.password,$scope.imagename,"customer");
+            userFactory.addUser($scope.name,$scope.username,$scope.password,$scope.imagename,"customer",$scope.address,$scope.postcode,$scope.phone);
             $location.path('/home/store');
         };
 

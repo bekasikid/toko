@@ -22,9 +22,9 @@
                 </div>
                 <div class="item item-borderless" style="padding: 10px 0 0;">
                     <div class="row">
-                        <div class="col col-50"
-                             style="border-top: 1px solid #DDD;border-right: 1px solid #DDD;text-align: center;padding-bottom: 10px;">
-                            {{product.point | currency : '' : 0}} Points
+                        <div class="col col-50" style="border-top: 1px solid #DDD;border-right: 1px solid #DDD;text-align: center;padding-bottom: 10px;">
+                            <span ng-if="loggedin.user_role=='customer'">{{product.point | currency : '' : 0}} Points</span>
+                            <span ng-if="loggedin.user_role!='customer'">{{product.product_price | currency : 'Rp. ' : 0}}</span>
                         </div>
                         <div class="col col-50"
                              style="border-top: 1px solid #DDD;text-align: center;padding-bottom: 10px;">
@@ -33,15 +33,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="item item-text-wrap item-divider" ng-if="loggedin.user_id>0">
+                <div class="item item-text-wrap item-divider" ng-if="(loggedin.user_id>0) && (loggedin.user_role=='customer')">
                     Pembayaran
                 </div>
-                <div class="item range" ng-if="loggedin.user_id>0">
+                <div class="item range" ng-if="(loggedin.user_id>0) && (loggedin.user_role=='customer')">
                     <i class="icon ion-pricetag"></i>
                     <input type="range" ng-min="0" ng-max="product.point" ng-model="prod.points"/>
                     <i class="icon ion-pricetags"></i>
                 </div>
-                <div class="item item-borderless" style="padding: 10px 0 0;" ng-if="loggedin.user_id>0">
+                <div class="item item-borderless" style="padding: 10px 0 0;" ng-if="(loggedin.user_id>0) && (loggedin.user_role=='customer')">
                     <div class="row">
                         <div class="col col-50"
                              style="border-top: 1px solid #DDD;border-right: 1px solid #DDD;text-align: center;">
@@ -86,7 +86,7 @@
                 </div>
             </div>
         </ion-content>
-        <ion-footer-bar align-title="left" class="bar bar-stable">
+        <ion-footer-bar align-title="left" class="bar bar-stable" ng-if="loggedin.user_role=='customer'">
             <button ng-click="add(product)" class="button button-block">Pesan Sekarang</button>
         </ion-footer-bar>
     </ion-pane>

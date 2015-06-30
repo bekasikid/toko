@@ -4,10 +4,10 @@
             <div class="item item-borderless">
                 Daftar Produk
             </div>
-            <div class="item item-thumbnail-left item-icon-right" ng-repeat="product in productsList" ui-sref="home.product({id:product.product_id})">
+            <div class="item item-thumbnail-left item-icon-right" ng-animate="'animate'" ng-repeat="product in productsList" ui-sref="home.product({id:product.product_id})">
                 <img src="{{product.imageurl}}"/>
                 <h2><strong>{{product.product_name}}</strong></h2>
-                <div style="margin: 5px 0;">{{product.point | currency : 'Rp ' : 0 }}</div>
+                <div style="margin: 5px 0;">{{product.point | currency : '' : 0 }} Points</div>
                 <div><strong>Status: </strong>{{product.product_status==1?"Available":"Not Available"}}</div>
                 <i class="icon ion-ios-arrow-right"></i>
             </div>

@@ -1,0 +1,10 @@
+
+        <ion-header-bar align-title="left" class="bar bar-stable" ng-controller="headerCtrl">
+            <div class="buttons">
+                <button menu-toggle="left" class="button button-icon button-clear ion-navicon"></button>
+            </div>
+            <h1 class="title title-left">{{title}}</h1>
+            <button class="button button-icon icon ion-android-cart buttonn-right"
+                    ng-if="loggedin.user_role=='customer'"><span class="badge badge-assertive">{{cart.length}}</span>
+            </button>
+        </ion-header-bar>

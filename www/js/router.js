@@ -28,6 +28,9 @@ angular.module('RouterMain',[])
             .state('home.store', {
                 url: "/main",
                 views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
                     'content': {
                         templateUrl: "tpl/store/main.html"
                     }
@@ -36,6 +39,9 @@ angular.module('RouterMain',[])
             .state('home.cart', {
                 url: "/cart",
                 views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
                     'content': {
                         templateUrl: "tpl/store/cart.html",
                     }
@@ -44,6 +50,9 @@ angular.module('RouterMain',[])
             .state('home.history', {
                 url: "/history",
                 views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
                     'content': {
                         templateUrl: "tpl/store/history.html",
                     }
@@ -52,6 +61,9 @@ angular.module('RouterMain',[])
             .state('home.historyid', {
                 url: "/history/id/:id",
                 views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
                     'content': {
                         templateUrl: "tpl/store/history-detail.html",
                     }
@@ -60,6 +72,9 @@ angular.module('RouterMain',[])
             .state('home.login', {
                 url: "/login",
                 views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
                     'content': {
                         templateUrl: "tpl/store/login.html",
                     }
@@ -69,6 +84,9 @@ angular.module('RouterMain',[])
             .state('home.daftar', {
                 url: "/daftar",
                 views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
                     'content': {
                         templateUrl: "tpl/store/daftar.html",
                     }
@@ -78,6 +96,9 @@ angular.module('RouterMain',[])
             .state('home.category', {
                 url: "/category/id/:id",
                 views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
                     'content': {
                         templateUrl: "tpl/store/product-list.html",
                     }
@@ -87,6 +108,9 @@ angular.module('RouterMain',[])
             .state('home.product', {
                 url: "/product/id/:id",
                 views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
                     'content': {
                         templateUrl: "tpl/store/product-detail.html",
                     }
@@ -101,10 +125,20 @@ angular.module('RouterMain',[])
                     }
                 },
             })
-
+            .state('home.store.all', {
+                url: "/all",
+                views: {
+                    'mainContent': {
+                        templateUrl: "tpl/store/product-list.html",
+                    }
+                },
+            })
             .state('home.vendor', {
                 url: "/vendor",
                 views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
                     'content': {
                         templateUrl: "tpl/store/vendor/vendor-list.html",
                     }
@@ -113,6 +147,9 @@ angular.module('RouterMain',[])
             .state('home.vendor-product', {
                 url: "/vendor-product/id/:id",
                 views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
                     'content': {
                         templateUrl: "tpl/store/vendor/vendor-product.html",
                     }
@@ -121,6 +158,9 @@ angular.module('RouterMain',[])
             .state('home.vendor-product-new', {
                 url: "/vendor-product-new",
                 views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
                     'content': {
                         templateUrl: "tpl/store/vendor/vendor-product-new.html",
                     }
@@ -129,6 +169,9 @@ angular.module('RouterMain',[])
             .state('home.vendor-order', {
                 url: "/vendor-order",
                 views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
                     'content': {
                         templateUrl: "tpl/store/vendor/vendor-ordered.html",
                     }
@@ -137,6 +180,9 @@ angular.module('RouterMain',[])
             .state('home.vendor-order-id', {
                 url: "/vendor-order/id/:id",
                 views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
                     'content': {
                         templateUrl: "tpl/store/vendor/vendor-order-detail.html",
                     }
@@ -145,6 +191,9 @@ angular.module('RouterMain',[])
             .state('home.vendor-add', {
                 url: "/vendor-add",
                 views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
                     'content': {
                         templateUrl: "tpl/store/vendor/vendor-add.html",
                     }
@@ -153,14 +202,42 @@ angular.module('RouterMain',[])
             .state('home.provider-order', {
                 url: "/provider-order",
                 views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
                     'content': {
                         templateUrl: "tpl/store/provider/provider-order.html",
+                    }
+                },
+            })
+            .state('home.provider-report', {
+                url: "/provider-report",
+                views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
+                    'content': {
+                        templateUrl: "tpl/store/provider/provider-order-report.html",
+                    }
+                },
+            })
+            .state('home.provider-report-chart', {
+                url: "/provider-report-chart",
+                views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
+                    'content': {
+                        templateUrl: "tpl/store/provider/provider-order-chart.html",
                     }
                 },
             })
             .state('home.provider-order-id', {
                 url: "/provider-order/id/:id",
                 views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
                     'content': {
                         templateUrl: "tpl/store/provider/provider-order-detail.html",
                     }
@@ -169,6 +246,9 @@ angular.module('RouterMain',[])
             .state('home.provider-add', {
                 url: "/provider-add",
                 views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
                     'content': {
                         templateUrl: "tpl/store/provider/provider-add.html",
 
@@ -178,8 +258,22 @@ angular.module('RouterMain',[])
             .state('home.provider-users-point', {
                 url: "/provider-users-point",
                 views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
                     'content': {
                         templateUrl: "tpl/store/provider/provider-users-point.html",
+                    }
+                },
+            })
+            .state('home.provider-users-point-detail', {
+                url: "/provider-users-point/id/:id",
+                views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
+                    'content': {
+                        templateUrl: "tpl/store/provider/provider-users-point-detail.html",
                     }
                 },
             })

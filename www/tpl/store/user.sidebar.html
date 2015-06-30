@@ -29,14 +29,14 @@
 
             <h2>{{loggedin.user_name}}</h2>
 
-            <p>Last Update: 12:00</p>
+            <!--<p>Last Update: 12:00</p>-->
         </ion-item>
     </ion-list>
     <ul class="list">
         <li class="item item-divider" ng-if="loggedin.providers.length>0"><h2>Accounts</h2></li>
         <li ng-repeat="p in loggedin.providers">
             <label class="item item-radio">
-                <input type="radio" ng-model="pid.value" name="pValue" ng-value="p.provider_id" ng-change="rubah(p.provider_id)">
+                <input type="radio" ng-model="pid.value" name="pValue" ng-value="p.provider_id" ng-click="rubah(p.provider_id)">
                 <div class="item-content">
                     {{p.provider_name}}
                 </div>
@@ -56,7 +56,7 @@
         <li class="item item-divider"><h2>Shopping Cart</h2></li>
         <a class="item item-icon-left" href="#/home/cart">
             <i class="icon ion-android-cart"></i>
-            Chart
+            Cart
             <span class="badge badge-assertive">{{itemsNumber()}}</span>
         </a>
         <li class="item item-divider"><h2>History</h2></li>
@@ -70,15 +70,18 @@
         <!--<i class="icon ion-ios-sunny"></i>-->
         <!--</li>-->
         <li ng-click="toggleCategories()" class="item item-divider item-icon-right">
-        <h2>Categories</h2>
+            <h2>Categories</h2>
 
-        <div ng-if="tc==false"><i class="icon ion-plus"></i></div>
-        <div ng-if="tc==true"><i class="icon ion-minus"></i></div>
+            <div ng-if="tc==false"><i class="icon ion-plus"></i></div>
+            <div ng-if="tc==true"><i class="icon ion-minus"></i></div>
         </li>
         <div ng-if="tc==true">
-        <li ng-repeat="c in categories" class="item item-icon-right" ui-sref="home.category({id:c.category_id})">
-        <p>{{c.category_name}}</p><i class="icon ion-ios-arrow-right"></i>
-        </li>
+            <li class="item item-icon-right" ui-sref="home.store.all">
+                <p>Semua Produk</p><i class="icon ion-ios-arrow-right"></i>
+            </li>
+            <li ng-repeat="c in categories" class="item item-icon-right" ui-sref="home.category({id:c.category_id})">
+                <p>{{c.category_name}}</p><i class="icon ion-ios-arrow-right"></i>
+            </li>
         </div>
     </ul>
 </ion-content>
