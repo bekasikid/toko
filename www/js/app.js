@@ -6,11 +6,12 @@
 //var base = "http://localhost/wincom/goer/toko-master/rest/";
 //var uploadUrl = "http://localhost/wincom/goer/toko-master/rest/index.php/api/upload/upload";
 //var uploadPointUrl = "http://localhost/wincom/goer/toko-master/rest/index.php/api/upload/uploadPoint";
-var base = "http://localhost/tukarpoint/tukarpoint/";
-var uploadUrl = "http://localhost/tukarpoint/tukarpoint/index.php/api/upload/upload";
-var uploadPointUrl = "http://localhost/tukarpoint/tukarpoint/index.php/api/upload/uploadPoint";
-angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule', 'ProviderModule','ngFileUpload','chieffancypants.loadingBar', 'ngAnimate'])
-
+var base = "http://52.0.13.11/tukarpoint/";
+var uploadUrl = "http://52.0.13.11/tukarpoint/index.php/api/upload/upload";
+var uploadPointUrl = "http://52.0.13.11/tukarpoint/index.php/api/upload/uploadPoint";
+angular.module('starter', ['ionic','ngCordova', 'RouterMain', 'StoreModule', 'VendorModule', 'ProviderModule','ngFileUpload','chieffancypants.loadingBar', 'ngAnimate','ionic.service.core',
+    'ionic.service.push',
+    'ionic.service.deploy',])
     .run(function ($ionicPlatform) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -615,10 +616,19 @@ angular.module('starter', ['ionic', 'RouterMain', 'StoreModule', 'VendorModule',
             }
         }
     }])
-    .config(function($ionicConfigProvider,cfpLoadingBarProvider) {
+    .config(function($ionicConfigProvider,cfpLoadingBarProvider,$ionicAppProvider) {
         $ionicConfigProvider.views.maxCache(0);
         cfpLoadingBarProvider.includeSpinner = true;
+        $ionicAppProvider.identify({
+            // The App ID (from apps.ionic.io) for the server
+            app_id: 'a99a070f',
+            // The public API key all services will use for this app
+            api_key: '29d662f0de4e8fa2b81326fdb8145af8b54d678d1cd27018',
+            // The GCM project ID (project number) from your Google Developer Console (un-comment if used)
+            // gcm_id: 'YOUR_GCM_ID'
+        });
     })
+
     .directive('ngMin', function() {
         return {
             restrict : 'A',
