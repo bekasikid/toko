@@ -4,9 +4,15 @@
         <li class="item item-thumbnail-left item-icon-right" ng-repeat="order in orderList" ui-sref="home.provider-order-id({id:order.order_id})">
             <img src="{{order.imageurl}}"/>
             <h2><strong>{{order.user_name}} - {{(order.point) | currency : '' : 0 }} Points</strong></h2>
-            <div style="margin: 5px 0;">Tanggal : {{order.order_date}}</div>
-            <div style="margin: 5px 0;">Produk : {{order.product_name}} - {{(order.order_approved==1)?"Disetujui":((order.order_approved==2)?"Ditolak":"Dalam Proses")}}</div>
-            <div style="margin: 5px 0;">Harga : {{(order.product_price) | currency : 'Rp ' : 0 }} / {{(order.product_point) | currency : '' : 0 }} Points</div>
+            <div style="margin: 5px 0;">{{order.order_date}}</div>
+            <div style="margin: 5px 0;">{{order.product_name}} -
+                <span ng-switch="order.order_approved">
+                    <span ng-switch-when="1" class="positive">Disetujui</span>
+                    <span ng-switch-when="2" class="assertive">Ditolak</span>
+                    <span ng-switch-default class="energized">Dalam Proses</span>
+                </span>
+            </div>
+            <div style="margin: 5px 0;">{{(order.product_price) | currency : 'Rp ' : 0 }} / {{(order.product_point) | currency : '' : 0 }} Points</div>
             <i class="icon ion-ios-arrow-right"></i>
         </li>
     </ul>

@@ -255,6 +255,18 @@ angular.module('RouterMain',[])
                     }
                 },
             })
+            .state('home.provider-product', {
+                url: "/provider-product",
+                views: {
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
+                    'content': {
+                        templateUrl: "tpl/store/provider/product-list.html",
+
+                    }
+                },
+            })
             .state('home.provider-users-point', {
                 url: "/provider-users-point",
                 views: {

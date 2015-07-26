@@ -6,9 +6,15 @@
 //var base = "http://localhost/wincom/goer/toko-master/rest/";
 //var uploadUrl = "http://localhost/wincom/goer/toko-master/rest/index.php/api/upload/upload";
 //var uploadPointUrl = "http://localhost/wincom/goer/toko-master/rest/index.php/api/upload/uploadPoint";
+
 var base = "http://52.0.13.11/tukarpoint/";
 var uploadUrl = "http://52.0.13.11/tukarpoint/index.php/api/upload/upload";
 var uploadPointUrl = "http://52.0.13.11/tukarpoint/index.php/api/upload/uploadPoint";
+
+//var base = "http://localhost/tukarpoint/tukarpoint/";
+//var uploadUrl = "http://localhost/tukarpoint/tukarpoint/index.php/api/upload/upload";
+//var uploadPointUrl = "http://localhost/tukarpoint/tukarpoint/index.php/api/upload/uploadPoint";
+
 angular.module('starter', ['ionic','ngCordova', 'RouterMain', 'StoreModule', 'VendorModule', 'ProviderModule','ngFileUpload','chieffancypants.loadingBar', 'ngAnimate','ionic.service.core',
     'ionic.service.push',
     'ionic.service.deploy',])

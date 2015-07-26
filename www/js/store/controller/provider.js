@@ -55,8 +55,11 @@ angular.module('ProviderModule', ['ngFileUpload',"chart.js"])
         $scope.onClick = function (points, evt) {
             console.log(points, evt);
         };
+
+        $scope.labels1 = ["Customer A", "Customer B", "Customer C"];
+        $scope.data1 = [30000, 50000, 10000];
     })
-    .controller('ProviderOrderDetailCtrl', function ($scope, userFactory,orderFactory,providerFactory) {
+    .controller('ProviderOrderDetailCtrl', function ($scope, userFactory,orderFactory,providerFactory,$stateParams) {
         $scope.loggedin = userFactory.getLoginUser();
         $scope.provider = providerFactory.getProvider();
         console.log($scope.provider);
@@ -160,6 +163,29 @@ angular.module('ProviderModule', ['ngFileUpload',"chart.js"])
             }
             $state.transitionTo('home.provider-users-point', $state.$current.params, {
                 reload: true, inherit: true, notify: true
+            });
+        };
+
+    })
+    .controller('providerProductCtrl', function ($scope, userFactory, productFactory, providerFactory,$stateParams,$state) {
+        $scope.loggedin = userFactory.getLoginUser();
+        $scope.provider = providerFactory.getProvider();
+
+        //console.log($state);
+
+        $scope.productsList = [];
+        $scope.page = 0;
+        $scope.limit = 1;
+        $scope.noMoreData = false;
+        $scope.loadMore = function(){
+            productFactory.getItems($scope.page).then(function(data){
+                $scope.productsList = $scope.productsList.concat(data);
+                if(data.length<$scope.limit){
+                    $scope.noMoreData = true;
+                }
+                $scope.page++;
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+
             });
         };
 

@@ -2,10 +2,16 @@
     <ul class="list">
         <li class="item item-icon-right item-thumbnail-left" ng-repeat="order in orderList" ui-sref="home.historyid({id:order.order_id})">
             <img src="{{order.imageurl}}"/>
-            <div style="margin: 5px 0;">Tanggal : {{order.order_date}}</div>
-            <div style="margin: 5px 0;">Point   : {{(order.product_point) | currency : '' : 0 }}</div>
-            <div style="margin: 5px 0;">Status  : {{(order.order_approved==1)?"Disetujui":"Belum Disetujui"}}</div>
-            <div style="margin: 5px 0;">Proses  : {{(order.order_status==1)?"Dalam Proses":"Belum Diproses"}}</div>
+            <h2><strong>{{order.product_maker}} - {{order.order_date}}</strong></h2>
+            <h3><strong>{{order.product_name}}</strong></h3>
+            <h3><strong>{{order.product_point | currency : '' : 0 }} Points</strong></h3>
+            <div style="margin: 5px 0;">Status:
+                <span ng-switch="order.order_approved">
+                    <span ng-switch-when="1" class="positive">Disetujui</span>
+                    <span ng-switch-when="2" class="assertive">Ditolak</span>
+                    <span ng-switch-default class="energized">Dalam Proses</span>
+                </span>
+            </div>
             <i class="icon ion-ios-arrow-right"></i>
         </li>
     </ul>
