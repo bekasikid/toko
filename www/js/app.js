@@ -670,6 +670,19 @@ angular.module('starter', ['ionic','ngCordova', 'RouterMain', 'StoreModule', 'Ve
             require: 'ngModel',
             link: function(elem, $scope, attrs, ngModel){
                 ngModel.$formatters.push(function(val){
+                    return "Rp. "+number_format(val,0,".",",")
+                });
+                ngModel.$parsers.push(function(val){
+                    return val.replace(/^\$/, '')
+                });
+            }
+        }
+    })
+    .directive('number', function () {
+        return {
+            require: 'ngModel',
+            link: function(elem, $scope, attrs, ngModel){
+                ngModel.$formatters.push(function(val){
                     return number_format(val,0,".",",")
                 });
                 ngModel.$parsers.push(function(val){

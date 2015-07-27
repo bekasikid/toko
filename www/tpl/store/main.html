@@ -38,8 +38,8 @@
                                             </div>
                                             <h2><strong>{{products[$index].product_name}}</strong></h2>
 
-                                            <div style="margin: 5px 0;" ng-if="(loggedin.user_role=='customer')||(loggedin.user_id==0)"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(newProducts[$index].point) | currency : '' :0}} Points</strong></div>
-                                            <div style="margin: 5px 0;" ng-if="(loggedin.user_role!='customer')&&(loggedin.user_id>0)"><strong>{{(newProducts[$index].product_price) | currency : 'Rp. ' :0}}</strong></div>
+                                            <div class="price-tag" style="margin: 5px 0;" ng-if="(loggedin.user_role=='customer')||(loggedin.user_id==0)"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(newProducts[$index].point) | currency : '' :0}} Points</strong></div>
+                                            <div class="price-tag" style="margin: 5px 0;" ng-if="(loggedin.user_role!='customer')&&(loggedin.user_id>0)"><strong>{{(newProducts[$index].product_price) | currency : 'Rp. ' :0}}</strong></div>
                                         </div>
                                         <div class="col col-50" ng-if="($index+1)<products.length" style="text-align: center;"
                                              ui-sref="home.product({id:products[$index+1].product_id})">
@@ -48,8 +48,8 @@
                                                     <img src="{{products[$index+1].imageurl}}" class="image-display"/>
                                                 </div>
                                                 <h2><strong>{{products[$index+1].product_name}}</strong></h2>
-                                                <div style="margin: 5px 0;" ng-if="(loggedin.user_role=='customer')||(loggedin.user_id==0)"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(newProducts[$index+1].point) | currency : '' :0}} Points</strong></div>
-                                                <div style="margin: 5px 0;" ng-if="(loggedin.user_role!='customer')&&(loggedin.user_id>0)"><strong>{{(newProducts[$index+1].product_price) | currency : 'Rp. ' :0}}</strong></div>
+                                                <div class="price-tag" style="margin: 5px 0;" ng-if="(loggedin.user_role=='customer')||(loggedin.user_id==0)"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(newProducts[$index+1].point) | currency : '' :0}} Points</strong></div>
+                                                <div class="price-tag" style="margin: 5px 0;" ng-if="(loggedin.user_role!='customer')&&(loggedin.user_id>0)"><strong>{{(newProducts[$index+1].product_price) | currency : 'Rp. ' :0}}</strong></div>
                                             </div>
                                         </div>
                                     </div>
@@ -73,8 +73,8 @@
                                                 <img src="{{newProducts[$index].imageurl}}" class="image-display"/>
                                             </div>
                                             <h2><strong>{{newProducts[$index].product_name}}</strong></h2>
-                                            <div style="margin: 5px 0;" ng-if="(loggedin.user_role=='customer')||(loggedin.user_id==0)"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(newProducts[$index].point) | currency : '' :0}} Points</strong></div>
-                                            <div style="margin: 5px 0;" ng-if="(loggedin.user_role!='customer')&&(loggedin.user_id>0)"><strong>{{(newProducts[$index].product_price) | currency : 'Rp. ' :0}}</strong></div>
+                                            <div class="price-tag" style="margin: 5px 0;" ng-if="(loggedin.user_role=='customer')||(loggedin.user_id==0)"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(newProducts[$index].point) | currency : '' :0}} Points</strong></div>
+                                            <div class="price-tag" style="margin: 5px 0;" ng-if="(loggedin.user_role!='customer')&&(loggedin.user_id>0)"><strong>{{(newProducts[$index].product_price) | currency : 'Rp. ' :0}}</strong></div>
                                         </div>
                                         <div class="col col-50" ng-if="($index+1)<products.length" style="text-align: center;"
                                              ui-sref="home.product({id:newProducts[$index+1].product_id})">
@@ -83,8 +83,8 @@
                                                     <img src="{{newProducts[$index+1].imageurl}}" class="image-display"/>
                                                 </div>
                                                 <h2><strong>{{newProducts[$index+1].product_name}}</strong></h2>
-                                                <div style="margin: 5px 0;" ng-if="(loggedin.user_role=='customer')||(loggedin.user_id==0)"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(newProducts[$index+1].point) | currency : '' :0}} Points</strong></div>
-                                                <div style="margin: 5px 0;" ng-if="(loggedin.user_role!='customer')&&(loggedin.user_id>0)"><strong>{{(newProducts[$index+1].product_price) | currency : 'Rp. ' :0}}</strong></div>
+                                                <div class="price-tag" style="margin: 5px 0;" ng-if="(loggedin.user_role=='customer')||(loggedin.user_id==0)"><span ng-if="loggedin.user_id==0">Up to </span><strong>{{(newProducts[$index+1].point) | currency : '' :0}} Points</strong></div>
+                                                <div class="price-tag" style="margin: 5px 0;" ng-if="(loggedin.user_role!='customer')&&(loggedin.user_id>0)"><strong>{{(newProducts[$index+1].product_price) | currency : 'Rp. ' :0}}</strong></div>
                                             </div>
                                         </div>
                                     </div>

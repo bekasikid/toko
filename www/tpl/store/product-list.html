@@ -1,16 +1,21 @@
-<ion-content class="has-header padding" ng-controller="productCategoryCtrl">
+<ion-header-bar align-title="left" class="bar bar-stable" ng-controller="headerCtrl">
+    <div class="buttons">
+        <button menu-toggle="left" class="button button-icon button-clear ion-navicon"></button>
+    </div>
+    <h1 class="title title-left">Daftar Produk</h1>
+    <button class="button button-icon icon ion-android-cart buttonn-right"
+            ng-if="loggedin.user_role=='customer'"><span class="badge badge-assertive">{{cart.length}}</span>
+    </button>
+</ion-header-bar>
+
+<ion-content class="has-header" ng-controller="productCategoryCtrl">
     <ion-list>
-        <div class="card">
-            <div class="item item-borderless">
-                Daftar Produk
-            </div>
-            <div class="item item-thumbnail-left item-icon-right" ng-animate="'animate'" ng-repeat="product in productsList" ui-sref="home.product({id:product.product_id})">
-                <img src="{{product.imageurl}}"/>
-                <h2><strong>{{product.product_name}}</strong></h2>
-                <div style="margin: 5px 0;">{{product.point | currency : '' : 0 }} Points</div>
-                <div><strong>Status: </strong>{{product.product_status==1?"Available":"Not Available"}}</div>
-                <i class="icon ion-ios-arrow-right"></i>
-            </div>
+        <div class="item item-thumbnail-left item-icon-right" ng-animate="'animate'" ng-repeat="product in productsList" ui-sref="home.product({id:product.product_id})">
+            <img src="{{product.imageurl}}"/>
+            <h2><strong>{{product.product_name}}</strong></h2>
+            <div style="margin: 5px 0;" class="price-tag">{{product.point | currency : '' : 0 }} Points</div>
+            <div><strong>Status: </strong>{{product.product_status==1?"Available":"Not Available"}}</div>
+            <i class="icon ion-ios-arrow-right"></i>
         </div>
     </ion-list>
     <ion-infinite-scroll ng-if="!noMoreData" on-infinite="loadMore()" distance="10%"></ion-infinite-scroll>

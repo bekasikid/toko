@@ -125,10 +125,16 @@ angular.module('RouterMain',[])
                     }
                 },
             })
-            .state('home.store.all', {
+            .state('home.product-all', {
                 url: "/all",
                 views: {
-                    'mainContent': {
+                    //'mainContent': {
+                    //    templateUrl: "tpl/store/product-list.html",
+                    //}
+                    'header': {
+                        templateUrl: "tpl/header.html",
+                    },
+                    'content': {
                         templateUrl: "tpl/store/product-list.html",
                     }
                 },

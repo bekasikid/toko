@@ -66,7 +66,7 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         $scope.limit = 1;
         $scope.noMoreData = false;
         $scope.loadMore = function(){
-            if($state.$current.name=='home.store.all'){
+            if($state.$current.name=='home.product-all'){
                 productFactory.getItems($scope.page).then(function(data){
                     $scope.productsList = $scope.productsList.concat(data);
                     if(data.length<$scope.limit){

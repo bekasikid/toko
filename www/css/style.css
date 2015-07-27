@@ -141,3 +141,7 @@
 .label.button {
     cursor: auto !important;
 }
+.price-tag{
+    color:#CC3300;
+    font-size: 20px;
+}
