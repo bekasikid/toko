@@ -121,7 +121,7 @@ angular.module('RouterMain',[])
                 url: "/product/name/:name",
                 views: {
                     'mainContent': {
-                        templateUrl: "tpl/store/product-list.html",
+                        templateUrl: "tpl/store/product-search.html",
                     }
                 },
             })
@@ -131,9 +131,37 @@ angular.module('RouterMain',[])
                     //'mainContent': {
                     //    templateUrl: "tpl/store/product-list.html",
                     //}
-                    'header': {
-                        templateUrl: "tpl/header.html",
-                    },
+                    //'header': {
+                    //    templateUrl: "tpl/header.html",
+                    //},
+                    'content': {
+                        templateUrl: "tpl/store/product-list.html",
+                    }
+                },
+            })
+            .state('home.recommend-all', {
+                url: "/recommend",
+                views: {
+                    //'mainContent': {
+                    //    templateUrl: "tpl/store/product-list.html",
+                    //}
+                    //'header': {
+                    //    templateUrl: "tpl/header.html",
+                    //},
+                    'content': {
+                        templateUrl: "tpl/store/product-list.html",
+                    }
+                },
+            })
+            .state('home.new-all', {
+                url: "/new",
+                views: {
+                    //'mainContent': {
+                    //    templateUrl: "tpl/store/product-list.html",
+                    //}
+                    //'header': {
+                    //    templateUrl: "tpl/header.html",
+                    //},
                     'content': {
                         templateUrl: "tpl/store/product-list.html",
                     }
@@ -142,9 +170,9 @@ angular.module('RouterMain',[])
             .state('home.vendor', {
                 url: "/vendor",
                 views: {
-                    'header': {
-                        templateUrl: "tpl/header.html",
-                    },
+                    //'header': {
+                    //    templateUrl: "tpl/header.html",
+                    //},
                     'content': {
                         templateUrl: "tpl/store/vendor/vendor-list.html",
                     }
@@ -252,21 +280,30 @@ angular.module('RouterMain',[])
             .state('home.provider-add', {
                 url: "/provider-add",
                 views: {
-                    'header': {
-                        templateUrl: "tpl/header.html",
-                    },
+                    //'header': {
+                    //    templateUrl: "tpl/header.html",
+                    //},
                     'content': {
                         templateUrl: "tpl/store/provider/provider-add.html",
 
                     }
                 },
             })
-            .state('home.provider-product', {
-                url: "/provider-product",
+            .state('home.provider-list', {
+                url: "/provider-list",
                 views: {
-                    'header': {
-                        templateUrl: "tpl/header.html",
-                    },
+                    'content': {
+                        templateUrl: "tpl/store/provider/provider-list.html",
+
+                    }
+                },
+            })
+            .state('home.provider-product', {
+                url: "/provider-product/:id",
+                views: {
+                    //'header': {
+                    //    templateUrl: "tpl/header.html",
+                    //},
                     'content': {
                         templateUrl: "tpl/store/provider/product-list.html",
 

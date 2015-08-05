@@ -1,4 +1,17 @@
-<ion-content class="has-header padding"><!--Created by goer on 5/21/15.-->
+<ion-header-bar align-title="left" class="bar bar-stable" ng-controller="headerCtrl">
+    <div class="buttons">
+        <button class="button button-clear icon ion-chevron-left" ui-sref="home.store"></button>
+    </div>
+    <h1 class="title title-left">Login</h1>
+    <div class="buttons">
+        <button class="button button-icon icon ion-android-cart"
+                ng-if="loggedin.user_role=='customer'" ui-sref="home.cart"><span class="badge badge-assertive">{{cart.length}}</span>
+        </button>
+        <button class="button button-icon icon ion-ios-paper" ng-if="loggedin.user_role=='customer'" ui-sref="home.history">
+        </button>
+    </div>
+</ion-header-bar>
+<ion-content class="has-header"><!--Created by goer on 5/21/15.-->
     <ion-list ng-controller="AccountCtrl">
         <form ng-submit="login()">
             <label class="item item-input item-stacked-label">

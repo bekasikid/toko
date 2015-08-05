@@ -167,7 +167,7 @@ angular.module('ProviderModule', ['ngFileUpload',"chart.js"])
         };
 
     })
-    .controller('providerProductCtrl', function ($scope, userFactory, productFactory, providerFactory,$stateParams,$state) {
+    .controller('providerProductCtrl', function ($scope, userFactory, providerFactory,$stateParams,$state) {
         $scope.loggedin = userFactory.getLoginUser();
         $scope.provider = providerFactory.getProvider();
 
@@ -178,7 +178,7 @@ angular.module('ProviderModule', ['ngFileUpload',"chart.js"])
         $scope.limit = 1;
         $scope.noMoreData = false;
         $scope.loadMore = function(){
-            productFactory.getItems($scope.page).then(function(data){
+            providerFactory.getProducts($stateParams.id,$scope.page).then(function(data){
                 $scope.productsList = $scope.productsList.concat(data);
                 if(data.length<$scope.limit){
                     $scope.noMoreData = true;
@@ -190,4 +190,32 @@ angular.module('ProviderModule', ['ngFileUpload',"chart.js"])
         };
 
     })
+    .controller('providerListCtrl', function ($scope, userFactory, providerFactory,$stateParams,$state) {
+        $scope.loggedin = userFactory.getLoginUser();
+        //$scope.provider = providerFactory.getProvider();
+
+        $scope.providersList = [];
+        $scope.page = 0;
+        $scope.limit = 1;
+        $scope.noMoreData = false;
+        $scope.loadMore = function(){
+            providerFactory.getProviders($scope.page).then(function(data){
+                $scope.providersList = $scope.providersList.concat(data);
+                if(data.length<$scope.limit){
+                    $scope.noMoreData = true;
+                }
+                $scope.page++;
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+
+            });
+        };
+
+    })
+    .controller('searchProviderCtrl', function ($scope, userFactory, providerFactory,$stateParams,$state) {
+        $scope.loggedin = userFactory.getLoginUser();
+        $scope.provider = providerFactory.getProvider();
+
+
+    })
+
     ;

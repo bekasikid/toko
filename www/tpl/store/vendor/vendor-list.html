@@ -1,6 +1,26 @@
-<ion-content class="has-header padding" ng-controller="VendorListCtrl">
+<ion-header-bar align-title="left" class="bar bar-stable" ng-controller="headerCtrl">
+    <div class="buttons">
+        <button class="button button-clear icon ion-chevron-left" ui-sref="home.store"></button>
+    </div>
+    <h1 class="title title-left">Produk</h1>
+    <div class="buttons">
+        <button class="button button-icon icon ion-ios-compose-outline" ui-sref="home.vendor-product-new"></button>
+    </div>
+</ion-header-bar>
+<div class="bar bar-stable bar-subheader item-input-inset" ng-controller="subHeaderCtrl">
+    <label class="item-input-wrapper" style="border: #EEE 1px solid;">
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon"></i>
+            <input type="search" placeholder="Cari Barang" ng-change="search()" ng-model="searchQuery">
+        </label>
+        <button class="button button-clear">
+            Cancel
+        </button>
+    </label>
+</div>
+
+<ion-content class="has-subheader" ng-controller="VendorListCtrl">
     <ion-list>
-        <li class="item item-divider">Daftar Produk</li>
         <li class="item item-thumbnail-left item-icon-right" ng-repeat="product in productsList" ui-sref="home.vendor-product({id:product.product_id})">
             <img src="{{product.imageurl}}"/>
             <h2><strong>{{product.product_name}}</strong></h2>
@@ -11,8 +31,3 @@
     </ion-list>
     <ion-infinite-scroll ng-if="!noMoreData" on-infinite="loadMore()" distance="10%"></ion-infinite-scroll>
 </ion-content>
-<ion-footer-bar class="bar bar-stable">
-    <div class="buttons">
-        <a type="button" class="button ion-ios-compose-outline" href="#/home/vendor-product-new">Tambah</a>
-    </div>
-</ion-footer-bar>

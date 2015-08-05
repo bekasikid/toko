@@ -1,7 +1,7 @@
 /**
  * Created by goer on 5/21/15.
  */
-angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
+angular.module('StoreModule', ['ngFileUpload'])
 
     .controller('headerCtrl', function ($scope, cartFactory, userFactory,$state) {
         $scope.loggedin = userFactory.getLoginUser();
@@ -22,8 +22,20 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
         }else if($state.$current.name=='home.store.all'){
             $scope.title = 'Daftar Produk';
         }else{
-            $scope.title = 'TUKAR POINT';
+            $scope.title = 'PASTIPOINT';
         }
+
+    })
+    .controller('subHeaderCtrl', function ($scope, cartFactory, userFactory,$state) {
+        $scope.productsList = [];
+        $scope.page = 0;
+        $scope.limit = 1;
+        $scope.noMoreData = false;
+        $scope.search = function(){
+            $state.transitionTo("home.store.search", {name:$scope.searchQuery}, {
+                reload: false, inherit: true, notify: true
+            });
+        };
 
     })
     .controller('ProductListCtrl', function ($scope, cartFactory, userFactory, productFactory, providerFactory,$ionicSlideBoxDelegate) {
@@ -76,6 +88,26 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
                     $scope.$broadcast('scroll.infiniteScrollComplete');
 
                 });
+            }else if($state.$current.name=='home.recommend-all'){
+                productFactory.getRecommended($scope.page).then(function(data){
+                    $scope.productsList = $scope.productsList.concat(data);
+                    if(data.length<$scope.limit){
+                        $scope.noMoreData = true;
+                    }
+                    $scope.page++;
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+
+                });
+            }else if($state.$current.name=='home.new-all'){
+                productFactory.getNew($scope.page).then(function(data){
+                    $scope.productsList = $scope.productsList.concat(data);
+                    if(data.length<$scope.limit){
+                        $scope.noMoreData = true;
+                    }
+                    $scope.page++;
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+
+                });
             }else{
                 if($stateParams.id){
                     productFactory.categoryItems($stateParams.id,$scope.page).then(function(data){
@@ -99,8 +131,6 @@ angular.module('StoreModule', ['angular-carousel','ngFileUpload'])
                     });
                 }
             }
-
-
         };
 
     })

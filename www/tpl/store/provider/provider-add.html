@@ -1,7 +1,13 @@
-<ion-content class="has-header padding">
+<ion-header-bar align-title="left" class="bar bar-stable" ng-controller="headerCtrl">
+    <div class="buttons">
+        <button class="button button-clear icon ion-chevron-left" ui-sref="home.provider-list"></button>
+    </div>
+    <h1 class="title title-left">Tambah Provider</h1>
+</ion-header-bar>
+<ion-content class="has-header">
     <ion-list ng-controller="ProviderAddCtrl">
         <form ng-submit="register()">
-            <div class="list card">
+            <div class="list">
                 <div class="item item-image" style="text-align: center;padding-top: 10px;">
                     <div ngf-drop ngf-select ng-model="files" class="drop-box"
                          ngf-drag-over-class="dragover" ngf-multiple="false" ngf-allow-dir="true"

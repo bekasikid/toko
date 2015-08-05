@@ -45,8 +45,10 @@ angular.module('VendorModule', ['ngFileUpload','ckeditor'])
     })
     .controller('VendorOrderDetailCtrl', function ($scope, userFactory,orderFactory,$stateParams) {
         $scope.loggedin = userFactory.getLoginUser();
+        $scope.order = {};
         orderFactory.getItemById($stateParams.id).then(function(row){
             $scope.order = row;
+            console.log(row);
         });
         $scope.total = function(){
             var harga = 0;

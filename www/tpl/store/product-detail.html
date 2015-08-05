@@ -3,91 +3,92 @@
         margin-top: 0 !important;
     }
 </style>
-<ion-header-bar class="bar-stable" align-title="center">
+<ion-header-bar class="bar-stable" align-title="left">
     <button class="button button-clear icon ion-chevron-left" ui-sref="home.store"></button>
-    <h1 class="title">Tukar Point</h1>
+    <h1 class="title">Produk Detail</h1>
 </ion-header-bar>
 <ion-view title="Product Detail">
     <ion-pane ng-controller="productDetailCtrl">
         <ion-content>
-            <div class="card" style="">
-                <div class="item" style="text-align: center;">
-                    <div><strong>{{product.product_maker}}</strong></div>
-                </div>
-                <div class="item item-borderless" style="text-align: center;">
-                    <strong>{{product.product_name}}</strong>
-                </div>
-                <div class="item item-borderless" style="text-align: center;">
-                    <img src="{{product.imageurl}}" class="image-presentation"/>
-                </div>
-                <div class="item item-borderless" style="padding: 10px 0 0;">
-                    <div class="row">
-                        <div class="col col-50" style="border-top: 1px solid #DDD;border-right: 1px solid #DDD;text-align: center;padding-bottom: 10px;">
-                            <span class="price-tag" ng-if="loggedin.user_role=='customer'">{{product.point | currency : '' : 0}} Points</span>
-                            <span ng-if="loggedin.user_role!='customer'">{{product.product_price | currency : 'Rp. ' : 0}}</span>
-                        </div>
-                        <div class="col col-50"
-                             style="border-top: 1px solid #DDD;text-align: center;padding-bottom: 10px;">
-                            Product <span ng-if="product.product_status==1">Tersedia</span><span
-                                ng-if="product.product_status==0">Tidak Tersedia</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="item item-text-wrap item-divider" ng-if="(loggedin.user_id>0) && (loggedin.user_role=='customer')">
-                    Pembayaran
-                </div>
-                <div class="item range" ng-if="(loggedin.user_id>0) && (loggedin.user_role=='customer')">
-                    <i class="icon ion-pricetag"></i>
-                    <input type="range" ng-min="0" ng-max="product.point" ng-model="prod.points"/>
-                    <i class="icon ion-pricetags"></i>
-                </div>
-                <div class="item item-borderless" style="padding: 10px 0 0;" ng-if="(loggedin.user_id>0) && (loggedin.user_role=='customer')">
-                    <div class="row">
-                        <div class="col col-50"
-                             style="border-top: 1px solid #DDD;border-right: 1px solid #DDD;text-align: center;">
-                            <label class="item-input item-stacked-label">
-                                <span class="input-label">Topup</span>
-                                <input type="text" placeholder="Topup" ng-model="prod.topup" style="text-align: center;"
-                                       readonly currency>
-                            </label>
-                        </div>
-                        <div class="col col-50" style="border-top: 1px solid #DDD;text-align: center;">
-                            <label class="item-input item-stacked-label">
-                                <span class="input-label">Points</span>
-                                <input type="text" placeholder="Points" ng-model="prod.points" value="prod.points"
-                                       style="text-align: center;" number>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="item item-text-wrap item-icon-right item-divider" style="padding: 5px 5px;"
-                     ng-click="toggleDet()">
-                    Detail Produk
-                    <i class="icon" style="font-size:14px;" ng-class="isDetShown ? 'ion-plus' : 'ion-minus'"></i>
-                </div>
-                <div class="item item-text-wrap" style="padding: 35px 5px;" ng-show="!isDetShown"
-                     ng-bind-html="product.product_detail">
 
-                </div>
-                <div class="item item-text-wrap item-icon-right item-divider" style="padding: 5px 5px;"
-                     ng-click="toggleDesc()">
-                    Deskripsi
-                    <i class="icon" style="font-size:14px;" ng-class="isDescShown ? 'ion-plus' : 'ion-minus'"></i>
-                </div>
-                <div class="item item-text-wrap" style="padding: 35px 5px;" ng-show="!isDescShown"
-                     ng-bind-html="product.product_description">
-                </div>
-                <div class="item item-text-wrap item-icon-right item-divider" style="padding: 5px 5px;"
-                     ng-click="toggleTerm()">
-                    Terms & Condition
-                    <i class="icon" style="font-size:14px;" ng-class="isTermShown ? 'ion-plus' : 'ion-minus'"></i>
-                </div>
-                <div class="item item-text-wrap" style="padding: 35px 5px;" ng-show="!isTermShown">
+            <div class="item" style="text-align: center;">
+                <div><strong>{{product.product_maker}}</strong></div>
+            </div>
+            <div class="item item-borderless" style="text-align: center;">
+                <strong>{{product.product_name}}</strong>
+            </div>
+            <div class="item item-borderless" style="text-align: center;">
+                <img src="{{product.imageurl}}" class="image-presentation"/>
+            </div>
+            <div class="item item-borderless" style="padding: 10px 0 0;">
+                <div class="row">
+                    <div class="col col-50" style="border-top: 1px solid #DDD;border-right: 1px solid #DDD;text-align: center;padding-bottom: 10px;" ng-switch on="loggedin.user_role">
+                        <span class="price-tag" ng-switch-when="vendor">{{product.product_price | currency : 'Rp. ' : 0}}</span>
+                        <span class="price-tag" ng-switch-when="provider">{{product.product_price | currency : 'Rp. ' : 0}}</span>
+                        <span class="price-tag" ng-switch-default>{{product.point | currency : '' : 0}} Points</span>
+                    </div>
+                    <div class="col col-50"
+                         style="border-top: 1px solid #DDD;text-align: center;padding-bottom: 10px;">
+                        Product <span ng-if="product.product_status==1">Tersedia</span><span
+                            ng-if="product.product_status==0">Tidak Tersedia</span>
+                    </div>
                 </div>
             </div>
+            <div class="item item-text-wrap item-divider" ng-if="(loggedin.user_id>0) && (loggedin.user_role=='customer')">
+                Pembayaran
+            </div>
+            <div class="item range" ng-if="(loggedin.user_id>0) && (loggedin.user_role=='customer')">
+                <i class="icon ion-pricetag"></i>
+                <input type="range" ng-min="0" ng-max="product.point" ng-model="prod.points"/>
+                <i class="icon ion-pricetags"></i>
+            </div>
+            <div class="item item-borderless" style="padding: 10px 0 0;" ng-if="(loggedin.user_id>0) && (loggedin.user_role=='customer')">
+                <div class="row">
+                    <div class="col col-50"
+                         style="border-top: 1px solid #DDD;border-right: 1px solid #DDD;text-align: center;">
+                        <label class="item-input item-stacked-label">
+                            <span class="input-label">Topup</span>
+                            <input type="text" placeholder="Topup" ng-model="prod.topup" style="text-align: center;"
+                                   readonly currency>
+                        </label>
+                    </div>
+                    <div class="col col-50" style="border-top: 1px solid #DDD;text-align: center;">
+                        <label class="item-input item-stacked-label">
+                            <span class="input-label">Points</span>
+                            <input type="text" placeholder="Points" ng-model="prod.points" value="prod.points"
+                                   style="text-align: center;" number>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="item item-text-wrap item-icon-right item-divider" style="padding: 5px 5px;"
+                 ng-click="toggleDet()">
+                Detail Produk
+                <i class="icon" style="font-size:14px;" ng-class="isDetShown ? 'ion-plus' : 'ion-minus'"></i>
+            </div>
+            <div class="item item-text-wrap" style="padding: 35px 5px;" ng-show="!isDetShown"
+                 ng-bind-html="product.product_detail">
+
+            </div>
+            <div class="item item-text-wrap item-icon-right item-divider" style="padding: 5px 5px;"
+                 ng-click="toggleDesc()">
+                Deskripsi
+                <i class="icon" style="font-size:14px;" ng-class="isDescShown ? 'ion-plus' : 'ion-minus'"></i>
+            </div>
+            <div class="item item-text-wrap" style="padding: 35px 5px;" ng-show="!isDescShown"
+                 ng-bind-html="product.product_description">
+            </div>
+            <!--<div class="item item-text-wrap item-icon-right item-divider" style="padding: 5px 5px;"-->
+                 <!--ng-click="toggleTerm()">-->
+                <!--Terms & Condition-->
+                <!--<i class="icon" style="font-size:14px;" ng-class="isTermShown ? 'ion-plus' : 'ion-minus'"></i>-->
+            <!--</div>-->
+            <!--<div class="item item-text-wrap" style="padding: 35px 5px;" ng-show="!isTermShown">-->
+            <!--</div>-->
+
         </ion-content>
         <ion-footer-bar align-title="left" class="bar bar-stable" ng-if="loggedin.user_role=='customer'">
-            <button ng-click="add(product)" class="button button-light button-block">Pesan Sekarang</button>
+            <button ng-click="add(product)" class="button button-stable button-block">Pesan Sekarang</button>
         </ion-footer-bar>
     </ion-pane>
 </ion-view>

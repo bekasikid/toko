@@ -1,8 +1,8 @@
 <ion-side-menus enable-menu-with-back-views="true">
     <!-- CENTER CONTENT -->
     <ion-pane ion-side-menu-content drag-content="false">
-        <div ui-view="header"></div>
-        <div ui-view="content"></div>
+        <!--<div ui-view="header"></div>-->
+        <div ui-view="content" class="has-subheader"></div>
     </ion-pane>
     <!-- LEFT SIDE MENU -->
     <ion-side-menu side="left" ng-switch on="loggedin.user_role" ng-controller="LoginCtrl">

@@ -4,16 +4,16 @@
     </div>
     <h1 class="title title-left">PASTIPOINT</h1>
     <div class="buttons">
-        <button class="button button-icon icon ion-android-cart" ng-if="loggedin.user_role=='customer'" ui-sref="home.cart"><span class="badge badge-assertive">{{cart.length}}</span>
+        <button class="button button-icon icon ion-android-cart"
+                ng-if="loggedin.user_role=='customer' || loggedin.user_role=='guest'" ui-sref="home.cart"><span class="badge badge-assertive">{{cart.length}}</span>
         </button>
-        <button class="button button-icon icon ion-ios-person" ng-if="loggedin.user_role=='guest'" ui-sref="home.login"></button>
         <button class="button button-icon icon ion-ios-paper" ng-if="loggedin.user_role=='customer'" ui-sref="home.history">
         </button>
     </div>
 </ion-header-bar>
 <div class="bar bar-stable bar-subheader item-input-inset" ng-controller="subHeaderCtrl">
-    <label class="item-input-wrapper" style="border: #EEE 1px solid;background-color: #FFF;">
-        <label class="item-input-wrapper" style="background-color: #FFF;">
+    <label class="item-input-wrapper" style="border: #EEE 1px solid;">
+        <label class="item-input-wrapper">
             <i class="icon ion-ios-search placeholder-icon"></i>
             <input type="search" placeholder="Cari Barang" ng-change="search()" ng-model="searchQuery">
         </label>
@@ -35,14 +35,24 @@
         <div ng-controller="ProductListCtrl">
             <ul class="list">
                 <div class="item item-borderless">
-                    <ion-slide-box auto-play="true">
-                        <ion-slide ng-repeat="cList in carouselLists">
-                            <div class="box" style="text-align: center;"><img src="{{cList.imageurl}}" style="max-height: 300px;max-width: 100%;"/></div>
-                        </ion-slide>
-                    </ion-slide-box>
 
 
                 </div>
+                <li class="item item-borderless" style="text-align: center;">
+                    <ul rn-carousel class="" rn-carousel-index="carouselIndex22" style="height: 300px;"
+                        rn-carousel-auto-slide rn-carousel-buffered>
+                        <li ng-repeat="cList in carouselLists">
+                            <div class="layer" style="position:relative;">
+                                <img src="{{cList.imageurl}}" style="max-height: 300px;max-width: 100%;"/>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="rn-carousel-indicator custom-indicator">
+                                    <span ng-repeat="cList in carouselLists"
+                                          ng-class="{active: $index==$parent.carouselIndex22 }" class="icon ion-star"
+                                          ng-click="$parent.carouselIndex22 = $index"> </span>
+                    </div>
+                </li>
                 <li class="item item-divider">
                     <h2 style="float: left;"><strong>Product Terbaik</strong></h2>
                     <div style="float: right" ui-sref="home.recommend-all">

@@ -263,6 +263,30 @@ angular.module('starter', ['ionic','ngCordova', 'RouterMain', 'StoreModule', 'Ve
             return def.promise;
         };
 
+        productLists.getRecommended = function(page){
+            var def = $q.defer();
+            var limit = 6;
+            var active_provider = this.getActive();
+            var uri = base+"index.php/api/products/getProducts/recommended/1/limit/"+limit+"/page/"+page+"/provider/"+active_provider.provider_id;
+            $http.get(uri).success(function(data){
+                def.resolve(data);
+            });
+            //return items;
+            return def.promise;
+        };
+
+        productLists.getNew = function(page){
+            var def = $q.defer();
+            var limit = 6;
+            var active_provider = this.getActive();
+            var uri = base+"index.php/api/products/getProducts/new/1/limit/"+limit+"/page/"+page+"/provider/"+active_provider.provider_id;
+            $http.get(uri).success(function(data){
+                def.resolve(data);
+            });
+            //return items;
+            return def.promise;
+        };
+
         productLists.newItems = function(){
             var def = $q.defer();
             var limit = 6;
@@ -496,6 +520,16 @@ angular.module('starter', ['ionic','ngCordova', 'RouterMain', 'StoreModule', 'Ve
             return JSON.parse($window.localStorage['provider'] || '{}');
         };
 
+        providerObjects.getProviders = function(page){
+            var def = $q.defer();
+            var limit = 6;
+            var uri = base+"index.php/api/providers/getProviders/limit/"+limit+"/page/"+page;
+            $http.get(uri).success(function(data){
+                def.resolve(data);
+            });
+            return def.promise;
+        };
+
         providerObjects.removeProvider = function(){
             $window.localStorage.removeItem('provider');
         };
@@ -536,6 +570,17 @@ angular.module('starter', ['ionic','ngCordova', 'RouterMain', 'StoreModule', 'Ve
 
         providerObjects.getPointRate = function(){
             return pointRate;
+        };
+
+        providerObjects.getProducts = function(id,page){
+            var def = $q.defer();
+            var limit = 6;
+            var uri = base+"index.php/api/providers/getProducts/id/"+id+"/limit/"+limit+"/page/"+page;
+            $http.get(uri).success(function(data){
+                def.resolve(data);
+            });
+            //return items;
+            return def.promise;
         };
 
         return providerObjects;

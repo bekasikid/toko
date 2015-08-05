@@ -1,13 +1,18 @@
-<ion-content class="has-header padding" ng-controller="VendorOrderDetailCtrl">
+<ion-header-bar class="bar-stable">
+    <button class="button button-clear icon ion-chevron-left" ui-sref="home.vendor-order"></button>
+    <h1 class="title">Pesanan Detail</h1>
+</ion-header-bar>
+
+<ion-content class="has-header" ng-controller="VendorOrderDetailCtrl">
     <ul class="list">
         <li class="item item-thumbnail-left">
-            <img src="{{order.user.image}}"/>
+            <img src="{{order.imageurl}}"/>
 
-            <h2><strong>{{order.user.name}}</strong></h2>
+            <h2><strong>{{order.user_name}}</strong></h2>
 
-            <div style="margin: 5px 0;">Tanggal : {{order.tgl}}</div>
-            <div style="margin: 5px 0;">Barang : {{order.products.length}} Item</div>
-            <div style="margin: 5px 0;">Total : {{(total()) | currency : 'Rp ' : 0 }}</div>
+            <div style="margin: 5px 0;">Tanggal : {{order.order_date}}</div>
+            <div style="margin: 5px 0;">Barang : {{order.products_name}}</div>
+            <div style="margin: 5px 0;">Harga : {{order.product_price | currency : 'Rp ' : 0 }}</div>
             <div style="margin: 5px 0;">Status : {{(order.status==1)?"Approved":"Not Approved"}}</div>
         </li>
         <li class="item item-divider">
